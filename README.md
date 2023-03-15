@@ -59,6 +59,7 @@ To get a local copy up and running follow these steps.
 1. Create a project folder on your desktop
 
 2.  Clone the repo
+3.  Open a terminal/powershell and type:
    ```sh
    cd your-project-folder 
    git clone https://github.com/mcworkaholic/IS345-G5-Music-Player.git
