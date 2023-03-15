@@ -61,7 +61,7 @@ To get a local copy up and running follow these steps.
 2.  Clone the repo
    ```sh
    cd your-project-folder 
-   git clone https://github.com/mcworkaholic/IS443-Bike-Database.git
+   git clone https://github.com/mcworkaholic/IS345-G5-Music-Player.git
    ```
 
 <!-- CONTRIBUTING -->
