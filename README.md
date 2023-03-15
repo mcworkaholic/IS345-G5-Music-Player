@@ -1,4 +1,4 @@
-Group Project: C# Music Player, Demonstration of trees and heaps<br><br>
+# Group Project: C# Music Player, Demonstration of trees and heaps<br><br>
 By Weston Evans, Ahmed Mahklooq, and Mobeen Shahid
 
 
