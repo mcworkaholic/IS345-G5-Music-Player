@@ -1,0 +1,16 @@
+C:\Users\Weston\source\repos\Music Player\bin\Debug\Music Player.exe.config
+C:\Users\Weston\source\repos\Music Player\bin\Debug\Music Player.exe
+C:\Users\Weston\source\repos\Music Player\bin\Debug\Music Player.pdb
+C:\Users\Weston\source\repos\Music Player\bin\Debug\Interop.WMPLib.dll
+C:\Users\Weston\source\repos\Music Player\bin\Debug\AxInterop.WMPLib.dll
+C:\Users\Weston\source\repos\Music Player\obj\Debug\Music Player.csproj.AssemblyReference.cache
+C:\Users\Weston\source\repos\Music Player\obj\Debug\Music Player.csproj.SuggestedBindingRedirects.cache
+C:\Users\Weston\source\repos\Music Player\obj\Debug\Interop.WMPLib.dll
+C:\Users\Weston\source\repos\Music Player\obj\Debug\AxInterop.WMPLib.dll
+C:\Users\Weston\source\repos\Music Player\obj\Debug\Music Player.csproj.ResolveComReference.cache
+C:\Users\Weston\source\repos\Music Player\obj\Debug\Music_Player.Properties.Resources.resources
+C:\Users\Weston\source\repos\Music Player\obj\Debug\Music Player.csproj.GenerateResource.cache
+C:\Users\Weston\source\repos\Music Player\obj\Debug\Music Player.csproj.CoreCompileInputs.cache
+C:\Users\Weston\source\repos\Music Player\obj\Debug\Music Player.exe
+C:\Users\Weston\source\repos\Music Player\obj\Debug\Music Player.pdb
+C:\Users\Weston\source\repos\Music Player\obj\Debug\Music_Player.Form1.resources
