@@ -29,9 +29,13 @@ By Weston Evans, Ahmed Mahklooq, and Mobeen Shahid
 
 <!-- TECHNOLOGIES -->
 ## Technologies
-<div align="center">
+<a href="https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white">
+        <img src="https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white"
+            alt="coverage"></a>
+
+<!-- <div align="center">
 ![.Net](https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white)
-</div>
+</div> -->
 
 <div align="center">
 ![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white)
