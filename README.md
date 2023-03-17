@@ -64,6 +64,7 @@ To get a local copy up and running follow these steps.
    cd your-project-folder 
    git clone https://github.com/mcworkaholic/IS345-G5-Music-Player.git
    ```
+4.  Open the project folder w/newly added files and click on the provided solution to get started
 
 <!-- CONTRIBUTING -->
 ## Contributing
