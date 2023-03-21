@@ -14,3 +14,22 @@ C:\Users\Weston\source\repos\Music Player\obj\Debug\Music Player.csproj.CoreComp
 C:\Users\Weston\source\repos\Music Player\obj\Debug\Music Player.exe
 C:\Users\Weston\source\repos\Music Player\obj\Debug\Music Player.pdb
 C:\Users\Weston\source\repos\Music Player\obj\Debug\Music_Player.Form1.resources
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\bin\Debug\Music Player.exe.config
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\bin\Debug\Music Player.exe
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\bin\Debug\Music Player.pdb
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\bin\Debug\Interop.WMPLib.dll
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\bin\Debug\AxInterop.WMPLib.dll
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\Music Player.csproj.AssemblyReference.cache
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\Music Player.csproj.SuggestedBindingRedirects.cache
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\Interop.WMPLib.dll
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\AxInterop.WMPLib.dll
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\Music Player.csproj.ResolveComReference.cache
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\Music_Player.Form1.resources
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\Music_Player.Properties.Resources.resources
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\Music Player.csproj.GenerateResource.cache
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\Music Player.csproj.CoreCompileInputs.cache
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\Music Player.exe
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\Music Player.pdb
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Weston\Desktop\IS345-G5-Music-Player\Music Player\obj\Debug\Music Player.csproj.CopyComplete
