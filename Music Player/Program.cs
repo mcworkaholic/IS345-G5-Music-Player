@@ -5,6 +5,7 @@ namespace Music_Player
 {
     internal static class Program
     {
+        public static bool OpenForm1OnClose { get; set; }
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -13,7 +14,14 @@ namespace Music_Player
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            OpenForm1OnClose = false;
+
+            Application.Run(new loginForm());
+
+            if (OpenForm1OnClose)
+            {
+                Application.Run(new Form1());
+            }
         }
     }
 }
