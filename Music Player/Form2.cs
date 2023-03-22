@@ -172,9 +172,9 @@ namespace Music_Player
                     {
                         cfrmpwderrBox.Visible = true;
                         pwderrBox.Visible = true;
-                        if(confirmtextBox.Visible == true)
+                        if (confirmtextBox.Visible == true)
                         {
-                            if(confirmtextBox.Text.Length > 0)
+                            if (confirmtextBox.Text.Length > 0)
                             {
                                 MessageBox.Show("Passwords must match. Please try again.", "Password Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
@@ -202,7 +202,7 @@ namespace Music_Player
                         if (reader.Read())
                         {
                             storedHash = reader.GetString(0);
-                            //user_id = reader.GetInt32(1);
+                            Program.user_id = reader.GetInt32(1);
                         }
                     }
                 }
@@ -210,7 +210,7 @@ namespace Music_Player
             if (passwordtextBox.Text.Length > 0 && usertextBox.Text.Length > 0)
             {
                 if (BC.Verify(passwordtextBox.Text, storedHash))  //System.ArgumentException: 'Invalid salt: salt cannot be null or empty
-                    //Parameter name: salt' for login without profile creation
+                                                                  //Parameter name: salt' for login without profile creation
 
                 {
                     Program.OpenForm1OnClose = true;
@@ -221,7 +221,7 @@ namespace Music_Player
                     // Passwords don't match, so deny login
                     MessageBox.Show("Invalid username or password.", "Invalid Credentials", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     usrerrBox.Visible = true;
-                    pwderrBox.Visible =true;
+                    pwderrBox.Visible = true;
                 }
             }
             else
@@ -264,7 +264,7 @@ namespace Music_Player
             }
             else
             {
-                passView.Visible =false;
+                passView.Visible = false;
             }
         }
 
@@ -284,7 +284,7 @@ namespace Music_Player
             }
             else
             {
-                cnfmView.Visible =false;
+                cnfmView.Visible = false;
             }
         }
 

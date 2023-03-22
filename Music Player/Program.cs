@@ -5,6 +5,7 @@ namespace Music_Player
 {
     internal static class Program
     {
+        public static int user_id { get; set; }
         public static bool OpenForm1OnClose { get; set; }
         /// <summary>
         /// The main entry point for the application.
