@@ -127,7 +127,7 @@ namespace Music_Player
                 }
                 if (passwordtextBox.Text.Length > 50 || confirmtextBox.Text.Length > 50)
                 {
-                    MessageBox.Show("Password must be less than 50 characters.");
+                    MessageBox.Show("Password must be less than 50 characters.", "Password Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     cfrmpwderrBox.Visible = true;
                     pwderrBox.Visible = true;
                 }
@@ -164,7 +164,7 @@ namespace Music_Player
                                 confirmtextBox.Text = String.Empty;
                                 passView.Visible = false;
                                 cnfmView.Visible = false;
-                                MessageBox.Show("Username already exists. Please choose a different username.");
+                                MessageBox.Show("Username already exists. Please choose a different username.", "Username In Use", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                     }
@@ -176,8 +176,7 @@ namespace Music_Player
                         {
                             if(confirmtextBox.Text.Length > 0)
                             {
-                                MessageBox.Show("Passwords must match. Please try again.");
-                                confirmtextBox.Text = String.Empty;
+                                MessageBox.Show("Passwords must match. Please try again.", "Password Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                     }
@@ -210,7 +209,9 @@ namespace Music_Player
             }
             if (passwordtextBox.Text.Length > 0 && usertextBox.Text.Length > 0)
             {
-                if (BC.Verify(passwordtextBox.Text, storedHash))
+                if (BC.Verify(passwordtextBox.Text, storedHash))  //System.ArgumentException: 'Invalid salt: salt cannot be null or empty
+                    //Parameter name: salt' for login without profile creation
+
                 {
                     Program.OpenForm1OnClose = true;
                     this.Close();
@@ -218,7 +219,7 @@ namespace Music_Player
                 else
                 {
                     // Passwords don't match, so deny login
-                    MessageBox.Show("Invalid username or password.");
+                    MessageBox.Show("Invalid username or password.", "Invalid Credentials", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     usrerrBox.Visible = true;
                     pwderrBox.Visible =true;
                 }
