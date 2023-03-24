@@ -1,7 +1,6 @@
 ﻿using CSCore.Streams.Effects;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -10,7 +9,6 @@ namespace Music_Player
 {
     public partial class EQ : Form
     {
-        private Equalizer _equalizer;
         EqualizerFilter filter;
         public EQ()
         {
@@ -20,14 +18,30 @@ namespace Music_Player
         // for moving borderless form
         int movX, movY;
         bool isMoving;
-        float lastValue;
-        float currentValue;
-        bool valueChanged;
+
         List<Label> labelList = new List<Label>();
 
         private void EQ_Load(object sender, EventArgs e)
         {
-            
+            // Add event delegates to handle mousehover and leave
+            foreach (Control control in mainPanel.Controls)
+            {
+                if (control is Button)
+                {
+                    control.MouseHover += new EventHandler(MouseHover);
+                    control.MouseLeave += new EventHandler(MouseLeave);
+                }
+                else if (control is TrackBar trackbar)
+                {
+                    control.MouseHover += new EventHandler(MouseHover);
+                    control.MouseLeave += new EventHandler(MouseLeave);
+                }
+                else if(control is PictureBox pictureBox)
+                {
+                    control.MouseHover += new EventHandler(MouseHover);
+                    control.MouseLeave += new EventHandler(MouseLeave);
+                }
+            }
             // Create and add labels to the list
             for (int i = 0; i <= 10; i++)
             {
@@ -38,63 +52,53 @@ namespace Music_Player
                 }
             }
         }
-
-        private void trackBar_MouseDown(object sender, MouseEventArgs e)
+        private void trackBar_ValueChanged(object sender, EventArgs e)
         {
-            var trackbar = sender as TrackBar;
-            lastValue = trackbar.Value;
-
-        }
-        private void trackBar_MouseUp(object sender, MouseEventArgs e)
-        {
-            var trackbar = sender as TrackBar;
-            currentValue = trackbar.Value;
-
-            if (currentValue != lastValue)
+            foreach (Control control in mainPanel.Controls)
             {
-                valueChanged = true;
-            }
-            else
-            {
-                valueChanged = false;
-            }
-            if (valueChanged)
-            {
-                string labelName = trackbar.Name + "Label";
-                foreach (Label label in labelList)
+                if (control is System.Windows.Forms.TrackBar trackbar)
                 {
-                    if (label.Name == labelName)
+                    string labelName = trackbar.Name + "Label";
+                    foreach (Label label in labelList)
                     {
-                        label.Text = trackbar.Value.ToString() + "dB";
+                        if (label.Name == labelName)
+                        {
+                            label.Text = trackbar.Value.ToString() + "dB";
+                        }
                     }
                 }
             }
         }
         private void buttonReset_Click(object sender, EventArgs e)
         {
-            foreach (Control contr in mainPanel.Controls)
+            foreach (Control control in mainPanel.Controls)
             {
-                if (contr is TrackBar) //If the equalizer is not empty, i.e. at least 1 track was launched and the control is tracKbar
+                if (control is System.Windows.Forms.TrackBar trackbar)
                 {
-                    var trackBar = contr as TrackBar; //assume control is trackBar
-                    trackBar.Value = 0; //get the decibel value that was added to the specific filter
-                }
-                if (contr is System.Windows.Forms.Label && contr.Tag != null) //if the control is text and the control had a tag (each required label is tied to the trackBar via a tag)
-                {
-                    foreach (Control contr1 in mainPanel.Controls)//search for a trackbar with the same tag
+                    trackbar.Value = 0;
+                    string labelName = trackbar.Name + "Label";
+                    foreach (Label label in labelList)
                     {
-                        if (contr1 is TrackBar)
+                        if (label.Name == labelName)
                         {
-                            var trackbar = contr1 as TrackBar;
-                            if (trackbar.Tag == contr.Tag)
-                            {
-                                contr.Text = trackbar.Value.ToString() + "dB";//write value from trackbar to label
-                            }
+                            label.Text = trackbar.Value.ToString() + "dB";
                         }
                     }
                 }
             }
         }
+        // cursors
+        private void MouseHover(object sender, EventArgs e)
+        {
+            // hover on
+            this.Cursor = Cursors.Hand;
+        }
+        private void MouseLeave(object sender, EventArgs e)
+        {
+            // Change cursor to default when hovering away
+            this.Cursor = Cursors.Default;
+        }
+
         // form movement and closing
         private void topPanel_MouseDown(object sender, MouseEventArgs e)
         {
@@ -103,6 +107,7 @@ namespace Music_Player
             movY = e.Y;
         }
 
+        // For borderless forms, utilizes the top panel
         private void topPanel_MouseMove(object sender, MouseEventArgs e)
         {
             if (isMoving)
@@ -116,7 +121,7 @@ namespace Music_Player
             isMoving = false;
         }
 
-
+        
 
         private void closeBox_Click(object sender, EventArgs e)
         {

@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EQ));
             this.mainPanel = new System.Windows.Forms.Panel();
+            this.buttonReset = new System.Windows.Forms.Button();
             this.highLabel = new System.Windows.Forms.Label();
             this.midLabel = new System.Windows.Forms.Label();
             this.lowLabel = new System.Windows.Forms.Label();
@@ -65,7 +66,6 @@
             this.trackBar3 = new System.Windows.Forms.TrackBar();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.buttonReset = new System.Windows.Forms.Button();
             this.mainPanel.SuspendLayout();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).BeginInit();
@@ -124,6 +124,20 @@
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(800, 369);
             this.mainPanel.TabIndex = 1;
+            // 
+            // buttonReset
+            // 
+            this.buttonReset.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonReset.FlatAppearance.BorderSize = 0;
+            this.buttonReset.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold);
+            this.buttonReset.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.buttonReset.Location = new System.Drawing.Point(745, 331);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(43, 26);
+            this.buttonReset.TabIndex = 30;
+            this.buttonReset.Text = "Reset";
+            this.buttonReset.UseVisualStyleBackColor = false;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
             // highLabel
             // 
@@ -403,8 +417,7 @@
             this.trackBar10.TabIndex = 9;
             this.trackBar10.Tag = "9";
             this.trackBar10.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar10.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseDown);
-            this.trackBar10.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
+            this.trackBar10.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar9
             // 
@@ -418,8 +431,7 @@
             this.trackBar9.TabIndex = 8;
             this.trackBar9.Tag = "8";
             this.trackBar9.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar9.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseDown);
-            this.trackBar9.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
+            this.trackBar9.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar8
             // 
@@ -433,8 +445,7 @@
             this.trackBar8.TabIndex = 7;
             this.trackBar8.Tag = "7";
             this.trackBar8.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseDown);
-            this.trackBar8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
+            this.trackBar8.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar7
             // 
@@ -448,8 +459,7 @@
             this.trackBar7.TabIndex = 6;
             this.trackBar7.Tag = "6";
             this.trackBar7.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar7.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseDown);
-            this.trackBar7.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
+            this.trackBar7.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar5
             // 
@@ -463,8 +473,7 @@
             this.trackBar5.TabIndex = 5;
             this.trackBar5.Tag = "4";
             this.trackBar5.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseDown);
-            this.trackBar5.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
+            this.trackBar5.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar4
             // 
@@ -478,8 +487,7 @@
             this.trackBar4.TabIndex = 4;
             this.trackBar4.Tag = "3";
             this.trackBar4.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseDown);
-            this.trackBar4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
+            this.trackBar4.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar6
             // 
@@ -493,8 +501,7 @@
             this.trackBar6.TabIndex = 3;
             this.trackBar6.Tag = "5";
             this.trackBar6.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar6.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseDown);
-            this.trackBar6.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
+            this.trackBar6.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar3
             // 
@@ -509,8 +516,7 @@
             this.trackBar3.TabIndex = 2;
             this.trackBar3.Tag = "2";
             this.trackBar3.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseDown);
-            this.trackBar3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
+            this.trackBar3.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar2
             // 
@@ -524,8 +530,7 @@
             this.trackBar2.TabIndex = 1;
             this.trackBar2.Tag = "1";
             this.trackBar2.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseDown);
-            this.trackBar2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
+            this.trackBar2.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar1
             // 
@@ -539,22 +544,7 @@
             this.trackBar1.TabIndex = 0;
             this.trackBar1.Tag = "0";
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseDown);
-            this.trackBar1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
-            // 
-            // buttonReset
-            // 
-            this.buttonReset.BackColor = System.Drawing.SystemColors.Control;
-            this.buttonReset.FlatAppearance.BorderSize = 0;
-            this.buttonReset.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold);
-            this.buttonReset.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.buttonReset.Location = new System.Drawing.Point(745, 331);
-            this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(43, 26);
-            this.buttonReset.TabIndex = 30;
-            this.buttonReset.Text = "Reset";
-            this.buttonReset.UseVisualStyleBackColor = false;
-            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // EQ
             // 
