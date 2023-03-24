@@ -209,20 +209,30 @@ namespace Music_Player
             }
             if (passwordtextBox.Text.Length > 0 && usertextBox.Text.Length > 0)
             {
-                if (BC.Verify(passwordtextBox.Text, storedHash))  //System.ArgumentException: 'Invalid salt: salt cannot be null or empty
-                                                                  //Parameter name: salt' for login without profile creation
+                try
+                {
+                    if (BC.Verify(passwordtextBox.Text, storedHash))
 
-                {
-                    Program.OpenForm1OnClose = true;
-                    this.Close();
+                    {
+                        Program.OpenForm1OnClose = true;
+                        this.Close();
+                    }
+                    else
+                    {
+                        // Passwords don't match, so deny login
+                        MessageBox.Show("Invalid username or password.", "Invalid Credentials", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        usrerrBox.Visible = true;
+                        pwderrBox.Visible = true;
+                    }
                 }
-                else
+                catch(System.ArgumentException)
                 {
-                    // Passwords don't match, so deny login
-                    MessageBox.Show("Invalid username or password.", "Invalid Credentials", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // username not found, so deny login
+                    MessageBox.Show("Invalid username, please create an account.", "Invalid Credentials", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     usrerrBox.Visible = true;
                     pwderrBox.Visible = true;
                 }
+                
             }
             else
             {

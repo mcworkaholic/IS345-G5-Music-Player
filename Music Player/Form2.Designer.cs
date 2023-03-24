@@ -40,12 +40,12 @@
             this.usrerrBox = new System.Windows.Forms.PictureBox();
             this.cfrmpwderrBox = new System.Windows.Forms.PictureBox();
             this.confirmPanel = new System.Windows.Forms.Panel();
+            this.cnfmView = new System.Windows.Forms.Button();
             this.buttonPanel = new System.Windows.Forms.Panel();
             this.backButton = new System.Windows.Forms.Button();
             this.pwderrBox = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.passView = new System.Windows.Forms.Button();
-            this.cnfmView = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.usrerrBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cfrmpwderrBox)).BeginInit();
             this.confirmPanel.SuspendLayout();
@@ -109,7 +109,7 @@
             this.createButton.Location = new System.Drawing.Point(128, 1);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(105, 23);
-            this.createButton.TabIndex = 7;
+            this.createButton.TabIndex = 8;
             this.createButton.Text = "Create Profile";
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
@@ -119,7 +119,7 @@
             this.loginButton.Location = new System.Drawing.Point(47, 1);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(75, 23);
-            this.loginButton.TabIndex = 8;
+            this.loginButton.TabIndex = 7;
             this.loginButton.Text = "Login";
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
@@ -157,6 +157,17 @@
             this.confirmPanel.Size = new System.Drawing.Size(270, 29);
             this.confirmPanel.TabIndex = 11;
             this.confirmPanel.Visible = false;
+            // 
+            // cnfmView
+            // 
+            this.cnfmView.Location = new System.Drawing.Point(216, 3);
+            this.cnfmView.Name = "cnfmView";
+            this.cnfmView.Size = new System.Drawing.Size(23, 21);
+            this.cnfmView.TabIndex = 16;
+            this.cnfmView.Text = "👁️‍🗨️";
+            this.cnfmView.UseVisualStyleBackColor = true;
+            this.cnfmView.Visible = false;
+            this.cnfmView.Click += new System.EventHandler(this.cnfmView_Click);
             // 
             // buttonPanel
             // 
@@ -212,17 +223,6 @@
             this.passView.UseVisualStyleBackColor = true;
             this.passView.Visible = false;
             this.passView.Click += new System.EventHandler(this.passView_Click);
-            // 
-            // cnfmView
-            // 
-            this.cnfmView.Location = new System.Drawing.Point(216, 3);
-            this.cnfmView.Name = "cnfmView";
-            this.cnfmView.Size = new System.Drawing.Size(23, 21);
-            this.cnfmView.TabIndex = 16;
-            this.cnfmView.Text = "👁️‍🗨️";
-            this.cnfmView.UseVisualStyleBackColor = true;
-            this.cnfmView.Visible = false;
-            this.cnfmView.Click += new System.EventHandler(this.cnfmView_Click);
             // 
             // loginForm
             // 
