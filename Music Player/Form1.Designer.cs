@@ -82,7 +82,7 @@
             this.songslistBox.FormattingEnabled = true;
             this.songslistBox.Location = new System.Drawing.Point(531, 49);
             this.songslistBox.Name = "songslistBox";
-            this.songslistBox.Size = new System.Drawing.Size(264, 316);
+            this.songslistBox.Size = new System.Drawing.Size(264, 318);
             this.songslistBox.TabIndex = 1;
             this.songslistBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.songslistBox_DrawItem);
             this.songslistBox.SelectedIndexChanged += new System.EventHandler(this.songslistBox_SelectedIndexChanged);
@@ -384,6 +384,7 @@
             this.closeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.closeBox.TabIndex = 1;
             this.closeBox.TabStop = false;
+            this.closeBox.Click += new System.EventHandler(this.closeBox_Click);
             this.closeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.closeBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
@@ -399,6 +400,7 @@
             this.minimizeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.minimizeBox.TabIndex = 0;
             this.minimizeBox.TabStop = false;
+            this.minimizeBox.Click += new System.EventHandler(this.minimizeBox_Click);
             this.minimizeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.minimizeBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
@@ -435,9 +437,10 @@
             this.deviceBox.FormattingEnabled = true;
             this.deviceBox.Location = new System.Drawing.Point(85, 422);
             this.deviceBox.Name = "deviceBox";
-            this.deviceBox.Size = new System.Drawing.Size(141, 21);
+            this.deviceBox.Size = new System.Drawing.Size(168, 21);
             this.deviceBox.Sorted = true;
             this.deviceBox.TabIndex = 29;
+            this.deviceBox.SelectedIndexChanged += new System.EventHandler(this.deviceBox_SelectedIndexChanged);
             // 
             // WindowsMediaPlayer
             // 

@@ -1,9 +1,8 @@
-﻿using AxWMPLib;
-using CSCore.CoreAudioAPI;
+﻿using AudioSwitcher.AudioApi.CoreAudio;
+using AxWMPLib;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
@@ -22,8 +21,9 @@ namespace Music_Player
 {
     public partial class Form1 : Form
     {
-        private readonly ObservableCollection<MMDevice> _devices = new ObservableCollection<MMDevice>();//creating a list of output devices
+        List<string> _devices = new List<string>();
         EQ equalizerWindow;
+
         // tracking for queuing
         int lastPlayingIndex;
         int currentSelectedIndex;
@@ -45,15 +45,23 @@ namespace Music_Player
         string musicFolderPath;
         string dbPath;
         string connectionString;
+        (Dictionary<string, List<string>>, string) devices;
 
+        // Modified throughout use
         List<int> queueList = new List<int>();
 
         // Create a dictionary to cache album artwork URLs
         Dictionary<string, string> albumArtCache = new Dictionary<string, string>();
 
+        // Audio
+        IEnumerable<CoreAudioDevice> coreDevices = new CoreAudioController().GetPlaybackDevices();
+        private CoreAudioController audioController;
+
         public Form1()
         {
             InitializeComponent();
+            // Initialize the audio controller and device enumerator
+            audioController = new CoreAudioController();
         }
 
         private void songslistBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -64,7 +72,6 @@ namespace Music_Player
                 //only plays when double clicked, a single click only changes the listbox so the user can add the selected song to a queue or playlist
                 WindowsMediaPlayer.URL = paths[songslistBox.SelectedIndex];
                 listBoxDoubleClick = false; // reset the flag
-                songslistBox.DoubleClick += new EventHandler(deviceBox_SelectedIndexChanged);
             }
             else
             {
@@ -452,6 +459,26 @@ namespace Music_Player
             paths = filePaths.ToArray();
             files = fileNames.ToArray();
         }
+        private (Dictionary<string, List<string>>, string) GetAudioDevices()
+        {
+            var devices = new Dictionary<string, List<string>>();
+
+            foreach (var dev in coreDevices)
+            {
+                if (!devices.ContainsKey(dev.FullName))
+                {
+                    devices.Add(dev.FullName, new List<string>());
+                }
+                devices[dev.FullName].Add(dev.Id.ToString("B"));
+            }
+
+            // get the default audio endpoint
+            var defaultDevice = audioController.DefaultPlaybackDevice;
+            _ = defaultDevice.FullName;
+            var defaultDeviceGuid = defaultDevice.Id.ToString("B");
+
+            return (devices, defaultDeviceGuid);
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             // Add a delegate for the MediaChange event.
@@ -466,20 +493,15 @@ namespace Music_Player
             AddSearchSource(musicFolderPath);
 
             // Add available audio devices
-            using (var mmdeviceEnumerator = new MMDeviceEnumerator()) //get information about audio devices in the computer
+            devices = GetAudioDevices();
+            foreach (var device in devices.Item1)
             {
-                using (
-                    var mmdeviceCollection = mmdeviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active))
-                {
-                    foreach (var device in mmdeviceCollection)
-                    {
-                        _devices.Add(device);
-                    }
-                }
+                deviceBox.Items.Add(device.Key);
             }
-            deviceBox.DataSource = _devices;
-            deviceBox.DisplayMember = "FriendlyName";
-            deviceBox.ValueMember = "DeviceID";
+
+            // Set the initial selected index based on the default audio endpoint
+            deviceBox.SelectedIndex = deviceBox.FindStringExact(devices.Item2);
+
 
             // Add stored playlists from user to playlists combobox
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -732,7 +754,7 @@ namespace Music_Player
             playlistBox.Text = string.Empty;
             playlistBox.SelectedIndex = -1;
             addtoplaylistButton.Enabled = false;
-            openplayButton.Enabled= false;
+            openplayButton.Enabled = false;
             if (searchTextBox.Text.Length == 0 && playlistBox.SelectedIndex == -1)
             {
                 this.ActiveControl = null;
@@ -771,14 +793,35 @@ namespace Music_Player
             equalizerWindow = new EQ();
             equalizerWindow.Show();
         }
-
         private void deviceBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            List<string> deviceGuid;
+            string selectedDeviceName = deviceBox.SelectedItem.ToString();
 
+            if (devices.Item1.ContainsKey(selectedDeviceName))
+            {
+                deviceGuid = devices.Item1[selectedDeviceName];
+
+                if (deviceGuid.Count > 0)
+                {
+                    Guid selectedDeviceGuid = Guid.Parse(deviceGuid[0]);
+
+                    // Set the default device to a new device based on its device ID
+                    var newDefaultDevice = audioController.GetDevice(selectedDeviceGuid);
+                    audioController.DefaultPlaybackDevice = newDefaultDevice;
+                }
+                else
+                {
+                    MessageBox.Show("No device GUIDs found for selected device name.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Device not found.");
+            }
         }
-
         private void MouseHover(object sender, EventArgs e)
-        {   
+        {
             // hover on
             this.Cursor = Cursors.Hand;
         }
