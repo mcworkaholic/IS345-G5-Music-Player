@@ -36,7 +36,7 @@ namespace Music_Player
                     control.MouseHover += new EventHandler(MouseHover);
                     control.MouseLeave += new EventHandler(MouseLeave);
                 }
-                else if(control is PictureBox pictureBox)
+                else if (control is PictureBox pictureBox)
                 {
                     control.MouseHover += new EventHandler(MouseHover);
                     control.MouseLeave += new EventHandler(MouseLeave);
@@ -121,7 +121,7 @@ namespace Music_Player
             isMoving = false;
         }
 
-        
+
 
         private void closeBox_Click(object sender, EventArgs e)
         {
