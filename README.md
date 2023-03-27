@@ -31,11 +31,16 @@ By Weston Evans, Ahmed Mahklooq, and Mobeen Shahid
 ## Technologies
 <a href="https://img.shields.io">
         <img src="https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white"
-            alt="coverage"></a>
+            alt=".Net Badge"></a>
             
 <a href="https://img.shields.io">
         <img src="https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white"
-            alt="coverage"></a>
+            alt="C# badge"></a>
+            
+<a href="https://img.shields.io">
+        <img src="https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white"
+            alt="SQlite Badge"></a>
+
 
 <!-- GETTING STARTED -->
 ## Getting Started
