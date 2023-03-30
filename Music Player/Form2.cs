@@ -15,14 +15,24 @@ namespace Music_Player
         {
             InitializeComponent();
         }
+
+        // for moving borderless form
+        int movX, movY;
+        bool isMoving;
+
         string connectionString;
-        bool createButtonClicked = false;
+
         List<TextBox> TextboxList = new List<TextBox>();
         List<PictureBox> errorBoxList = new List<PictureBox>();
+
+        // Click counters that functions vary on odd or even clicks
         int passViewClickCount = 0;
-        bool passViewClicked = false;
         int confirmViewClickCount = 0;
+
+        // Initial state flags
+        bool passViewClicked = false;
         bool confirmViewClicked = false;
+        bool createButtonClicked = false;
 
         private void ResetState()
         {
@@ -34,6 +44,11 @@ namespace Music_Player
             TextboxList.Add(usertextBox);
             TextboxList.Add(passwordtextBox);
             TextboxList.Add(confirmtextBox);
+
+            //add to list of error boxes for iteration later
+            errorBoxList.Add(usrerrBox);
+            errorBoxList.Add(pwderrBox);
+            errorBoxList.Add(cfrmpwderrBox);
 
             // Set to no text.
             passwordtextBox.Text = "";
@@ -50,21 +65,22 @@ namespace Music_Player
             string workingDirectory = Environment.CurrentDirectory;
             string dbPath = Directory.GetParent(workingDirectory).Parent.FullName + "\\Data\\users.db";
             connectionString = $@"Data Source={dbPath};";
-            buttonPanel.Location = new System.Drawing.Point(92, 303);
+            buttonPanel.Location = new System.Drawing.Point(34, 75);
 
             // re-add event handlers
+            exitBox.Click += exitBox_Click;
+            miniBox.Click += miniBox_Click;
             createButton.Click += createButton_Click;
             loginButton.Click += loginButton_Click;
             backButton.Click += backButton_Click;
         }
-
         // Hash a password using Bcrypt
         public static string HashPassword(string password)
         {
             string hashedPassword = BC.HashPassword(password);
             return (hashedPassword);
         }
-        private void loginForm_Load(object sender, EventArgs e)
+        private void LoginForm_Load(object sender, EventArgs e)
         {
             // add to list of textboxes for iteration later
             TextboxList.Add(usertextBox);
@@ -79,25 +95,30 @@ namespace Music_Player
             // Set to no text.
             passwordtextBox.Text = "";
             confirmtextBox.Text = "";
+
             // The password character is an asterisk.
             passwordtextBox.PasswordChar = '•';
             confirmtextBox.PasswordChar = '•';
+
             // The control will allow no more than 50 characters.
             passwordtextBox.MaxLength = 50;
+
             // set path to provided database
             string workingDirectory = Environment.CurrentDirectory;
             string dbPath = Directory.GetParent(workingDirectory).Parent.FullName + "\\Data\\users.db";
             connectionString = $@"Data Source={dbPath};";
-            buttonPanel.Location = new System.Drawing.Point(92, 303);
+
+            // Initial location
+            buttonPanel.Location = new System.Drawing.Point(34, 75);
         }
 
         private void createButton_Click(object sender, EventArgs e)
         {
             if (!createButtonClicked)
             {
-                buttonPanel.Location = new System.Drawing.Point(49, 331);
+                buttonPanel.Location = new System.Drawing.Point(35, 99);
                 loginButton.Visible = false;
-                confirmPanel.Location = new System.Drawing.Point(65, 300);
+                confirmPanel.Location = new System.Drawing.Point(3, 69);
                 confirmPanel.Visible = true;
                 createButton.Text = "Create";
                 createButtonClicked = true;
@@ -225,14 +246,14 @@ namespace Music_Player
                         pwderrBox.Visible = true;
                     }
                 }
-                catch(System.ArgumentException)
+                catch (System.ArgumentException)
                 {
                     // username not found, so deny login
                     MessageBox.Show("Invalid username, please create an account.", "Invalid Credentials", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     usrerrBox.Visible = true;
                     pwderrBox.Visible = true;
                 }
-                
+
             }
             else
             {
@@ -264,11 +285,11 @@ namespace Music_Player
             {
                 if (pwderrBox.Visible == false)
                 {
-                    passView.Location = new System.Drawing.Point(281, 276);
+                    passView.Location = new System.Drawing.Point(218, 4);
                 }
                 else
                 {
-                    passView.Location = new System.Drawing.Point(310, 276);
+                    passView.Location = new System.Drawing.Point(246, 5);
                 }
                 passView.Visible = true;
             }
@@ -284,11 +305,11 @@ namespace Music_Player
             {
                 if (cfrmpwderrBox.Visible == false)
                 {
-                    cnfmView.Location = new System.Drawing.Point(216, 3);
+                    cnfmView.Location = new System.Drawing.Point(218, 4);
                 }
                 else
                 {
-                    cnfmView.Location = new System.Drawing.Point(245, 3);
+                    cnfmView.Location = new System.Drawing.Point(246, 4);
                 }
                 cnfmView.Visible = true;
             }
@@ -317,7 +338,6 @@ namespace Music_Player
             {
                 passwordtextBox.PasswordChar = '•';
             }
-            passView.Text = "👁";
         }
 
         private void cnfmView_Click(object sender, EventArgs e)
@@ -339,7 +359,66 @@ namespace Music_Player
             {
                 confirmtextBox.PasswordChar = '•';
             }
-            cnfmView.Text = "👁";
+        }
+
+
+        // Next 7 events handle the moving of the form, opening, closing, & cursor behavior
+        private void topPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            isMoving = true;
+            movX = e.X;
+            movY = e.Y;
+        }
+
+        private void topPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isMoving) // based on bool flag
+            {
+                this.SetDesktopLocation(MousePosition.X - movX, MousePosition.Y - movY);
+            }
+        }
+
+        private void topPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            isMoving = false;
+        }
+
+        private void miniBox_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+        private void exitBox_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        private new void MouseHover(object sender, EventArgs e)
+        {
+            // hover on = 👆
+            this.Cursor = Cursors.Hand;
+        }
+        private new void MouseLeave(object sender, EventArgs e)
+        {
+            // Change cursor to default when hovering away
+            this.Cursor = Cursors.Default;
+        }
+
+        // Opens GitHub link with default web browser
+        private void codelinkBox_Click(object sender, EventArgs e)
+        {
+            string target = "https://github.com/mcworkaholic/IS345-G5-Music-Player";
+
+            //Use no more than one assignment when you test this code.
+            //string target = "ftp://ftp.microsoft.com";
+            //string target = "C:\\Program Files\\Microsoft Visual Studio\\INSTALL.HTM";
+            try
+            {
+                System.Diagnostics.Process.Start(target);
+            }
+            catch (System.ComponentModel.Win32Exception noBrowser)
+            {
+                if (noBrowser.ErrorCode == -2147467259)
+                    MessageBox.Show(noBrowser.Message);
+            }
         }
     }
 }
