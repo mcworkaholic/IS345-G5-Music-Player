@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EQ));
             this.mainPanel = new System.Windows.Forms.Panel();
             this.buttonReset = new System.Windows.Forms.Button();
@@ -66,6 +67,7 @@
             this.trackBar3 = new System.Windows.Forms.TrackBar();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.mainPanel.SuspendLayout();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).BeginInit();
@@ -138,6 +140,8 @@
             this.buttonReset.Text = "Reset";
             this.buttonReset.UseVisualStyleBackColor = false;
             this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            this.buttonReset.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.buttonReset.MouseHover += new System.EventHandler(this.MouseHover);
             // 
             // highLabel
             // 
@@ -186,14 +190,17 @@
             this.closeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.closeBox.ErrorImage = null;
             this.closeBox.Image = ((System.Drawing.Image)(resources.GetObject("closeBox.Image")));
-            this.closeBox.Location = new System.Drawing.Point(779, 0);
+            this.closeBox.Location = new System.Drawing.Point(774, 0);
             this.closeBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.closeBox.Name = "closeBox";
-            this.closeBox.Size = new System.Drawing.Size(18, 23);
+            this.closeBox.Size = new System.Drawing.Size(23, 23);
             this.closeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.closeBox.TabIndex = 29;
             this.closeBox.TabStop = false;
+            this.toolTip1.SetToolTip(this.closeBox, "Close");
             this.closeBox.Click += new System.EventHandler(this.closeBox_Click);
+            this.closeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.closeBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
             // trackBar10Label
             // 
@@ -615,5 +622,6 @@
         private System.Windows.Forms.Label midLabel;
         private System.Windows.Forms.Label lowLabel;
         private System.Windows.Forms.Button buttonReset;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

@@ -3,16 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 namespace Music_Player
 {
     public partial class EQ : Form
     {
-        EqualizerFilter filter;
-        public EQ()
+        private Equalizer _equalizer;
+        public EQ(Equalizer equalizer)
         {
             InitializeComponent();
+            _equalizer = equalizer;
         }
 
         // for moving borderless form
@@ -23,15 +25,22 @@ namespace Music_Player
 
         private void EQ_Load(object sender, EventArgs e)
         {
+            EqualizerFilter filter;
             // Add event delegates to handle mousehover and leave
             foreach (Control control in mainPanel.Controls)
             {
-                if (control is Button)
+                if (control is System.Windows.Forms.TrackBar) //Если эквалайзер не пуст, т.е. хотя бы 1 трек запускался и контрол это tracKbar
                 {
                     control.MouseHover += new EventHandler(MouseHover);
                     control.MouseLeave += new EventHandler(MouseLeave);
+                    if (_equalizer != null)
+                    {
+                        var trackBar = control as System.Windows.Forms.TrackBar; //считаем, что контрол это trackBar
+                        filter = _equalizer.SampleFilters[Int32.Parse((string)trackBar.Tag)]; //получаем значения фильтра эквалайзера по тегу трекбара
+                        trackBar.Value = (int)filter.AverageGainDB; //получаем значение децибел, которое было прибавлено в конкретный фильтр
+                    }
                 }
-                else if (control is TrackBar trackbar)
+                else if (control is System.Windows.Forms.Button)
                 {
                     control.MouseHover += new EventHandler(MouseHover);
                     control.MouseLeave += new EventHandler(MouseLeave);
@@ -54,6 +63,17 @@ namespace Music_Player
         }
         private void trackBar_ValueChanged(object sender, EventArgs e)
         {
+            var TrackBar = sender as System.Windows.Forms.TrackBar;
+            if (_equalizer != null && TrackBar != null)
+            {
+                //double perc = (trackbar.Value / (double)trackbar.Maximum);
+                var value = (float)(TrackBar.Value);
+
+                //the tag of the trackbar contains the index of the filter
+                int filterIndex = Int32.Parse((string)TrackBar.Tag);
+                EqualizerFilter filter = _equalizer.SampleFilters[filterIndex];
+                filter.AverageGainDB = value;
+            }
             foreach (Control control in mainPanel.Controls)
             {
                 if (control is System.Windows.Forms.TrackBar trackbar)
@@ -120,8 +140,6 @@ namespace Music_Player
         {
             isMoving = false;
         }
-
-
 
         private void closeBox_Click(object sender, EventArgs e)
         {
