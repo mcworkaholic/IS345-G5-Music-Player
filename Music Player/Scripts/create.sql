@@ -1,7 +1,8 @@
 CREATE TABLE user (
   user_id INTEGER PRIMARY KEY AUTOINCREMENT,
   username VARCHAR(50) UNIQUE NOT NULL,
-  password TEXT NOT NULL
+  password TEXT NOT NULL,
+  default_startup_folder TEXT 
 );
 
 CREATE TABLE playlist (
