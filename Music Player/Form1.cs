@@ -1,5 +1,4 @@
-﻿using AudioSwitcher.AudioApi.CoreAudio;
-using AxWMPLib;
+﻿using AxWMPLib;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
@@ -22,7 +20,9 @@ namespace Music_Player
     public partial class Form1 : Form
     {
         List<string> _devices = new List<string>();
+        private MusicPlayer MusicPlayer = new MusicPlayer();//создание объекта музыкального плеера
         EQ equalizerWindow;
+        private TimeSpan currentPosition = TimeSpan.Zero; // Initialize timespan, to be modified later when user clicks play or pause
 
         // tracking for queuing
         int lastPlayingIndex;
@@ -34,8 +34,13 @@ namespace Music_Player
 
         // initial states
         bool shuffleButtonClicked = false;
+        bool playPauseClicked = false;
         bool listBoxDoubleClick = false;
+        bool stopUpdate;
         int shuffleButtonClickCount = 0;
+        int playPauseClickCount = 0;
+        int playlistIndexChanged = 0;
+        int deviceIndexChanged = 0;
 
         //Create Global Variables of String Type Array to save the titles or name of the //Tracks and path of the track 
         string[] files, paths;
@@ -47,21 +52,36 @@ namespace Music_Player
         string connectionString;
         (Dictionary<string, List<string>>, string) devices;
 
+        // Separates song from artist with a unique identifier on form load for display purposes
+        Guid objectTypeSeparator;
+
         // Modified throughout use
         List<int> queueList = new List<int>();
 
         // Create a dictionary to cache album artwork URLs
         Dictionary<string, string> albumArtCache = new Dictionary<string, string>();
 
-        // Audio
-        IEnumerable<CoreAudioDevice> coreDevices = new CoreAudioController().GetPlaybackDevices();
-        private CoreAudioController audioController;
+
+
+        // Fullscreen capabilities
+        private bool _isFullscreenToggle = false;
+        public bool IsFullscreen
+        {
+            get { return _isFullscreenToggle; }
+
+            set { _isFullscreenToggle = value; }
+        }
+        private Size _previousVideoContainerSize = new Size();
 
         public Form1()
         {
             InitializeComponent();
-            // Initialize the audio controller and device enumerator
-            audioController = new CoreAudioController();
+            // Initialize the audio controller 
+            //audioController = new CoreAudioController();
+
+            // key events for pressing "ENTER" key while in the songslistbox, while it is the active control
+            songslistBox.PreviewKeyDown += songsListBox_PreviewKeyDown;
+            songslistBox.KeyDown += new KeyEventHandler(songslistBox_KeyDown);
         }
 
         private void songslistBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -71,7 +91,9 @@ namespace Music_Player
                 //play music 
                 //only plays when double clicked, a single click only changes the listbox so the user can add the selected song to a queue or playlist
                 WindowsMediaPlayer.URL = paths[songslistBox.SelectedIndex];
-                listBoxDoubleClick = false; // reset the flag
+                Play(WindowsMediaPlayer.URL);
+                // reset the flag
+                listBoxDoubleClick = false;
             }
             else
             {
@@ -85,6 +107,23 @@ namespace Music_Player
                 }
             }
         }
+        private void songslistBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            //play music at the selected index
+            {
+                listBoxDoubleClick = true;
+                WindowsMediaPlayer.URL = paths[songslistBox.SelectedIndex];
+                Play(WindowsMediaPlayer.URL);
+                // reset the flag
+                listBoxDoubleClick = false;
+            }
+            else
+            {
+                MessageBox.Show("No device IDs found for selected device name.");
+            }
+        }
+
         public void SetCurrentEffectPreset(int value)
         {
             // requires registry permission. need to configure for users who do not have registry editing permissions
@@ -93,37 +132,45 @@ namespace Music_Player
             RegistryKey key = Registry.Users.OpenSubKey(path, true) ?? throw new Exception("Registry key not found!");
             key.SetValue("SaveSettingsOnExit", value, RegistryValueKind.DWord);
         }
+
         private void WindowsMediaPlayer_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e)
         {
-            eqButton.Enabled = true;
-            queueButton.Enabled = true;
-            shuffleButton.Enabled = true;
-            vizButton.Enabled = true;
-            nextBox.Enabled = true;
-            previousBox.Enabled = true;
-            playlistBox.Enabled = true;
-            searchTextBox.Enabled = true;
+            foreach (Control control in audioControllerPanel.Controls)
+            {
+                control.Enabled = true;
+            }
             if (WindowsMediaPlayer.playState == WMPLib.WMPPlayState.wmppsMediaEnded)
             {
                 // start a timer to initiate autoplay of songs with the current play state (shuffle or next)
                 playTimer.Interval = 100;
                 playTimer.Enabled = true;
+                timer1.Stop();
             }
-
-
-
+            else if (WindowsMediaPlayer.playState == WMPLib.WMPPlayState.wmppsPaused)
+            {
+                playPauseButton.Image = Properties.Resources.Play;
+                timer1.Stop();
+            }
+            else if (WindowsMediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying)
+            {
+                audioPosTrackBar.Maximum = (int)WindowsMediaPlayer.Ctlcontrols.currentItem.duration;
+                timer1.Start();
+                playPauseButton.Image = Properties.Resources.Pause;
+            }
+            eqButton.Enabled = true;
+            playlistBox.Enabled = true;
+            searchTextBox.Enabled = true;
         }
-        private int Randomize()
+        private void timer1_Tick(object sender, EventArgs e)
         {
-            // shuffle functionality generates a random number within an array of indexes from the listbox
-            // and changes the currently selected index
-            var random = new Random();
-            int[] indexes = new int[songslistBox.Items.Count];
-            for (var i = 0; i < indexes.Length; i += 1)
-                indexes[i] = i;
-            List<int> list = indexes.ToList();
-            int newIndex = random.Next(list.Count);
-            return newIndex;
+            if (WindowsMediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying)
+            {
+                audioPosTrackBar.Value = (int)WindowsMediaPlayer.Ctlcontrols.currentPosition;
+            }
+            else
+            {
+                timer1.Enabled = false;
+            }
         }
         private void playTimer_Tick(object sender, EventArgs e)
         {
@@ -134,10 +181,10 @@ namespace Music_Player
             else
             {
                 WindowsMediaPlayer.URL = paths[queueList[0]];
+                Play(WindowsMediaPlayer.URL);
                 queueList.RemoveAt(0);
                 queueLabel.Text = $"Queued Songs: {queueList.Count}";
             }
-
             if (!queueLabel.Visible)
             {
                 if (shuffleButtonClicked == false)
@@ -159,12 +206,13 @@ namespace Music_Player
                     int randomizedIndex;
                     do
                     {
-                        randomizedIndex = Randomize();
+                        randomizedIndex = MusicPlayer.Shuffle(songslistBox);
                     } while (randomizedIndex == songslistBox.SelectedIndex);
 
                     songslistBox.SelectedIndex = randomizedIndex;
                 }
                 WindowsMediaPlayer.URL = paths[songslistBox.SelectedIndex];
+                Play(WindowsMediaPlayer.URL);
             }
             playTimer.Enabled = false;
         }
@@ -184,37 +232,55 @@ namespace Music_Player
                     {
                         songslistBox.SelectedIndex = currentIndex + 1;
                     }
-                    WindowsMediaPlayer.URL = paths[songslistBox.SelectedIndex];
+                    Play(paths[songslistBox.SelectedIndex]);
                 }
                 if (songslistBox.SelectedIndex > 0)
                 {
                     int currentIndex = Array.IndexOf(paths, WindowsMediaPlayer.currentMedia.sourceURL);
-                    WindowsMediaPlayer.URL = paths[currentIndex - 1];
                     songslistBox.SelectedIndex = Array.IndexOf(paths, WindowsMediaPlayer.URL);
+                    Play(paths[currentIndex - 1]);
+                    songslistBox.SelectedIndex--;
                 }
                 else if (songslistBox.SelectedIndex == 0)
                 {
                     songslistBox.SelectedIndex = songslistBox.Items.Count - 1;
-                    WindowsMediaPlayer.URL = paths[songslistBox.SelectedIndex];
+                    Play(paths[songslistBox.SelectedIndex]);
                 }
             }
             else if (shuffleButtonClicked == true)
             {
                 // while loop ensures that the same song that is currently playing is not shuffled to next
-                while (Randomize() != Array.IndexOf(paths, WindowsMediaPlayer.currentMedia.sourceURL))
+                while (MusicPlayer.Shuffle(songslistBox) != Array.IndexOf(paths, WindowsMediaPlayer.currentMedia.sourceURL))
                 {
-                    songslistBox.SelectedIndex = Randomize();
-                    WindowsMediaPlayer.URL = paths[songslistBox.SelectedIndex];
+                    songslistBox.SelectedIndex = MusicPlayer.Shuffle(songslistBox);
+                    Play(paths[songslistBox.SelectedIndex]);
                     break;
                 }
             }
         }
-
+        private void Play(string songPath)
+        {
+            List<string> deviceId;
+            string selectedDeviceName = deviceBox.SelectedItem.ToString();
+            if (devices.Item1.ContainsKey(selectedDeviceName))
+            {
+                deviceId = devices.Item1[selectedDeviceName];
+                if (deviceId.Count > 0)
+                {
+                    // Set the default device to a new device based on its device ID 
+                    var defaultDevice = MusicPlayer.GetSoundDevice(deviceId.First());
+                    WindowsMediaPlayer.URL = songPath;
+                    MusicPlayer.Open(songPath, defaultDevice);
+                    MusicPlayer.Play();
+                    timer1.Start();
+                }
+            }
+        }
         private void nextBox_Click(object sender, EventArgs e)
         {
             if (queueList.Count > 0)
             {
-                WindowsMediaPlayer.URL = paths[queueList[0]];
+                Play(paths[queueList[0]]);
                 queueList.RemoveAt(0);
                 queueLabel.Text = $"Queued Songs: {queueList.Count}";
             }
@@ -248,14 +314,16 @@ namespace Music_Player
                         songslistBox.SelectedIndex = 0;
                         WindowsMediaPlayer.URL = paths[songslistBox.SelectedIndex];
                     }
+                    Play(WindowsMediaPlayer.URL);
                 }
                 else if (shuffleButtonClicked == true)
                 {
                     // while loop ensures that the same song that is currently playing is not shuffled to next
-                    while (Randomize() != Array.IndexOf(paths, WindowsMediaPlayer.currentMedia.sourceURL))
+                    while (MusicPlayer.Shuffle(songslistBox) != Array.IndexOf(paths, WindowsMediaPlayer.currentMedia.sourceURL))
                     {
-                        songslistBox.SelectedIndex = Randomize();
+                        songslistBox.SelectedIndex = MusicPlayer.Shuffle(songslistBox);
                         WindowsMediaPlayer.URL = paths[songslistBox.SelectedIndex];
+                        Play(WindowsMediaPlayer.URL);
                         break;
                     }
                 }
@@ -284,16 +352,7 @@ namespace Music_Player
             }
         }
 
-        private void songslistBox_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                listBoxDoubleClick = true;
-                //play music 
-                WindowsMediaPlayer.URL = paths[songslistBox.SelectedIndex];
-                listBoxDoubleClick = false; // reset the flag
-            }
-        }
+
 
         private void queueButton_Click(object sender, EventArgs e)
         {
@@ -308,7 +367,6 @@ namespace Music_Player
         {
             // Get the duration of the media file being played
             double duration = WindowsMediaPlayer.currentMedia.duration;
-
             //  display it in durationLabel
             durationLabel.Visible = true;
             durationLabel.Text = $"Length: {TimeSpan.FromSeconds(duration):mm\\:ss}";
@@ -392,7 +450,6 @@ namespace Music_Player
                 MessageBox.Show("An error occurred: " + ex.Message);
             }
         }
-
         private async void ApplySearch(string artist, string album, string albumArtPath)
         {
             // Check if any artwork files exist in the Album Art folder
@@ -413,12 +470,9 @@ namespace Music_Player
                 await SearchForAlbumCover(artist, album);
             }
         }
-
         private void LoadMusic(string path)
         {
-            // Point to the directory you want to build a tree of
-
-            // Build the tree structure of the directory
+            objectTypeSeparator = Guid.NewGuid();
             TreeNode rootNode = TreeNode.BuildTree(path);
 
             // Get the third level children of the root node
@@ -435,7 +489,7 @@ namespace Music_Player
                             // Construct the song name and artist name string
                             string songName = greatGrandChild.DisplayName;
                             string artistName = greatGrandChild.Parent.Parent.DisplayName;
-                            string itemText = $"{songName}(&^%*%{artistName}";
+                            string itemText = $"{songName}{objectTypeSeparator}{artistName}";
 
                             // Add the string to the ListBox control
                             songslistBox.Items.Add(itemText);
@@ -443,7 +497,6 @@ namespace Music_Player
                     }
                 }
             }
-
             // Get the names of the files in the third level children
             List<string> fileNames = new List<string>();
             List<string> filePaths = new List<string>();
@@ -463,26 +516,26 @@ namespace Music_Player
         {
             var devices = new Dictionary<string, List<string>>();
 
-            foreach (var dev in coreDevices)
+            foreach (var dev in MusicPlayer.EnumerateWasapiDevices())
             {
-                if (!devices.ContainsKey(dev.FullName))
+                if (!devices.ContainsKey(dev.FriendlyName))
                 {
-                    devices.Add(dev.FullName, new List<string>());
+                    devices.Add(dev.FriendlyName, new List<string>());
                 }
-                devices[dev.FullName].Add(dev.Id.ToString("B"));
+                devices[dev.FriendlyName].Add(dev.DeviceID.ToString());
             }
 
             // get the default audio endpoint
-            var defaultDevice = audioController.DefaultPlaybackDevice;
-            _ = defaultDevice.FullName;
-            var defaultDeviceGuid = defaultDevice.Id.ToString("B");
-
-            return (devices, defaultDeviceGuid);
+            string defaultDeviceName = MusicPlayer.GetDefaultSoundDevice().FriendlyName;
+            return (devices, defaultDeviceName);
         }
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            WindowsMediaPlayer.settings.volume = 0;
+            playPauseButton.Image = Properties.Resources.PausePlay;
             // Add a delegate for the MediaChange event.
-            WindowsMediaPlayer.MediaChange += new _WMPOCXEvents_MediaChangeEventHandler(WindowsMediaPlayer_MediaChange);
+            WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(WindowsMediaPlayer_MediaChange);
             // set visualization preset from windows media player
             SetCurrentEffectPreset(4);
             workingDirectory = Environment.CurrentDirectory;
@@ -502,6 +555,13 @@ namespace Music_Player
             // Set the initial selected index based on the default audio endpoint
             deviceBox.SelectedIndex = deviceBox.FindStringExact(devices.Item2);
 
+            // Add Playlists
+            GetPlaylists("Load");
+        }
+        private void GetPlaylists(string action)
+        {
+            List<string> playlists = new List<string>();
+            int selectedIndex = playlistBox.SelectedIndex; // Store the selected index
 
             // Add stored playlists from user to playlists combobox
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
@@ -515,29 +575,37 @@ namespace Music_Player
                     {
                         while (reader.Read())
                         {
-                            playlistBox.Items.Add(reader["playlist_name"].ToString());
+                            playlists.Add(reader["playlist_name"].ToString());
                         }
                     }
                 }
             }
+            playlistBox.DataSource = playlists;
+            playlistBox.SelectedIndex = selectedIndex; // Set the selected index again
 
+            if (action == "Load")
+            {
+                // Do nothing
+            }
+            else if (action == "Add")
+            {
+                playlistBox.SelectedIndex = playlistBox.Items.Count - 1;
+            }
         }
         private void AddSearchSource(string path)
         {
             var rootNode = TreeNode.BuildTree(path);
-            var allNodesExceptRoot = rootNode.GetAllNodesExceptRoot();
-            var autoCompleteSource = allNodesExceptRoot.Select(node => node.DisplayName).ToList();
+            var allNodes = rootNode.GetAllNodes();
+            var autoCompleteSource = allNodes.Select(node => $"{node.DisplayName} {node.ObjectType}").ToList();
             autoCompleteSource.RemoveAll(node => node.Equals("Album Art")); // remove node and its children if node is album art
             AutoCompleteStringCollection MyCollection = new AutoCompleteStringCollection();
             foreach (var node in autoCompleteSource)
             {
-                // add check for if file or folder. if folder, string = album name (album) if file, string = node.displayname
-                //foreach (TreeNode node in rootNode.GetAllNodesExceptRoot())
                 MyCollection.Add(node);
             }
+
             searchTextBox.AutoCompleteCustomSource = MyCollection;
         }
-
         private void clearQueueButton_Click(object sender, EventArgs e)
         {
             queueList.Clear();
@@ -546,15 +614,21 @@ namespace Music_Player
         }
         private void OpenorPlay(string searchText)
         {
+            List<string> exceptions = new List<string> { "(Artist)", "(Album)", "(Song)" };
             // setting initial flag
             bool resultsFound = true;
-            string pattern = searchText.Trim().Replace(" ", ".*");
-            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+
+            // remove exceptions from searchText
+            foreach (string exception in exceptions)
+            {
+                searchText = searchText.Replace(exception, "");
+            }
+
             var rootNode = TreeNode.BuildTree(musicFolderPath);
             foreach (TreeNode node in rootNode.GetAllNodesExceptRoot())
             {
                 // song name, not filename
-                if (regex.IsMatch(node.DisplayName))
+                if (searchText.Trim() == node.DisplayName)
                 {
                     // Found a matching node
                     if (node.NodeType == NodeType.File)
@@ -562,6 +636,8 @@ namespace Music_Player
                         // Play the song associated with the node
                         string songPath = node.FullPath;
                         WindowsMediaPlayer.URL = songPath;
+                        Play(songPath);
+
                         searchTextBox.Clear();
                         openplayButton.Enabled = false;
                         resultsFound = true;
@@ -579,6 +655,8 @@ namespace Music_Player
             if (resultsFound == false)
             {
                 MessageBox.Show("No Results Found.");
+                clearBox.Visible = true;
+                searchTextBox.Focus();
             }
         }
         private void openplayButton_Click(object sender, EventArgs e)
@@ -618,8 +696,9 @@ namespace Music_Player
             string fileName = "cover.jpg";
             string artFolderPath = currentNode.GetAlbumArtPath();
             string newImagePath = Path.Combine(artFolderPath, fileName);
+
             // create the file "cover.jpg" before saving the image
-            System.IO.File.Create(newImagePath).Close();
+            File.Create(newImagePath).Close();
             Image currentAlbumImage = albumArtBox.Image;
             SaveImage(currentAlbumImage, newImagePath);
 
@@ -651,23 +730,20 @@ namespace Music_Player
         private void songslistBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             e.DrawBackground();
-
-            // Get the song name and artist from the ListBox item
-            string artistName = "";
-            string songName = "";
             string itemText = songslistBox.Items[e.Index].ToString();
 
-            int separatorIndex = itemText.LastIndexOf("(&^%*%");
-            songName = itemText.Substring(0, separatorIndex).Trim().Replace("(&^%*%", "");
-            artistName = itemText.Substring(separatorIndex).Trim().Replace("(&^%*%", "");
+            int separatorIndex = itemText.LastIndexOf(objectTypeSeparator.ToString());
+            string songName = itemText.Substring(0, separatorIndex).Trim().Replace(objectTypeSeparator.ToString(), "");
+            // Get the song name and artist from the ListBox item
+            string artistName = itemText.Substring(separatorIndex).Trim().Replace(objectTypeSeparator.ToString(), "");
 
             // Draw the song name aligned to the left edge of the ListBox
-            using (var songNameFont = new Font(songslistBox.Font, FontStyle.Bold))
+            using (var songNameFont = new Font(songslistBox.Font, System.Drawing.FontStyle.Bold))
             {
                 e.Graphics.DrawString(songName, songNameFont, Brushes.Black, e.Bounds);
             }
             // Draw the artist name aligned to the right edge of the ListBox
-            using (var artistNameFont = new Font(songslistBox.Font, FontStyle.Bold))
+            using (var artistNameFont = new Font(songslistBox.Font, System.Drawing.FontStyle.Bold))
             {
                 SizeF artistNameSize = e.Graphics.MeasureString(artistName, artistNameFont);
                 float artistNameX = e.Bounds.Right - artistNameSize.Width;
@@ -687,6 +763,7 @@ namespace Music_Player
 
         private void newButton_Click(object sender, EventArgs e)
         {
+
             if (playlistBox.Text == string.Empty)
             {
                 MessageBox.Show("Please enter a unique name in the playlists textbox to create a new playlist.", "No Name Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -706,11 +783,14 @@ namespace Music_Player
                 }
                 MessageBox.Show($"Playlist {playlistBox.Text} Added");
                 playlistBox.Text = string.Empty;
+                GetPlaylists("Add");
             }
+
         }
 
         private void addtoplaylistButton_Click(object sender, EventArgs e)
         {
+
             if (songslistBox.SelectedIndex == -1)
             {
                 MessageBox.Show("No song was highlighted in the listbox", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -723,26 +803,31 @@ namespace Music_Player
             {
                 //insert song into playlist
             }
+
         }
 
         private void playlistBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            newButton.Enabled = false;
-            openplayButton.Enabled = true;
-            addtoplaylistButton.Enabled = true;
-            clearButton.Enabled = true;
-            clearButton.Visible = true;
+            playlistIndexChanged++;
+            if (playlistIndexChanged > 2) // Playlist index gets changed twice before the form loads, so check for this.
+            {
+                newButton.Enabled = false;
+                openplayButton.Enabled = true;
+                addtoplaylistButton.Enabled = true;
+                clearButton.Enabled = true;
+                clearButton.Visible = true;
+            }
         }
 
         private void playlistBox_TextChanged(object sender, EventArgs e)
         {
             if (playlistBox.Text.Length > 0)
-            {
+            {  // Show new button for playlist creation and hide clear button
                 newButton.Enabled = true;
                 clearButton.Visible = false;
             }
             else
-            {
+            {   // Hide newButton, addtoplaylistbutton, and clearbutton
                 newButton.Enabled = false;
                 addtoplaylistButton.Enabled = false;
                 clearButton.Visible = false;
@@ -760,9 +845,10 @@ namespace Music_Player
                 this.ActiveControl = null;
             }
             clearButton.Visible = false;
+
         }
 
-        // Next 5 events handle the moving of the form, opening and closing
+        // Next 5 events handle the moving of the form + opening and closing ////
         private void topPanel_MouseDown(object sender, MouseEventArgs e)
         {
             isMoving = true;
@@ -772,7 +858,7 @@ namespace Music_Player
 
         private void topPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isMoving)
+            if (isMoving) // based on bool flag
             {
                 this.SetDesktopLocation(MousePosition.X - movX, MousePosition.Y - movY);
             }
@@ -787,42 +873,41 @@ namespace Music_Player
         {
             this.WindowState = FormWindowState.Minimized;
         }
-
-        private void eqButton_Click(object sender, EventArgs e)
+        private void closeBox_Click(object sender, EventArgs e)
         {
-            equalizerWindow = new EQ();
-            equalizerWindow.Show();
+            this.Close();
+            MusicPlayer.Dispose();
         }
-        private void deviceBox_SelectedIndexChanged(object sender, EventArgs e)
+
+
+        //// Next 2 events are for controlling song navigation with the left & right arrows, if "ENTER" key, plays song ///
+
+
+        // PreviewKeyDown is where you preview the key.
+        // Do not put any logic here, instead use the
+        // KeyDown event after setting IsInputKey to true.
+        private void songsListBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            List<string> deviceGuid;
-            string selectedDeviceName = deviceBox.SelectedItem.ToString();
-
-            if (devices.Item1.ContainsKey(selectedDeviceName))
+            if (e.KeyCode == Keys.Enter)
             {
-                deviceGuid = devices.Item1[selectedDeviceName];
-
-                if (deviceGuid.Count > 0)
-                {
-                    Guid selectedDeviceGuid = Guid.Parse(deviceGuid[0]);
-
-                    // Set the default device to a new device based on its device ID
-                    var newDefaultDevice = audioController.GetDevice(selectedDeviceGuid);
-                    audioController.DefaultPlaybackDevice = newDefaultDevice;
-                }
-                else
-                {
-                    MessageBox.Show("No device GUIDs found for selected device name.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Device not found.");
+                e.IsInputKey = true;
             }
         }
+
+        private void songslistBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // Play the selected song while listbox is active control
+                WindowsMediaPlayer.URL = paths[songslistBox.SelectedIndex];
+                Play(WindowsMediaPlayer.URL);
+            }
+        }
+
+        // Hovering functionality for buttons and pictureboxes
         private void MouseHover(object sender, EventArgs e)
         {
-            // hover on
+            // hover on = 👆
             this.Cursor = Cursors.Hand;
         }
         private void MouseLeave(object sender, EventArgs e)
@@ -831,9 +916,203 @@ namespace Music_Player
             this.Cursor = Cursors.Default;
         }
 
-        private void closeBox_Click(object sender, EventArgs e)
+        private void eqButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            equalizerWindow = new EQ(MusicPlayer.GetEqualizer());
+            equalizerWindow.Show();
+        }
+        private void deviceBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            deviceIndexChanged++;
+            if (deviceIndexChanged > 1) // device index gets changed once before the form loads, so check for this.
+            {
+                List<string> deviceId;
+                string selectedDeviceName = deviceBox.SelectedItem.ToString();
+
+                if (devices.Item1.ContainsKey(selectedDeviceName))
+                {
+                    deviceId = devices.Item1[selectedDeviceName];
+
+                    if (deviceId.Count > 0)
+                    {
+                        // Set the default device to a new device based on its device ID 
+                        var newDefaultDevice = MusicPlayer.GetSoundDevice(deviceId.First());
+
+                        // Get the current position in milliseconds from WindowsMediaPlayer
+                        double currentPositionMs = WindowsMediaPlayer.Ctlcontrols.currentPosition;
+
+                        // find out by what percentage the carriage has moved
+                        double percent = currentPositionMs / TimeSpan.FromMilliseconds(WindowsMediaPlayer.currentMedia.duration).TotalMilliseconds;
+                        // find out the current position of the track by multiplying the percentage by the total duration of the track
+                        TimeSpan position = TimeSpan.FromMilliseconds(MusicPlayer.Length.TotalMilliseconds * percent);
+
+                        MusicPlayer.Open(WindowsMediaPlayer.URL, newDefaultDevice);
+                        MusicPlayer.Position = position;
+                        WindowsMediaPlayer.Ctlcontrols.play();
+                        MusicPlayer.Play();
+                        this.ActiveControl = null;
+                    }
+                    else
+                    {
+                        MessageBox.Show("No device IDs found for selected device name.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Device not found.");
+                }
+            }
+        }
+
+        private void clearBox_Click(object sender, EventArgs e)
+        {
+            searchTextBox.Clear();
+            clearBox.Visible = false;
+            this.ActiveControl = null;
+        }
+
+        // Opens GitHub link with default web browser
+        private void codelinkBox_Click(object sender, EventArgs e)
+        {
+            string target = "https://github.com/mcworkaholic/IS345-G5-Music-Player";
+
+            //Use no more than one assignment when you test this code.
+            //string target = "ftp://ftp.microsoft.com";
+            //string target = "C:\\Program Files\\Microsoft Visual Studio\\INSTALL.HTM";
+            try
+            {
+                System.Diagnostics.Process.Start(target);
+            }
+            catch (System.ComponentModel.Win32Exception noBrowser)
+            {
+                if (noBrowser.ErrorCode == -2147467259)
+                    MessageBox.Show(noBrowser.Message);
+            }
+        }
+
+        private void VideoContainer_KeyUp(object sender, _WMPOCXEvents_KeyUpEvent e)
+        {
+            if (IsFullscreen && e.nKeyCode == (short)Keys.Escape)
+            {
+                //FullscreenToggle();
+            }
+        }
+
+        //private void FullscreenToggle()
+        //{
+        //    this.IsFullscreen = !this.IsFullscreen;
+        //    if (this.IsFullscreen)
+        //    {
+        //        _previousVideoContainerSize = new Size(WindowsMediaPlayer.Width, WindowsMediaPlayer.Height);
+        //        Screen screen = Screen.PrimaryScreen;
+        //        Rectangle area = screen.Bounds;
+        //        WindowsMediaPlayer.Width = Screen.PrimaryScreen.Bounds.Width;
+        //        WindowsMediaPlayer.Height = Screen.PrimaryScreen.Bounds.Height;
+        //        this.WindowState = FormWindowState.Maximized;
+        //    }
+        //    else
+        //    {
+        //        WindowsMediaPlayer.Width = _previousVideoContainerSize.Width;
+        //        WindowsMediaPlayer.Height = _previousVideoContainerSize.Height;
+        //    }
+        //}
+
+
+        private void maximizeBox_Click(object sender, EventArgs e)
+        {
+            // To be implemented
+            // FullscreenToggle();
+        }
+
+        private void settingsBox_Click(object sender, EventArgs e)
+        {
+            // To be implemented
+        }
+
+
+        private void playPauseButton_Click(object sender, EventArgs e)
+        {
+            if (WindowsMediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying)
+            {
+                WindowsMediaPlayer.Ctlcontrols.pause();
+                MusicPlayer.Pause();
+                timer1.Stop();
+            }
+            else
+            {
+                WindowsMediaPlayer.Ctlcontrols.play();
+                MusicPlayer.Play();
+                timer1.Start();
+            }
+        }
+
+        private void volumeBar_ValueChanged(object sender, EventArgs e)
+        {
+            if (volumeBar.Value == 0)
+            {
+                volumeIconBox.Image = Properties.Resources.Mute;
+            }
+            else if (volumeBar.Value <= 25)
+            {
+                volumeIconBox.Image = Properties.Resources.Volume20;
+            }
+            else if (volumeBar.Value <= 75)
+            {
+                volumeIconBox.Image = Properties.Resources.Volume60;
+            }
+            else
+            {
+                volumeIconBox.Image = Properties.Resources.Volume;
+            }
+            MusicPlayer.Volume = volumeBar.Value;
+        }
+
+        private void volumeIconBox_Click(object sender, EventArgs e)
+        {
+            MusicPlayer.Volume = 0;
+            volumeBar.Value = 0;
+        }
+        private void audioPosTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            if (stopUpdate)
+            {
+                double percent = audioPosTrackBar.Value / (double)audioPosTrackBar.Maximum;
+                // find out by what percentage the carriage has moved
+                // find out the current position of the track by multiplying the percentage by the total duration of the track
+                TimeSpan position = TimeSpan.FromMilliseconds(MusicPlayer.Length.TotalMilliseconds * percent);
+                MusicPlayer.Position = position;
+                WindowsMediaPlayer.Ctlcontrols.currentPosition = position.TotalSeconds;
+            }
+        }
+        private void audioPosTrackBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                stopUpdate = false;
+                MusicPlayer.Volume = volumeBar.Value;
+                MusicPlayer.Play();
+                WindowsMediaPlayer.Ctlcontrols.play();
+            }
+        }
+
+        private void audioPosTrackBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                stopUpdate = true;
+                MusicPlayer.Volume = 0;
+                WindowsMediaPlayer.Ctlcontrols.pause();
+                MusicPlayer.Pause();
+            }
+        }
+
+
+
+        // pauses audio output when the device combobox is clicked 
+        private void deviceBox_Click(object sender, EventArgs e)
+        {
+            WindowsMediaPlayer.Ctlcontrols.pause();
+            MusicPlayer.Pause();
         }
 
         private void vizButton_Click(object sender, EventArgs e)
@@ -865,152 +1144,4 @@ namespace Music_Player
         //    }
         //}
     }
-    public class TreeNode
-    {
-        private static TreeNode _cachedTree;
-
-        private readonly List<TreeNode> _children = new List<TreeNode>();
-        public string DisplayName { get; set; } // Displays the song title w/out file extension and track number
-        public string FullPath { get; set; } //  property to store file/folder path
-        public string FileName { get; set; } // property to store the name of the song file, i.e "07. A Street I Know.mp3"
-        public IEnumerable<TreeNode> Children => _children;
-        public TreeNode Parent { get; set; }
-        public NodeType NodeType { get; set; } // whether node is a file or folder
-
-        public string GetAlbumArtPath()
-        {
-            if (this.Parent == null)
-            {
-                return null;
-            }
-
-            foreach (var childNode in this.Parent.Children)
-            {
-                if (childNode.DisplayName == "Album Art" && childNode.NodeType == NodeType.Folder)
-                {
-                    return childNode.FullPath;
-                }
-            }
-
-            return this.Parent.GetAlbumArtPath();
-        }
-
-        public TreeNode FindNodeByFileName(string fileName)
-        {
-            // retrieves corresponding node by its filename 
-            if (this.FileName == fileName)
-            {
-                return this;
-            }
-            foreach (var child in Children)
-            {
-                var foundNode = child.FindNodeByFileName(fileName);
-                if (foundNode != null)
-                {
-                    return foundNode;
-                }
-            }
-            return null;
-        }
-
-        public TreeNode FindNodeByFullPath(string path)
-        {
-            // retrieves corresponding node by its path
-            if (this.FullPath == path)
-            {
-                return this;
-            }
-            foreach (var child in Children)
-            {
-                var foundNode = child.FindNodeByFullPath(path);
-                if (foundNode != null)
-                {
-                    return foundNode;
-                }
-            }
-            return null;
-        }
-        public IEnumerable<TreeNode> GetAllNodesExceptRoot()
-        {
-            var allNodes = new List<TreeNode>();
-            foreach (var childNode in Children)
-            {
-                allNodes.Add(childNode);
-                allNodes.AddRange(childNode.GetAllNodesExceptRoot());
-            }
-            return allNodes;
-        }
-        public void AddChild(TreeNode child)
-        {
-            child.Parent = this;
-            _children.Add(child);
-        }
-
-        public void DeleteChild(TreeNode child)
-        {
-            _children.Remove(child);
-        }
-        public static TreeNode BuildTree(string directoryPath)
-        {
-            //if (_cachedTree != null)
-            //{
-            //    return _cachedTree;
-            //}
-
-            var rootNode = new TreeNode
-            {
-                FullPath = directoryPath,
-                FileName = Path.GetFileName(directoryPath),
-                DisplayName = Path.GetFileName(directoryPath),
-                NodeType = NodeType.Folder
-            };
-
-            foreach (var filePath in Directory.GetFiles(directoryPath))
-            {
-                string fileName = Path.GetFileNameWithoutExtension(filePath);
-                int firstCharIndex = fileName.IndexOf("-");
-                string title;
-                if (firstCharIndex == -1)
-                {
-                    if (fileName.IndexOf('.') != -1)
-                    {
-                        title = fileName.Substring(fileName.IndexOf('.') + 1).Trim();
-                    }
-                    else
-                    {
-                        title = Regex.Replace(fileName, @"^\d+\s*", "").Trim();
-                    }
-                }
-                else
-                {
-                    string[] parts = fileName.Split('-');
-                    title = parts[1].Trim();
-                }
-                var node = new TreeNode
-                {
-                    FullPath = filePath,
-                    FileName = Path.GetFileName(filePath),
-                    DisplayName = title,
-                    NodeType = NodeType.File
-                };
-                rootNode.AddChild(node);
-            }
-
-            foreach (var subDirectoryPath in Directory.GetDirectories(directoryPath))
-            {
-                var node = BuildTree(subDirectoryPath);
-                rootNode.AddChild(node);
-            }
-            //_cachedTree = rootNode;
-            return rootNode;
-        }
-    }
-
-    public enum NodeType
-    {
-        File,
-        Folder
-    }
-
-
 }
