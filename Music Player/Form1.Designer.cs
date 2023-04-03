@@ -68,11 +68,15 @@
             this.settingsBox = new System.Windows.Forms.PictureBox();
             this.playPauseButton = new System.Windows.Forms.PictureBox();
             this.volumeIconBox = new System.Windows.Forms.PictureBox();
+            this.backBox = new System.Windows.Forms.PictureBox();
             this.volumeBar = new System.Windows.Forms.TrackBar();
             this.audioControllerPanel = new System.Windows.Forms.Panel();
             this.audioPosTrackBar = new System.Windows.Forms.TrackBar();
             this.volumeToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.libraryPanel = new System.Windows.Forms.Panel();
+            this.libraryAlbumArtBox = new System.Windows.Forms.PictureBox();
+            this.treeView = new System.Windows.Forms.TreeView();
             ((System.ComponentModel.ISupportInitialize)(this.previousBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).BeginInit();
@@ -87,9 +91,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
             this.audioControllerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.audioPosTrackBar)).BeginInit();
+            this.libraryPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).BeginInit();
             this.SuspendLayout();
             // 
             // songslistBox
@@ -97,6 +104,8 @@
             this.songslistBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
             this.songslistBox.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.songslistBox.FormattingEnabled = true;
+            this.songslistBox.HorizontalExtent = 1000;
+            this.songslistBox.HorizontalScrollbar = true;
             this.songslistBox.Location = new System.Drawing.Point(531, 49);
             this.songslistBox.Name = "songslistBox";
             this.songslistBox.Size = new System.Drawing.Size(264, 318);
@@ -333,7 +342,7 @@
             // 
             this.fetchingPanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.fetchingPanel.Controls.Add(this.fetchingLabel);
-            this.fetchingPanel.Location = new System.Drawing.Point(0, 49);
+            this.fetchingPanel.Location = new System.Drawing.Point(1, 49);
             this.fetchingPanel.Name = "fetchingPanel";
             this.fetchingPanel.Size = new System.Drawing.Size(525, 318);
             this.fetchingPanel.TabIndex = 25;
@@ -453,6 +462,7 @@
             // deviceBox
             // 
             this.deviceBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.deviceBox.Enabled = false;
             this.deviceBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.deviceBox.FormattingEnabled = true;
             this.deviceBox.Location = new System.Drawing.Point(85, 422);
@@ -569,6 +579,25 @@
             this.volumeIconBox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.volumeIconBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
+            // backBox
+            // 
+            this.backBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.backBox.ErrorImage = null;
+            this.backBox.Image = ((System.Drawing.Image)(resources.GetObject("backBox.Image")));
+            this.backBox.InitialImage = null;
+            this.backBox.Location = new System.Drawing.Point(238, -1);
+            this.backBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.backBox.Name = "backBox";
+            this.backBox.Size = new System.Drawing.Size(25, 22);
+            this.backBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.backBox.TabIndex = 2;
+            this.backBox.TabStop = false;
+            this.closeToolTip.SetToolTip(this.backBox, "To Library");
+            this.backBox.Visible = false;
+            this.backBox.Click += new System.EventHandler(this.backBox_Click);
+            this.backBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.backBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
             // volumeBar
             // 
             this.volumeBar.AutoSize = false;
@@ -584,6 +613,7 @@
             this.volumeBar.ValueChanged += new System.EventHandler(this.volumeBar_ValueChanged);
             this.volumeBar.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.volumeBar.MouseHover += new System.EventHandler(this.MouseHover);
+            this.volumeBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.volumeBar_MouseUp);
             // 
             // audioControllerPanel
             // 
@@ -625,12 +655,46 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // libraryPanel
+            // 
+            this.libraryPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.libraryPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.libraryPanel.Controls.Add(this.libraryAlbumArtBox);
+            this.libraryPanel.Controls.Add(this.backBox);
+            this.libraryPanel.Controls.Add(this.treeView);
+            this.libraryPanel.Location = new System.Drawing.Point(532, 49);
+            this.libraryPanel.Name = "libraryPanel";
+            this.libraryPanel.Size = new System.Drawing.Size(264, 318);
+            this.libraryPanel.TabIndex = 205;
+            this.libraryPanel.Visible = false;
+            // 
+            // libraryAlbumArtBox
+            // 
+            this.libraryAlbumArtBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.libraryAlbumArtBox.Location = new System.Drawing.Point(82, 17);
+            this.libraryAlbumArtBox.Name = "libraryAlbumArtBox";
+            this.libraryAlbumArtBox.Size = new System.Drawing.Size(100, 95);
+            this.libraryAlbumArtBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.libraryAlbumArtBox.TabIndex = 3;
+            this.libraryAlbumArtBox.TabStop = false;
+            this.libraryAlbumArtBox.Visible = false;
+            // 
+            // treeView
+            // 
+            this.treeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.treeView.Location = new System.Drawing.Point(0, 136);
+            this.treeView.Name = "treeView";
+            this.treeView.Size = new System.Drawing.Size(260, 177);
+            this.treeView.TabIndex = 0;
+            this.treeView.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(796, 454);
+            this.Controls.Add(this.libraryPanel);
             this.Controls.Add(this.audioControllerPanel);
             this.Controls.Add(this.settingsBox);
             this.Controls.Add(this.maximizeBox);
@@ -676,10 +740,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).EndInit();
             this.audioControllerPanel.ResumeLayout(false);
             this.audioControllerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.audioPosTrackBar)).EndInit();
+            this.libraryPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -724,11 +791,15 @@
         public AxWMPLib.AxWindowsMediaPlayer WindowsMediaPlayer;
         private System.Windows.Forms.PictureBox playPauseButton;
         private System.Windows.Forms.PictureBox volumeIconBox;
-        private System.Windows.Forms.TrackBar volumeBar;
         private System.Windows.Forms.Panel audioControllerPanel;
         private System.Windows.Forms.ToolTip volumeToolTip;
         public System.Windows.Forms.TrackBar audioPosTrackBar;
         private System.Windows.Forms.Timer timer1;
+        public System.Windows.Forms.TrackBar volumeBar;
+        private System.Windows.Forms.Panel libraryPanel;
+        private System.Windows.Forms.TreeView treeView;
+        private System.Windows.Forms.PictureBox backBox;
+        private System.Windows.Forms.PictureBox libraryAlbumArtBox;
     }
 }
 

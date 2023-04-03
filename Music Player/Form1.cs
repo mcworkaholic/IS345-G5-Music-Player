@@ -13,7 +13,6 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
-using Brushes = System.Drawing.Brushes;
 
 namespace Music_Player
 {
@@ -41,6 +40,7 @@ namespace Music_Player
         int playPauseClickCount = 0;
         int playlistIndexChanged = 0;
         int deviceIndexChanged = 0;
+        int lastVolume;
 
         //Create Global Variables of String Type Array to save the titles or name of the //Tracks and path of the track 
         string[] files, paths;
@@ -157,6 +157,7 @@ namespace Music_Player
                 timer1.Start();
                 playPauseButton.Image = Properties.Resources.Pause;
             }
+            deviceBox.Enabled = true;
             eqButton.Enabled = true;
             playlistBox.Enabled = true;
             searchTextBox.Enabled = true;
@@ -180,6 +181,7 @@ namespace Music_Player
             }
             else
             {
+                // Step through the queued songs sequentially
                 WindowsMediaPlayer.URL = paths[queueList[0]];
                 Play(WindowsMediaPlayer.URL);
                 queueList.RemoveAt(0);
@@ -221,21 +223,9 @@ namespace Music_Player
         {
             if (shuffleButtonClicked == false)
             {
-                if (songslistBox.SelectedIndex == -1)
-                {
-                    int currentIndex = Array.IndexOf(paths, WindowsMediaPlayer.currentMedia.sourceURL);
-                    if (paths.GetLowerBound(0) == currentIndex)
-                    {
-                        songslistBox.SelectedIndex = songslistBox.Items.Count - 1;
-                    }
-                    else
-                    {
-                        songslistBox.SelectedIndex = currentIndex + 1;
-                    }
-                    Play(paths[songslistBox.SelectedIndex]);
-                }
                 if (songslistBox.SelectedIndex > 0)
                 {
+                    // Go back 1 song from the current index of the library
                     int currentIndex = Array.IndexOf(paths, WindowsMediaPlayer.currentMedia.sourceURL);
                     songslistBox.SelectedIndex = Array.IndexOf(paths, WindowsMediaPlayer.URL);
                     Play(paths[currentIndex - 1]);
@@ -243,6 +233,7 @@ namespace Music_Player
                 }
                 else if (songslistBox.SelectedIndex == 0)
                 {
+                    // Go back to the start/top of the library
                     songslistBox.SelectedIndex = songslistBox.Items.Count - 1;
                     Play(paths[songslistBox.SelectedIndex]);
                 }
@@ -268,9 +259,9 @@ namespace Music_Player
                 if (deviceId.Count > 0)
                 {
                     // Set the default device to a new device based on its device ID 
-                    var defaultDevice = MusicPlayer.GetSoundDevice(deviceId.First());
+                    var currentDevice = MusicPlayer.GetSoundDevice(deviceId.First());
                     WindowsMediaPlayer.URL = songPath;
-                    MusicPlayer.Open(songPath, defaultDevice);
+                    MusicPlayer.Open(songPath, currentDevice);
                     MusicPlayer.Play();
                     timer1.Start();
                 }
@@ -367,49 +358,53 @@ namespace Music_Player
         {
             // Get the duration of the media file being played
             double duration = WindowsMediaPlayer.currentMedia.duration;
+
+            // Set volume of music to 0 while its changing, then set again to value of the volume trackbar
+            MusicPlayer.Volume = 0;
+            MusicPlayer.Volume = volumeBar.Value;
+
             //  display it in durationLabel
             durationLabel.Visible = true;
             durationLabel.Text = $"Length: {TimeSpan.FromSeconds(duration):mm\\:ss}";
-            var root = TreeNode.BuildTree(musicFolderPath);
+
+            var tree = FileSystemTreeNode.BuildTree(musicFolderPath);
             string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
-            var currentNode = root.FindNodeByFullPath(currentSongPath);
-            string fileName = currentNode.FileName;
-            string artistName = currentNode.Parent.Parent.DisplayName;
-            string albumName = currentNode.Parent.DisplayName;
-            string albumArtPath = currentSongPath.Replace(fileName, "Album Art");
-            string[] artPaths = Directory.GetFiles(albumArtPath);
+            var currentNode = tree.FindNodeByFullPath(currentSongPath);
+            //string fileName = currentNode.FileName;
+            //string artistName = currentNode.Parent.Parent.DisplayName;
+            //string albumName = currentNode.Parent.DisplayName;
+            //string albumArtPath = currentSongPath.Replace(fileName, "Album Art");
+            //string[] artPaths = Directory.GetFiles(albumArtPath);
 
-            if (artPaths.Length > 0)
+            //if (artPaths.Length > 0)
+            //{
+            //    albumArtBox.ImageLocation = artPaths[0];
+            //}
+            //// Check if the album artwork URL is already in the cache
+            //else if (albumArtCache.ContainsKey(albumName))
+            //{
+            //    // Set the image source to the cached artwork URL
+            //    albumArtBox.ImageLocation = albumArtCache[albumName];
+            //}
+            //else
+            //{
+            try
             {
-                albumArtBox.ImageLocation = artPaths[0];
-            }
-            // Check if the album artwork URL is already in the cache
-            else if (albumArtCache.ContainsKey(albumName))
-            {
-                // Set the image source to the cached artwork URL
-                albumArtBox.ImageLocation = albumArtCache[albumName];
-            }
-            else
-            {
-                try
+                TagLib.File file_TAG = TagLib.File.Create(currentNode.FullPath);
+                if (file_TAG.Tag.Pictures.Length >= 1)
                 {
-                    TagLib.File file_TAG = TagLib.File.Create(currentNode.FullPath);
-                    if (file_TAG.Tag.Pictures.Length >= 1)
-                    {
-                        var bin = (byte[])(file_TAG.Tag.Pictures[0].Data.Data);
-                        Image image = Image.FromStream(new MemoryStream(bin));
-                        albumArtBox.Image = image;
-                    }
-                    else
-                    {
-                        // Search for the album artwork URL and add it to the cache if needed
-                        ApplySearch(artistName, albumName, albumArtPath);
-                    }
+                    var bin = (byte[])(file_TAG.Tag.Pictures[0].Data.Data);
+                    Image image = Image.FromStream(new MemoryStream(bin));
+                    albumArtBox.Image = image;
                 }
-                catch (Exception ex) { MessageBox.Show("An unexpected error has occurred: " + ex.Message); }
+                else
+                {
+                    // Search for the album artwork URL and add it to the cache if needed
+                    //ApplySearch(artistName, albumName, albumArtPath);
+                }
             }
+            catch (Exception ex) { MessageBox.Show("An unexpected error has occurred: " + ex.Message); }
         }
-
         private async Task SearchForAlbumCover(string artist, string album)
         {
             try
@@ -473,10 +468,10 @@ namespace Music_Player
         private void LoadMusic(string path)
         {
             objectTypeSeparator = Guid.NewGuid();
-            TreeNode rootNode = TreeNode.BuildTree(path);
+            FileSystemTreeNode rootNode = FileSystemTreeNode.BuildTree(path);
 
             // Get the third level children of the root node
-            List<TreeNode> thirdLevelChildren = new List<TreeNode>();
+            List<FileSystemTreeNode> thirdLevelChildren = new List<FileSystemTreeNode>();
             foreach (var child in rootNode.Children)
             {
                 foreach (var grandChild in child.Children)
@@ -488,8 +483,9 @@ namespace Music_Player
                         {
                             // Construct the song name and artist name string
                             string songName = greatGrandChild.DisplayName;
+                            string albumName = greatGrandChild.Parent.DisplayName;
                             string artistName = greatGrandChild.Parent.Parent.DisplayName;
-                            string itemText = $"{songName}{objectTypeSeparator}{artistName}";
+                            string itemText = $"{songName}{objectTypeSeparator}{artistName}";// +{objectTypeSeparator}{albumName}{objectTypeSeparator}";
 
                             // Add the string to the ListBox control
                             songslistBox.Items.Add(itemText);
@@ -516,12 +512,14 @@ namespace Music_Player
         {
             var devices = new Dictionary<string, List<string>>();
 
+            // Retrieve all active audio devices
             foreach (var dev in MusicPlayer.EnumerateWasapiDevices())
             {
                 if (!devices.ContainsKey(dev.FriendlyName))
                 {
                     devices.Add(dev.FriendlyName, new List<string>());
                 }
+                // Dictionary holds device's friendly names as keys and IDs as values
                 devices[dev.FriendlyName].Add(dev.DeviceID.ToString());
             }
 
@@ -583,19 +581,15 @@ namespace Music_Player
             playlistBox.DataSource = playlists;
             playlistBox.SelectedIndex = selectedIndex; // Set the selected index again
 
-            if (action == "Load")
-            {
-                // Do nothing
-            }
-            else if (action == "Add")
+            if (action == "Add")
             {
                 playlistBox.SelectedIndex = playlistBox.Items.Count - 1;
             }
         }
         private void AddSearchSource(string path)
         {
-            var rootNode = TreeNode.BuildTree(path);
-            var allNodes = rootNode.GetAllNodes();
+            var rootNode = FileSystemTreeNode.BuildTree(path);
+            var allNodes = rootNode.GetAllNodesExceptRoot();
             var autoCompleteSource = allNodes.Select(node => $"{node.DisplayName} {node.ObjectType}").ToList();
             autoCompleteSource.RemoveAll(node => node.Equals("Album Art")); // remove node and its children if node is album art
             AutoCompleteStringCollection MyCollection = new AutoCompleteStringCollection();
@@ -605,6 +599,7 @@ namespace Music_Player
             }
 
             searchTextBox.AutoCompleteCustomSource = MyCollection;
+
         }
         private void clearQueueButton_Click(object sender, EventArgs e)
         {
@@ -612,26 +607,37 @@ namespace Music_Player
             queueLabel.Visible = false;
             clearQueueButton.Visible = false;
         }
+
         private void OpenorPlay(string searchText)
         {
             List<string> exceptions = new List<string> { "(Artist)", "(Album)", "(Song)" };
             // setting initial flag
             bool resultsFound = true;
-
+            string nodeType;
+            if (searchText.Contains(exceptions[2]))
+            {
+                nodeType = "(Song)";
+            }
+            else if (searchText.Contains(exceptions[1]))
+            {
+                nodeType = "(Album)";
+            }
+            else
+            {
+                nodeType = "(Artist)";
+            }
             // remove exceptions from searchText
             foreach (string exception in exceptions)
             {
-                searchText = searchText.Replace(exception, "");
+                searchText = searchText.Replace(exception, "").Trim();
             }
-
-            var rootNode = TreeNode.BuildTree(musicFolderPath);
-            foreach (TreeNode node in rootNode.GetAllNodesExceptRoot())
+            var rootNode = FileSystemTreeNode.BuildTree(musicFolderPath);
+            foreach (FileSystemTreeNode node in rootNode.GetAllNodesExceptRoot())
             {
                 // song name, not filename
-                if (searchText.Trim() == node.DisplayName)
+                if (node.DisplayName == searchText && node.ObjectType == nodeType)
                 {
-                    // Found a matching node
-                    if (node.NodeType == NodeType.File)
+                    if (node.ObjectType == "(Song)")
                     {
                         // Play the song associated with the node
                         string songPath = node.FullPath;
@@ -643,11 +649,56 @@ namespace Music_Player
                         resultsFound = true;
                         break; // Stop searching
                     }
-                    else if (node.NodeType == NodeType.Folder)
+                    else if (node.ObjectType == "(Album)")
                     {
-                        // set songslListBox.Visible = false;
-                        // open treeview of folder and its descendants
-                        resultsFound = true;
+                        // clear existing treeview if there is one
+                        treeView.Nodes.Clear();
+
+                        // Get the first song in the album
+                        var firstSongNode = node.Children.FirstOrDefault();
+
+                        // Check if the album has any songs
+                        if (firstSongNode != null)
+                        {
+                            // Get the album art from the first song
+                            TagLib.File file_TAG = TagLib.File.Create(firstSongNode.FullPath);
+                            if (file_TAG.Tag.Pictures.Length >= 1)
+                            {
+                                var bin = (byte[])(file_TAG.Tag.Pictures[0].Data.Data);
+                                Image image = Image.FromStream(new MemoryStream(bin));
+                                libraryAlbumArtBox.Image = image;
+                            }
+
+                            // Add the album node to the TreeView control
+                            var albumNode = new TreeNode(node.DisplayName);
+                            treeView.Nodes.Add(albumNode);
+
+                            // Add the first song to the TreeView control
+                            var firstSongTreeNode = new TreeNode(firstSongNode.DisplayName);
+                            albumNode.Nodes.Add(firstSongTreeNode);
+
+                            // Iterate over the rest of the songs and add them to the TreeView control
+                            foreach (var songNode in node.Children.Skip(1))
+                            {
+                                var treeNode = new TreeNode(songNode.DisplayName);
+                                albumNode.Nodes.Add(treeNode);
+                            }
+
+                            // Show the TreeView control and hide the songslistBox control
+                            treeView.ExpandAll();
+                            songslistBox.Visible = false;
+                            libraryPanel.Visible = true;
+                            libraryAlbumArtBox.Visible = true;
+                            treeView.Visible = true;
+                            backBox.Visible = true;
+
+                            resultsFound = true;
+                            break;
+                        }
+                        else if (node.ObjectType == "(Artist)")
+                        {
+                            //Implement
+                        }
                     }
                 }
                 else { resultsFound = false; }
@@ -659,6 +710,7 @@ namespace Music_Player
                 searchTextBox.Focus();
             }
         }
+
         private void openplayButton_Click(object sender, EventArgs e)
         {
             string selectedPlaylist;
@@ -677,11 +729,11 @@ namespace Music_Player
             }
             else
             {
-                if (searchTextBox.Text != string.Empty || searchTextBox.Text != null)
+                if (searchTextBox.Text != string.Empty && searchTextBox.Text != null)
                 {
                     OpenorPlay(searchTextBox.Text);
                 }
-                else if (selectedPlaylist != string.Empty || selectedPlaylist != null)
+                else if (selectedPlaylist != string.Empty && selectedPlaylist != null)
                 {
                     OpenorPlay(selectedPlaylist);
                 }
@@ -691,8 +743,8 @@ namespace Music_Player
         {
             // save artwork to their respective folders
             string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
-            var root = TreeNode.BuildTree(musicFolderPath);
-            var currentNode = root.FindNodeByFullPath(currentSongPath);
+            var tree = FileSystemTreeNode.BuildTree(musicFolderPath);
+            var currentNode = tree.FindNodeByFullPath(currentSongPath);
             string fileName = "cover.jpg";
             string artFolderPath = currentNode.GetAlbumArtPath();
             string newImagePath = Path.Combine(artFolderPath, fileName);
@@ -727,32 +779,6 @@ namespace Music_Player
             }
         }
 
-        private void songslistBox_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            e.DrawBackground();
-            string itemText = songslistBox.Items[e.Index].ToString();
-
-            int separatorIndex = itemText.LastIndexOf(objectTypeSeparator.ToString());
-            string songName = itemText.Substring(0, separatorIndex).Trim().Replace(objectTypeSeparator.ToString(), "");
-            // Get the song name and artist from the ListBox item
-            string artistName = itemText.Substring(separatorIndex).Trim().Replace(objectTypeSeparator.ToString(), "");
-
-            // Draw the song name aligned to the left edge of the ListBox
-            using (var songNameFont = new Font(songslistBox.Font, System.Drawing.FontStyle.Bold))
-            {
-                e.Graphics.DrawString(songName, songNameFont, Brushes.Black, e.Bounds);
-            }
-            // Draw the artist name aligned to the right edge of the ListBox
-            using (var artistNameFont = new Font(songslistBox.Font, System.Drawing.FontStyle.Bold))
-            {
-                SizeF artistNameSize = e.Graphics.MeasureString(artistName, artistNameFont);
-                float artistNameX = e.Bounds.Right - artistNameSize.Width;
-                PointF artistNameLocation = new PointF(artistNameX, e.Bounds.Y);
-                e.Graphics.DrawString(artistName, artistNameFont, Brushes.Black, artistNameLocation);
-            }
-            e.DrawFocusRectangle();
-        }
-
         private void Form1_Click(object sender, EventArgs e)
         {
             if (searchTextBox.Text.Length == 0 && playlistBox.SelectedIndex == -1)
@@ -763,7 +789,6 @@ namespace Music_Player
 
         private void newButton_Click(object sender, EventArgs e)
         {
-
             if (playlistBox.Text == string.Empty)
             {
                 MessageBox.Show("Please enter a unique name in the playlists textbox to create a new playlist.", "No Name Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -785,7 +810,40 @@ namespace Music_Player
                 playlistBox.Text = string.Empty;
                 GetPlaylists("Add");
             }
+        }
+        private void songslistBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+            string itemText = songslistBox.Items[e.Index].ToString();
 
+            int separatorIndex = itemText.LastIndexOf(objectTypeSeparator.ToString());
+
+            // Get the song name artist, album from the ListBox item
+            string songName = itemText.Substring(0, separatorIndex).Trim().Replace(objectTypeSeparator.ToString(), "");
+            string artistName = itemText.Substring(separatorIndex).Trim().Replace(objectTypeSeparator.ToString(), "");
+            string albumName = itemText.Substring(separatorIndex).Trim().Replace(objectTypeSeparator.ToString(), "");
+
+            // Draw the song name aligned to the left edge of the ListBox
+            using (var songNameFont = new Font(songslistBox.Font, System.Drawing.FontStyle.Bold))
+            {
+                e.Graphics.DrawString(songName, songNameFont, Brushes.Black, e.Bounds);
+            }
+            // Draw the artist name aligned to the right edge of the ListBox
+            using (var artistNameFont = new Font(songslistBox.Font, System.Drawing.FontStyle.Bold))
+            {
+                SizeF artistNameSize = e.Graphics.MeasureString(artistName, artistNameFont);
+                float artistNameX = e.Bounds.Right - artistNameSize.Width;
+                PointF artistNameLocation = new PointF(artistNameX, e.Bounds.Y);
+                e.Graphics.DrawString(artistName, artistNameFont, Brushes.Black, artistNameLocation);
+            }
+            using (var albumNameFont = new Font(songslistBox.Font, System.Drawing.FontStyle.Bold))
+            {
+                SizeF albumNameSize = e.Graphics.MeasureString(albumName, albumNameFont);
+                float albumNameX = e.Bounds.Right / 3 - albumNameSize.Width;
+                PointF albumNameLocation = new PointF(albumNameX, e.Bounds.Y);
+                e.Graphics.DrawString(albumName, albumNameFont, Brushes.Black, albumNameLocation);
+            }
+            e.DrawFocusRectangle();
         }
 
         private void addtoplaylistButton_Click(object sender, EventArgs e)
@@ -801,6 +859,7 @@ namespace Music_Player
             }
             else
             {
+                // To be implemented
                 //insert song into playlist
             }
 
@@ -877,6 +936,7 @@ namespace Music_Player
         {
             this.Close();
             MusicPlayer.Dispose();
+
         }
 
 
@@ -948,6 +1008,7 @@ namespace Music_Player
 
                         MusicPlayer.Open(WindowsMediaPlayer.URL, newDefaultDevice);
                         MusicPlayer.Position = position;
+                        MusicPlayer.Volume = volumeBar.Value;
                         WindowsMediaPlayer.Ctlcontrols.play();
                         MusicPlayer.Play();
                         this.ActiveControl = null;
@@ -1069,8 +1130,15 @@ namespace Music_Player
 
         private void volumeIconBox_Click(object sender, EventArgs e)
         {
-            MusicPlayer.Volume = 0;
-            volumeBar.Value = 0;
+            if (MusicPlayer.Volume == 0)
+            {
+                MusicPlayer.Volume = lastVolume;
+                volumeBar.Value = lastVolume;
+            }
+            else
+            {
+                volumeBar.Value = 0;
+            }
         }
         private void audioPosTrackBar_ValueChanged(object sender, EventArgs e)
         {
@@ -1106,7 +1174,19 @@ namespace Music_Player
             }
         }
 
+        // Stores last known volume 
+        private void volumeBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            lastVolume = volumeBar.Value;
+        }
 
+        private void backBox_Click(object sender, EventArgs e)
+        {
+            libraryPanel.Visible = false;
+            treeView.Visible = false;
+            backBox.Visible = false;
+            songslistBox.Visible = true;
+        }
 
         // pauses audio output when the device combobox is clicked 
         private void deviceBox_Click(object sender, EventArgs e)
@@ -1117,6 +1197,7 @@ namespace Music_Player
 
         private void vizButton_Click(object sender, EventArgs e)
         {
+            // To be implemented 
             // not working, would like to be able to change the visualization live while the application is running
             //int start = 0;
             //SetCurrentEffectPreset();
