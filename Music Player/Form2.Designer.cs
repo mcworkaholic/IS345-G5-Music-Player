@@ -236,9 +236,9 @@
             this.logoBox.BackColor = System.Drawing.Color.Transparent;
             this.logoBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.logoBox.Image = ((System.Drawing.Image)(resources.GetObject("logoBox.Image")));
-            this.logoBox.Location = new System.Drawing.Point(100, 52);
+            this.logoBox.Location = new System.Drawing.Point(164, 51);
             this.logoBox.Name = "logoBox";
-            this.logoBox.Size = new System.Drawing.Size(262, 174);
+            this.logoBox.Size = new System.Drawing.Size(144, 156);
             this.logoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.logoBox.TabIndex = 14;
             this.logoBox.TabStop = false;
@@ -378,9 +378,9 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 378);
+            this.panel1.Location = new System.Drawing.Point(0, 393);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(460, 25);
+            this.panel1.Size = new System.Drawing.Size(460, 10);
             this.panel1.TabIndex = 31;
             // 
             // loginForm
