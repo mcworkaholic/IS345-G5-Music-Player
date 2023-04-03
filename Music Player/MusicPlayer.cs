@@ -162,9 +162,10 @@ namespace Music_Player
 
         protected override void Dispose(bool disposing)
         {
+            this.Pause();
+            CleanupPlayback();
             base.Dispose(disposing);
             _equalizer?.Dispose();
-            CleanupPlayback();
         }
     }
 }
