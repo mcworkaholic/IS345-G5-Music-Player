@@ -1,4 +1,22 @@
-﻿using AxWMPLib;
+﻿
+// Author: Weston Evans/mcworkaholic on Github
+// 
+// Application purpose: [ This application was intended to become a decently
+// functioning music player with a mix of old and new technologies.
+// In the future I plan on adding archiving functionality with a few Python scripts, with the ability to sync with services such as Soundcloud, Spotify, and Youtube Music.
+
+// The design is pretty intuitive, all you have to do is first create an account(this is what keeps track of each profile's playlists)
+// and then double click on any song in the listbox to get started. In the future I'm going to allow the user to define what folder is opened up at the start.
+
+// Each icon that does not have text, has a tooltip describing what the action does. 
+// The search textbox is autopopulated with every node contained in the tree besides the root from TreeNode.cs,
+// to allow the user to make fast searches and either play a song or open an album.
+
+// The audio is controlled from MusicPlayer.cs, and the audio is synced with the visuals from the WindowsMediaPlayer component(hacky I know).
+
+// You will notice that some functionalities do not work, and that some refactoring can be done. I plan on fixing that for the next project. ]
+
+using AxWMPLib;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
