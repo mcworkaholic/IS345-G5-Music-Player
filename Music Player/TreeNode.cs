@@ -1,25 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace Music_Player
 {
-    internal class TreeNode
+    internal class FileSystemTreeNode
     {
         //private static TreeNode _cachedTree;
-        private readonly List<TreeNode> _children = new List<TreeNode>();
-        private IEnumerable<TreeNode> _nodes;
+        private readonly List<FileSystemTreeNode> _children = new List<FileSystemTreeNode>();
 
         public string DisplayName { get; set; } // Displays the song title w/out file extension and track number
         public string ObjectType { get; set; } // Displays the object type, i.e (artist), (album), (song)
         public string FullPath { get; set; } //  property to store file/folder path
         public string FileName { get; set; } // property to store the name of the song file, i.e "07. A Street I Know.mp3"
-        public IEnumerable<TreeNode> Children => _children;
-        public IEnumerable<TreeNode> AllNodes => GetAllNodes().Prepend(this); // include the root node
-        public TreeNode Parent { get; set; }
         public NodeType NodeType { get; set; } // whether node is a file or folder
+        public FileSystemTreeNode Parent { get; set; }
+        public IEnumerable<FileSystemTreeNode> Children => _children;
 
+        // Needs to be called from a "song" node
         public string GetAlbumArtPath()
         {
             if (this.Parent == null)
@@ -37,28 +36,42 @@ namespace Music_Player
 
             return this.Parent.GetAlbumArtPath();
         }
+        //public FileSystemTreeNode FindNodeByDisplayName(string displayName)
+        //{
+        //    if (this.DisplayName == displayName)
+        //    {
+        //        return this;
+        //    }
+        //    foreach (var child in Children)
+        //    {
+        //        var foundNode = child.FindNodeByDisplayName(displayName);
+        //        if (foundNode != null)
+        //        {
+        //            return foundNode;
+        //        }
+        //    }
+        //    return null;
+        //}
+        //public FileSystemTreeNode FindNodeByFileName(string fileName)
+        //{
+        //    // retrieves corresponding node by its filename 
+        //    if (this.FileName == fileName)
+        //    {
+        //        return this;
+        //    }
+        //    foreach (var child in Children)
+        //    {
+        //        var foundNode = child.FindNodeByFileName(fileName);
+        //        if (foundNode != null)
+        //        {
+        //            return foundNode;
+        //        }
+        //    }
+        //    return null;
+        //}
 
-        public TreeNode FindNodeByFileName(string fileName)
+        public FileSystemTreeNode FindNodeByFullPath(string path)
         {
-            // retrieves corresponding node by its filename 
-            if (this.FileName == fileName)
-            {
-                return this;
-            }
-            foreach (var child in Children)
-            {
-                var foundNode = child.FindNodeByFileName(fileName);
-                if (foundNode != null)
-                {
-                    return foundNode;
-                }
-            }
-            return null;
-        }
-
-        public TreeNode FindNodeByFullPath(string path)
-        {
-            // retrieves corresponding node by its path
             if (this.FullPath == path)
             {
                 return this;
@@ -73,9 +86,9 @@ namespace Music_Player
             }
             return null;
         }
-        public IEnumerable<TreeNode> GetAllNodesExceptRoot()
+        public IEnumerable<FileSystemTreeNode> GetAllNodesExceptRoot()
         {
-            var allNodes = new List<TreeNode>();
+            var allNodes = new List<FileSystemTreeNode>();
             foreach (var childNode in Children)
             {
                 allNodes.Add(childNode);
@@ -83,28 +96,20 @@ namespace Music_Player
             }
             return allNodes;
         }
-        public IEnumerable<TreeNode> GetAllNodes()
-        {
-            var allNodes = new List<TreeNode> { this }; // include the root node
-            foreach (var childNode in Children)
-            {
-                allNodes.AddRange(childNode.GetAllNodes());
-            }
-            return allNodes;
-        }
-        public void AddChild(TreeNode child)
+        public void AddChild(FileSystemTreeNode child)
         {
             child.Parent = this;
             _children.Add(child);
         }
 
-        public void DeleteChild(TreeNode child)
+        public void DeleteChild(FileSystemTreeNode child)
         {
             _children.Remove(child);
         }
-        public static TreeNode BuildTree(string directoryPath)
+
+        public static FileSystemTreeNode BuildTree(string directoryPath)
         {
-            var rootNode = new TreeNode
+            var rootNode = new FileSystemTreeNode
             {
                 FullPath = directoryPath,
                 FileName = Path.GetFileName(directoryPath),
@@ -115,7 +120,7 @@ namespace Music_Player
 
             foreach (var subDirectoryPath in Directory.GetDirectories(directoryPath))
             {
-                var artistNode = new TreeNode
+                var artistNode = new FileSystemTreeNode
                 {
                     FullPath = subDirectoryPath,
                     FileName = Path.GetFileName(subDirectoryPath),
@@ -127,7 +132,7 @@ namespace Music_Player
 
                 foreach (var albumDirectoryPath in Directory.GetDirectories(subDirectoryPath))
                 {
-                    var albumNode = new TreeNode
+                    var albumNode = new FileSystemTreeNode
                     {
                         FullPath = albumDirectoryPath,
                         FileName = Path.GetFileName(albumDirectoryPath),
@@ -158,7 +163,7 @@ namespace Music_Player
                             string[] parts = fileName.Split('-');
                             title = parts[1].Trim();
                         }
-                        var node = new TreeNode
+                        var node = new FileSystemTreeNode
                         {
                             FullPath = filePath,
                             FileName = Path.GetFileName(filePath),
