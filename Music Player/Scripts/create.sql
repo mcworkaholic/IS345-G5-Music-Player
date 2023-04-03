@@ -24,5 +24,5 @@ CREATE TABLE song (
   song_id INTEGER PRIMARY KEY AUTOINCREMENT,
   song_display_name VARCHAR(50) NOT NULL,
   song_file_name VARCHAR(50) NOT NULL,
-  song_path TEXT NOT NULL,
+  song_path TEXT NOT NULL
 );
