@@ -32,11 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.songslistBox = new System.Windows.Forms.ListBox();
             this.playTimer = new System.Windows.Forms.Timer(this.components);
-            this.previousBox = new System.Windows.Forms.PictureBox();
-            this.nextBox = new System.Windows.Forms.PictureBox();
             this.shuffleButton = new System.Windows.Forms.Button();
             this.queueButton = new System.Windows.Forms.Button();
-            this.albumArtBox = new System.Windows.Forms.PictureBox();
             this.durationLabel = new System.Windows.Forms.Label();
             this.vizButton = new System.Windows.Forms.Button();
             this.queueLabel = new System.Windows.Forms.Label();
@@ -52,51 +49,56 @@
             this.fetchingPanel = new System.Windows.Forms.Panel();
             this.fetchingLabel = new System.Windows.Forms.Label();
             this.topPanel = new System.Windows.Forms.Panel();
-            this.codelinkBox = new System.Windows.Forms.PictureBox();
-            this.closeBox = new System.Windows.Forms.PictureBox();
-            this.minimizeBox = new System.Windows.Forms.PictureBox();
             this.clearButton = new System.Windows.Forms.Button();
             this.eqButton = new System.Windows.Forms.Button();
             this.deviceBox = new System.Windows.Forms.ComboBox();
-            this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.prevToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.nextToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.minimizeToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.clearBox = new System.Windows.Forms.PictureBox();
             this.closeToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.maximizeBox = new System.Windows.Forms.PictureBox();
-            this.settingsBox = new System.Windows.Forms.PictureBox();
-            this.playPauseButton = new System.Windows.Forms.PictureBox();
-            this.volumeIconBox = new System.Windows.Forms.PictureBox();
-            this.backBox = new System.Windows.Forms.PictureBox();
             this.volumeBar = new System.Windows.Forms.TrackBar();
             this.audioControllerPanel = new System.Windows.Forms.Panel();
             this.audioPosTrackBar = new System.Windows.Forms.TrackBar();
             this.volumeToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.libraryPanel = new System.Windows.Forms.Panel();
-            this.libraryAlbumArtBox = new System.Windows.Forms.PictureBox();
             this.treeView = new System.Windows.Forms.TreeView();
-            ((System.ComponentModel.ISupportInitialize)(this.previousBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nextBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).BeginInit();
+            this.noLibraryLabel = new System.Windows.Forms.Label();
+            this.configureLabel = new System.Windows.Forms.Label();
+            this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
+            this.libraryAlbumArtBox = new System.Windows.Forms.PictureBox();
+            this.backBox = new System.Windows.Forms.PictureBox();
+            this.playPauseButton = new System.Windows.Forms.PictureBox();
+            this.previousBox = new System.Windows.Forms.PictureBox();
+            this.volumeIconBox = new System.Windows.Forms.PictureBox();
+            this.nextBox = new System.Windows.Forms.PictureBox();
+            this.settingsBox = new System.Windows.Forms.PictureBox();
+            this.maximizeBox = new System.Windows.Forms.PictureBox();
+            this.clearBox = new System.Windows.Forms.PictureBox();
+            this.codelinkBox = new System.Windows.Forms.PictureBox();
+            this.closeBox = new System.Windows.Forms.PictureBox();
+            this.minimizeBox = new System.Windows.Forms.PictureBox();
+            this.albumArtBox = new System.Windows.Forms.PictureBox();
             this.fetchingPanel.SuspendLayout();
             this.topPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.closeBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.clearBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maximizeBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
             this.audioControllerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.audioPosTrackBar)).BeginInit();
             this.libraryPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.previousBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maximizeBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clearBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.closeBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).BeginInit();
             this.SuspendLayout();
             // 
             // songslistBox
@@ -118,38 +120,6 @@
             // playTimer
             // 
             this.playTimer.Tick += new System.EventHandler(this.playTimer_Tick);
-            // 
-            // previousBox
-            // 
-            this.previousBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("previousBox.BackgroundImage")));
-            this.previousBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.previousBox.Enabled = false;
-            this.previousBox.Location = new System.Drawing.Point(49, 22);
-            this.previousBox.Name = "previousBox";
-            this.previousBox.Size = new System.Drawing.Size(15, 17);
-            this.previousBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.previousBox.TabIndex = 5;
-            this.previousBox.TabStop = false;
-            this.prevToolTip.SetToolTip(this.previousBox, "Previous");
-            this.previousBox.Click += new System.EventHandler(this.previousBox_Click);
-            this.previousBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.previousBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // nextBox
-            // 
-            this.nextBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("nextBox.BackgroundImage")));
-            this.nextBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.nextBox.Enabled = false;
-            this.nextBox.Location = new System.Drawing.Point(74, 22);
-            this.nextBox.Name = "nextBox";
-            this.nextBox.Size = new System.Drawing.Size(15, 17);
-            this.nextBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.nextBox.TabIndex = 6;
-            this.nextBox.TabStop = false;
-            this.nextToolTip.SetToolTip(this.nextBox, "Next");
-            this.nextBox.Click += new System.EventHandler(this.nextBox_Click);
-            this.nextBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.nextBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
             // shuffleButton
             // 
@@ -182,17 +152,6 @@
             this.queueButton.Click += new System.EventHandler(this.queueButton_Click);
             this.queueButton.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.queueButton.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // albumArtBox
-            // 
-            this.albumArtBox.BackColor = System.Drawing.Color.Black;
-            this.albumArtBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.albumArtBox.Location = new System.Drawing.Point(0, 49);
-            this.albumArtBox.Name = "albumArtBox";
-            this.albumArtBox.Size = new System.Drawing.Size(79, 73);
-            this.albumArtBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.albumArtBox.TabIndex = 10;
-            this.albumArtBox.TabStop = false;
             // 
             // durationLabel
             // 
@@ -375,65 +334,10 @@
             this.topPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseMove);
             this.topPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseUp);
             // 
-            // codelinkBox
-            // 
-            this.codelinkBox.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.codelinkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.codelinkBox.ErrorImage = null;
-            this.codelinkBox.Image = ((System.Drawing.Image)(resources.GetObject("codelinkBox.Image")));
-            this.codelinkBox.InitialImage = null;
-            this.codelinkBox.Location = new System.Drawing.Point(709, 1);
-            this.codelinkBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.codelinkBox.Name = "codelinkBox";
-            this.codelinkBox.Size = new System.Drawing.Size(23, 22);
-            this.codelinkBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.codelinkBox.TabIndex = 2;
-            this.codelinkBox.TabStop = false;
-            this.minimizeToolTip.SetToolTip(this.codelinkBox, "https://github.com/mcworkaholic/IS345-G5-Music-Player");
-            this.codelinkBox.Click += new System.EventHandler(this.codelinkBox_Click);
-            this.codelinkBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.codelinkBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // closeBox
-            // 
-            this.closeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.closeBox.ErrorImage = null;
-            this.closeBox.Image = ((System.Drawing.Image)(resources.GetObject("closeBox.Image")));
-            this.closeBox.InitialImage = null;
-            this.closeBox.Location = new System.Drawing.Point(766, 1);
-            this.closeBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.closeBox.Name = "closeBox";
-            this.closeBox.Size = new System.Drawing.Size(26, 22);
-            this.closeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.closeBox.TabIndex = 1;
-            this.closeBox.TabStop = false;
-            this.closeToolTip.SetToolTip(this.closeBox, "Close ");
-            this.closeBox.Click += new System.EventHandler(this.closeBox_Click);
-            this.closeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.closeBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // minimizeBox
-            // 
-            this.minimizeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.minimizeBox.ErrorImage = null;
-            this.minimizeBox.Image = ((System.Drawing.Image)(resources.GetObject("minimizeBox.Image")));
-            this.minimizeBox.InitialImage = null;
-            this.minimizeBox.Location = new System.Drawing.Point(735, 1);
-            this.minimizeBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.minimizeBox.Name = "minimizeBox";
-            this.minimizeBox.Size = new System.Drawing.Size(31, 22);
-            this.minimizeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.minimizeBox.TabIndex = 0;
-            this.minimizeBox.TabStop = false;
-            this.minimizeToolTip.SetToolTip(this.minimizeBox, "Minimize");
-            this.minimizeBox.Click += new System.EventHandler(this.minimizeBox_Click);
-            this.minimizeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.minimizeBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
             // clearButton
             // 
             this.clearButton.Enabled = false;
-            this.clearButton.Location = new System.Drawing.Point(720, 371);
+            this.clearButton.Location = new System.Drawing.Point(721, 371);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(75, 23);
             this.clearButton.TabIndex = 27;
@@ -472,131 +376,6 @@
             this.deviceBox.TabIndex = 3;
             this.deviceBox.SelectedIndexChanged += new System.EventHandler(this.deviceBox_SelectedIndexChanged);
             this.deviceBox.Click += new System.EventHandler(this.deviceBox_Click);
-            // 
-            // WindowsMediaPlayer
-            // 
-            this.WindowsMediaPlayer.Enabled = true;
-            this.WindowsMediaPlayer.Location = new System.Drawing.Point(0, 49);
-            this.WindowsMediaPlayer.Name = "WindowsMediaPlayer";
-            this.WindowsMediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("WindowsMediaPlayer.OcxState")));
-            this.WindowsMediaPlayer.Size = new System.Drawing.Size(525, 363);
-            this.WindowsMediaPlayer.TabIndex = 200;
-            this.WindowsMediaPlayer.TabStop = false;
-            this.WindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.WindowsMediaPlayer_PlayStateChange);
-            this.WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(this.WindowsMediaPlayer_MediaChange);
-            this.WindowsMediaPlayer.KeyUpEvent += new AxWMPLib._WMPOCXEvents_KeyUpEventHandler(this.VideoContainer_KeyUp);
-            // 
-            // clearBox
-            // 
-            this.clearBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.clearBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.clearBox.ErrorImage = null;
-            this.clearBox.Image = ((System.Drawing.Image)(resources.GetObject("clearBox.Image")));
-            this.clearBox.InitialImage = null;
-            this.clearBox.Location = new System.Drawing.Point(695, 398);
-            this.clearBox.Name = "clearBox";
-            this.clearBox.Size = new System.Drawing.Size(19, 19);
-            this.clearBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.clearBox.TabIndex = 30;
-            this.clearBox.TabStop = false;
-            this.clearBox.Visible = false;
-            this.clearBox.Click += new System.EventHandler(this.clearBox_Click);
-            this.clearBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.clearBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // maximizeBox
-            // 
-            this.maximizeBox.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.maximizeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.maximizeBox.ErrorImage = null;
-            this.maximizeBox.Image = ((System.Drawing.Image)(resources.GetObject("maximizeBox.Image")));
-            this.maximizeBox.InitialImage = null;
-            this.maximizeBox.Location = new System.Drawing.Point(502, 49);
-            this.maximizeBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.maximizeBox.Name = "maximizeBox";
-            this.maximizeBox.Size = new System.Drawing.Size(23, 22);
-            this.maximizeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.maximizeBox.TabIndex = 2;
-            this.maximizeBox.TabStop = false;
-            this.closeToolTip.SetToolTip(this.maximizeBox, "Maximize");
-            this.maximizeBox.Click += new System.EventHandler(this.maximizeBox_Click);
-            this.maximizeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.maximizeBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // settingsBox
-            // 
-            this.settingsBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.settingsBox.ErrorImage = null;
-            this.settingsBox.Image = ((System.Drawing.Image)(resources.GetObject("settingsBox.Image")));
-            this.settingsBox.InitialImage = null;
-            this.settingsBox.Location = new System.Drawing.Point(256, 422);
-            this.settingsBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.settingsBox.Name = "settingsBox";
-            this.settingsBox.Size = new System.Drawing.Size(14, 20);
-            this.settingsBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.settingsBox.TabIndex = 3;
-            this.settingsBox.TabStop = false;
-            this.closeToolTip.SetToolTip(this.settingsBox, "More Settings");
-            this.settingsBox.Click += new System.EventHandler(this.settingsBox_Click);
-            this.settingsBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.settingsBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // playPauseButton
-            // 
-            this.playPauseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.playPauseButton.Enabled = false;
-            this.playPauseButton.ErrorImage = null;
-            this.playPauseButton.Image = ((System.Drawing.Image)(resources.GetObject("playPauseButton.Image")));
-            this.playPauseButton.InitialImage = null;
-            this.playPauseButton.Location = new System.Drawing.Point(6, 16);
-            this.playPauseButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.playPauseButton.Name = "playPauseButton";
-            this.playPauseButton.Size = new System.Drawing.Size(33, 27);
-            this.playPauseButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.playPauseButton.TabIndex = 201;
-            this.playPauseButton.TabStop = false;
-            this.closeToolTip.SetToolTip(this.playPauseButton, "Play/Pause");
-            this.playPauseButton.Click += new System.EventHandler(this.playPauseButton_Click);
-            this.playPauseButton.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.playPauseButton.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // volumeIconBox
-            // 
-            this.volumeIconBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.volumeIconBox.Enabled = false;
-            this.volumeIconBox.ErrorImage = null;
-            this.volumeIconBox.Image = ((System.Drawing.Image)(resources.GetObject("volumeIconBox.Image")));
-            this.volumeIconBox.InitialImage = null;
-            this.volumeIconBox.Location = new System.Drawing.Point(102, 21);
-            this.volumeIconBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.volumeIconBox.Name = "volumeIconBox";
-            this.volumeIconBox.Size = new System.Drawing.Size(21, 19);
-            this.volumeIconBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.volumeIconBox.TabIndex = 202;
-            this.volumeIconBox.TabStop = false;
-            this.closeToolTip.SetToolTip(this.volumeIconBox, " Mute");
-            this.volumeIconBox.Click += new System.EventHandler(this.volumeIconBox_Click);
-            this.volumeIconBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.volumeIconBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // backBox
-            // 
-            this.backBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.backBox.ErrorImage = null;
-            this.backBox.Image = ((System.Drawing.Image)(resources.GetObject("backBox.Image")));
-            this.backBox.InitialImage = null;
-            this.backBox.Location = new System.Drawing.Point(238, -1);
-            this.backBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.backBox.Name = "backBox";
-            this.backBox.Size = new System.Drawing.Size(25, 22);
-            this.backBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.backBox.TabIndex = 2;
-            this.backBox.TabStop = false;
-            this.closeToolTip.SetToolTip(this.backBox, "To Library");
-            this.backBox.Visible = false;
-            this.backBox.Click += new System.EventHandler(this.backBox_Click);
-            this.backBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.backBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
             // volumeBar
             // 
@@ -662,11 +441,54 @@
             this.libraryPanel.Controls.Add(this.libraryAlbumArtBox);
             this.libraryPanel.Controls.Add(this.backBox);
             this.libraryPanel.Controls.Add(this.treeView);
-            this.libraryPanel.Location = new System.Drawing.Point(532, 49);
+            this.libraryPanel.Location = new System.Drawing.Point(531, 49);
             this.libraryPanel.Name = "libraryPanel";
             this.libraryPanel.Size = new System.Drawing.Size(264, 318);
             this.libraryPanel.TabIndex = 205;
             this.libraryPanel.Visible = false;
+            // 
+            // treeView
+            // 
+            this.treeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.treeView.Location = new System.Drawing.Point(0, 136);
+            this.treeView.Name = "treeView";
+            this.treeView.Size = new System.Drawing.Size(260, 177);
+            this.treeView.TabIndex = 0;
+            this.treeView.Visible = false;
+            // 
+            // noLibraryLabel
+            // 
+            this.noLibraryLabel.AutoSize = true;
+            this.noLibraryLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.noLibraryLabel.Location = new System.Drawing.Point(605, 58);
+            this.noLibraryLabel.Name = "noLibraryLabel";
+            this.noLibraryLabel.Size = new System.Drawing.Size(118, 13);
+            this.noLibraryLabel.TabIndex = 206;
+            this.noLibraryLabel.Text = "No Library Connected";
+            this.noLibraryLabel.Visible = false;
+            // 
+            // configureLabel
+            // 
+            this.configureLabel.AutoSize = true;
+            this.configureLabel.Location = new System.Drawing.Point(273, 425);
+            this.configureLabel.Name = "configureLabel";
+            this.configureLabel.Size = new System.Drawing.Size(74, 13);
+            this.configureLabel.TabIndex = 207;
+            this.configureLabel.Text = "👈 Configure";
+            this.configureLabel.Visible = false;
+            // 
+            // WindowsMediaPlayer
+            // 
+            this.WindowsMediaPlayer.Enabled = true;
+            this.WindowsMediaPlayer.Location = new System.Drawing.Point(0, 49);
+            this.WindowsMediaPlayer.Name = "WindowsMediaPlayer";
+            this.WindowsMediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("WindowsMediaPlayer.OcxState")));
+            this.WindowsMediaPlayer.Size = new System.Drawing.Size(525, 363);
+            this.WindowsMediaPlayer.TabIndex = 200;
+            this.WindowsMediaPlayer.TabStop = false;
+            this.WindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.WindowsMediaPlayer_PlayStateChange);
+            this.WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(this.WindowsMediaPlayer_MediaChange);
+            this.WindowsMediaPlayer.KeyUpEvent += new AxWMPLib._WMPOCXEvents_KeyUpEventHandler(this.VideoContainer_KeyUp);
             // 
             // libraryAlbumArtBox
             // 
@@ -679,14 +501,215 @@
             this.libraryAlbumArtBox.TabStop = false;
             this.libraryAlbumArtBox.Visible = false;
             // 
-            // treeView
+            // backBox
             // 
-            this.treeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.treeView.Location = new System.Drawing.Point(0, 136);
-            this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(260, 177);
-            this.treeView.TabIndex = 0;
-            this.treeView.Visible = false;
+            this.backBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.backBox.ErrorImage = null;
+            this.backBox.Image = ((System.Drawing.Image)(resources.GetObject("backBox.Image")));
+            this.backBox.InitialImage = null;
+            this.backBox.Location = new System.Drawing.Point(238, -1);
+            this.backBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.backBox.Name = "backBox";
+            this.backBox.Size = new System.Drawing.Size(25, 22);
+            this.backBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.backBox.TabIndex = 2;
+            this.backBox.TabStop = false;
+            this.closeToolTip.SetToolTip(this.backBox, "To Library");
+            this.backBox.Visible = false;
+            this.backBox.Click += new System.EventHandler(this.backBox_Click);
+            this.backBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.backBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // playPauseButton
+            // 
+            this.playPauseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.playPauseButton.Enabled = false;
+            this.playPauseButton.ErrorImage = null;
+            this.playPauseButton.Image = ((System.Drawing.Image)(resources.GetObject("playPauseButton.Image")));
+            this.playPauseButton.InitialImage = null;
+            this.playPauseButton.Location = new System.Drawing.Point(6, 16);
+            this.playPauseButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.playPauseButton.Name = "playPauseButton";
+            this.playPauseButton.Size = new System.Drawing.Size(33, 27);
+            this.playPauseButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.playPauseButton.TabIndex = 201;
+            this.playPauseButton.TabStop = false;
+            this.closeToolTip.SetToolTip(this.playPauseButton, "Play/Pause");
+            this.playPauseButton.Click += new System.EventHandler(this.playPauseButton_Click);
+            this.playPauseButton.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.playPauseButton.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // previousBox
+            // 
+            this.previousBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("previousBox.BackgroundImage")));
+            this.previousBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.previousBox.Enabled = false;
+            this.previousBox.Location = new System.Drawing.Point(49, 22);
+            this.previousBox.Name = "previousBox";
+            this.previousBox.Size = new System.Drawing.Size(15, 17);
+            this.previousBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.previousBox.TabIndex = 5;
+            this.previousBox.TabStop = false;
+            this.prevToolTip.SetToolTip(this.previousBox, "Previous");
+            this.previousBox.Click += new System.EventHandler(this.previousBox_Click);
+            this.previousBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.previousBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // volumeIconBox
+            // 
+            this.volumeIconBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.volumeIconBox.Enabled = false;
+            this.volumeIconBox.ErrorImage = null;
+            this.volumeIconBox.Image = ((System.Drawing.Image)(resources.GetObject("volumeIconBox.Image")));
+            this.volumeIconBox.InitialImage = null;
+            this.volumeIconBox.Location = new System.Drawing.Point(102, 21);
+            this.volumeIconBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.volumeIconBox.Name = "volumeIconBox";
+            this.volumeIconBox.Size = new System.Drawing.Size(21, 19);
+            this.volumeIconBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.volumeIconBox.TabIndex = 202;
+            this.volumeIconBox.TabStop = false;
+            this.closeToolTip.SetToolTip(this.volumeIconBox, " Mute");
+            this.volumeIconBox.Click += new System.EventHandler(this.volumeIconBox_Click);
+            this.volumeIconBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.volumeIconBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // nextBox
+            // 
+            this.nextBox.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("nextBox.BackgroundImage")));
+            this.nextBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.nextBox.Enabled = false;
+            this.nextBox.Location = new System.Drawing.Point(74, 22);
+            this.nextBox.Name = "nextBox";
+            this.nextBox.Size = new System.Drawing.Size(15, 17);
+            this.nextBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.nextBox.TabIndex = 6;
+            this.nextBox.TabStop = false;
+            this.nextToolTip.SetToolTip(this.nextBox, "Next");
+            this.nextBox.Click += new System.EventHandler(this.nextBox_Click);
+            this.nextBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.nextBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // settingsBox
+            // 
+            this.settingsBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.settingsBox.ErrorImage = null;
+            this.settingsBox.Image = ((System.Drawing.Image)(resources.GetObject("settingsBox.Image")));
+            this.settingsBox.InitialImage = null;
+            this.settingsBox.Location = new System.Drawing.Point(256, 422);
+            this.settingsBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.settingsBox.Name = "settingsBox";
+            this.settingsBox.Size = new System.Drawing.Size(14, 20);
+            this.settingsBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.settingsBox.TabIndex = 3;
+            this.settingsBox.TabStop = false;
+            this.closeToolTip.SetToolTip(this.settingsBox, "More Settings");
+            this.settingsBox.Click += new System.EventHandler(this.settingsBox_Click);
+            this.settingsBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.settingsBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // maximizeBox
+            // 
+            this.maximizeBox.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.maximizeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.maximizeBox.ErrorImage = null;
+            this.maximizeBox.Image = ((System.Drawing.Image)(resources.GetObject("maximizeBox.Image")));
+            this.maximizeBox.InitialImage = null;
+            this.maximizeBox.Location = new System.Drawing.Point(502, 49);
+            this.maximizeBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.maximizeBox.Name = "maximizeBox";
+            this.maximizeBox.Size = new System.Drawing.Size(23, 22);
+            this.maximizeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.maximizeBox.TabIndex = 2;
+            this.maximizeBox.TabStop = false;
+            this.closeToolTip.SetToolTip(this.maximizeBox, "Maximize");
+            this.maximizeBox.Click += new System.EventHandler(this.maximizeBox_Click);
+            this.maximizeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.maximizeBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // clearBox
+            // 
+            this.clearBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.clearBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.clearBox.ErrorImage = null;
+            this.clearBox.Image = ((System.Drawing.Image)(resources.GetObject("clearBox.Image")));
+            this.clearBox.InitialImage = null;
+            this.clearBox.Location = new System.Drawing.Point(695, 398);
+            this.clearBox.Name = "clearBox";
+            this.clearBox.Size = new System.Drawing.Size(19, 19);
+            this.clearBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.clearBox.TabIndex = 30;
+            this.clearBox.TabStop = false;
+            this.clearBox.Visible = false;
+            this.clearBox.Click += new System.EventHandler(this.clearBox_Click);
+            this.clearBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.clearBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // codelinkBox
+            // 
+            this.codelinkBox.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.codelinkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.codelinkBox.ErrorImage = null;
+            this.codelinkBox.Image = ((System.Drawing.Image)(resources.GetObject("codelinkBox.Image")));
+            this.codelinkBox.InitialImage = null;
+            this.codelinkBox.Location = new System.Drawing.Point(709, 1);
+            this.codelinkBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.codelinkBox.Name = "codelinkBox";
+            this.codelinkBox.Size = new System.Drawing.Size(23, 22);
+            this.codelinkBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.codelinkBox.TabIndex = 2;
+            this.codelinkBox.TabStop = false;
+            this.minimizeToolTip.SetToolTip(this.codelinkBox, "https://github.com/mcworkaholic/IS345-G5-Music-Player");
+            this.codelinkBox.Click += new System.EventHandler(this.codelinkBox_Click);
+            this.codelinkBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.codelinkBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // closeBox
+            // 
+            this.closeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.closeBox.ErrorImage = null;
+            this.closeBox.Image = ((System.Drawing.Image)(resources.GetObject("closeBox.Image")));
+            this.closeBox.InitialImage = null;
+            this.closeBox.Location = new System.Drawing.Point(766, 1);
+            this.closeBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.closeBox.Name = "closeBox";
+            this.closeBox.Size = new System.Drawing.Size(26, 22);
+            this.closeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.closeBox.TabIndex = 1;
+            this.closeBox.TabStop = false;
+            this.closeToolTip.SetToolTip(this.closeBox, "Close ");
+            this.closeBox.Click += new System.EventHandler(this.closeBox_Click);
+            this.closeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.closeBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // minimizeBox
+            // 
+            this.minimizeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.minimizeBox.ErrorImage = null;
+            this.minimizeBox.Image = ((System.Drawing.Image)(resources.GetObject("minimizeBox.Image")));
+            this.minimizeBox.InitialImage = null;
+            this.minimizeBox.Location = new System.Drawing.Point(735, 1);
+            this.minimizeBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.minimizeBox.Name = "minimizeBox";
+            this.minimizeBox.Size = new System.Drawing.Size(31, 22);
+            this.minimizeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.minimizeBox.TabIndex = 0;
+            this.minimizeBox.TabStop = false;
+            this.minimizeToolTip.SetToolTip(this.minimizeBox, "Minimize");
+            this.minimizeBox.Click += new System.EventHandler(this.minimizeBox_Click);
+            this.minimizeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.minimizeBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // albumArtBox
+            // 
+            this.albumArtBox.BackColor = System.Drawing.Color.Black;
+            this.albumArtBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.albumArtBox.Location = new System.Drawing.Point(0, 49);
+            this.albumArtBox.Name = "albumArtBox";
+            this.albumArtBox.Size = new System.Drawing.Size(79, 73);
+            this.albumArtBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.albumArtBox.TabIndex = 10;
+            this.albumArtBox.TabStop = false;
             // 
             // Form1
             // 
@@ -694,6 +717,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(796, 454);
+            this.Controls.Add(this.configureLabel);
+            this.Controls.Add(this.noLibraryLabel);
             this.Controls.Add(this.libraryPanel);
             this.Controls.Add(this.audioControllerPanel);
             this.Controls.Add(this.settingsBox);
@@ -725,28 +750,28 @@
             this.Text = "🎵 Music Player";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Click += new System.EventHandler(this.Form1_Click);
-            ((System.ComponentModel.ISupportInitialize)(this.previousBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nextBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).EndInit();
             this.fetchingPanel.ResumeLayout(false);
             this.fetchingPanel.PerformLayout();
             this.topPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.closeBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.clearBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maximizeBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).EndInit();
             this.audioControllerPanel.ResumeLayout(false);
             this.audioControllerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.audioPosTrackBar)).EndInit();
             this.libraryPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.previousBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maximizeBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clearBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.closeBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -800,6 +825,8 @@
         private System.Windows.Forms.TreeView treeView;
         private System.Windows.Forms.PictureBox backBox;
         private System.Windows.Forms.PictureBox libraryAlbumArtBox;
+        private System.Windows.Forms.Label noLibraryLabel;
+        private System.Windows.Forms.Label configureLabel;
     }
 }
 
