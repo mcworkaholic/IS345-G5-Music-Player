@@ -38,20 +38,12 @@
             this.confirmLabel = new System.Windows.Forms.Label();
             this.createButton = new System.Windows.Forms.Button();
             this.loginButton = new System.Windows.Forms.Button();
-            this.usrerrBox = new System.Windows.Forms.PictureBox();
-            this.cfrmpwderrBox = new System.Windows.Forms.PictureBox();
             this.confirmPanel = new System.Windows.Forms.Panel();
             this.cnfmView = new System.Windows.Forms.Button();
             this.buttonPanel = new System.Windows.Forms.Panel();
             this.backButton = new System.Windows.Forms.Button();
-            this.pwderrBox = new System.Windows.Forms.PictureBox();
-            this.logoBox = new System.Windows.Forms.PictureBox();
             this.passView = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
-            this.codelinkBox = new System.Windows.Forms.PictureBox();
-            this.exitBox = new System.Windows.Forms.PictureBox();
-            this.minimizeBox = new System.Windows.Forms.PictureBox();
-            this.miniBox = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
             this.passwordPanel = new System.Windows.Forms.Panel();
@@ -59,20 +51,28 @@
             this.controlPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.toolTip3 = new System.Windows.Forms.ToolTip(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.usrerrBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cfrmpwderrBox)).BeginInit();
+            this.usrerrBox = new System.Windows.Forms.PictureBox();
+            this.pwderrBox = new System.Windows.Forms.PictureBox();
+            this.cfrmpwderrBox = new System.Windows.Forms.PictureBox();
+            this.codelinkBox = new System.Windows.Forms.PictureBox();
+            this.exitBox = new System.Windows.Forms.PictureBox();
+            this.minimizeBox = new System.Windows.Forms.PictureBox();
+            this.miniBox = new System.Windows.Forms.PictureBox();
+            this.logoBox = new System.Windows.Forms.PictureBox();
             this.confirmPanel.SuspendLayout();
             this.buttonPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pwderrBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.logoBox)).BeginInit();
             this.topPanel.SuspendLayout();
+            this.passwordPanel.SuspendLayout();
+            this.usernamePanel.SuspendLayout();
+            this.controlPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.usrerrBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pwderrBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cfrmpwderrBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.miniBox)).BeginInit();
-            this.passwordPanel.SuspendLayout();
-            this.usernamePanel.SuspendLayout();
-            this.controlPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.logoBox)).BeginInit();
             this.SuspendLayout();
             // 
             // usertextBox
@@ -149,27 +149,6 @@
             this.loginButton.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.loginButton.MouseHover += new System.EventHandler(this.MouseHover);
             // 
-            // usrerrBox
-            // 
-            this.usrerrBox.ErrorImage = null;
-            this.usrerrBox.Image = ((System.Drawing.Image)(resources.GetObject("usrerrBox.Image")));
-            this.usrerrBox.Location = new System.Drawing.Point(220, 5);
-            this.usrerrBox.Name = "usrerrBox";
-            this.usrerrBox.Size = new System.Drawing.Size(19, 20);
-            this.usrerrBox.TabIndex = 9;
-            this.usrerrBox.TabStop = false;
-            this.usrerrBox.Visible = false;
-            // 
-            // cfrmpwderrBox
-            // 
-            this.cfrmpwderrBox.Image = ((System.Drawing.Image)(resources.GetObject("cfrmpwderrBox.Image")));
-            this.cfrmpwderrBox.Location = new System.Drawing.Point(220, 5);
-            this.cfrmpwderrBox.Name = "cfrmpwderrBox";
-            this.cfrmpwderrBox.Size = new System.Drawing.Size(19, 20);
-            this.cfrmpwderrBox.TabIndex = 10;
-            this.cfrmpwderrBox.TabStop = false;
-            this.cfrmpwderrBox.Visible = false;
-            // 
             // confirmPanel
             // 
             this.confirmPanel.Controls.Add(this.cnfmView);
@@ -220,29 +199,6 @@
             this.backButton.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.backButton.MouseHover += new System.EventHandler(this.MouseHover);
             // 
-            // pwderrBox
-            // 
-            this.pwderrBox.ErrorImage = null;
-            this.pwderrBox.Image = ((System.Drawing.Image)(resources.GetObject("pwderrBox.Image")));
-            this.pwderrBox.Location = new System.Drawing.Point(220, 6);
-            this.pwderrBox.Name = "pwderrBox";
-            this.pwderrBox.Size = new System.Drawing.Size(19, 20);
-            this.pwderrBox.TabIndex = 13;
-            this.pwderrBox.TabStop = false;
-            this.pwderrBox.Visible = false;
-            // 
-            // logoBox
-            // 
-            this.logoBox.BackColor = System.Drawing.Color.Transparent;
-            this.logoBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.logoBox.Image = ((System.Drawing.Image)(resources.GetObject("logoBox.Image")));
-            this.logoBox.Location = new System.Drawing.Point(164, 51);
-            this.logoBox.Name = "logoBox";
-            this.logoBox.Size = new System.Drawing.Size(144, 156);
-            this.logoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.logoBox.TabIndex = 14;
-            this.logoBox.TabStop = false;
-            // 
             // passView
             // 
             this.passView.Location = new System.Drawing.Point(216, 4);
@@ -272,73 +228,6 @@
             this.topPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseDown);
             this.topPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseMove);
             this.topPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseUp);
-            // 
-            // codelinkBox
-            // 
-            this.codelinkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.codelinkBox.ErrorImage = null;
-            this.codelinkBox.Image = ((System.Drawing.Image)(resources.GetObject("codelinkBox.Image")));
-            this.codelinkBox.InitialImage = null;
-            this.codelinkBox.Location = new System.Drawing.Point(368, 4);
-            this.codelinkBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.codelinkBox.Name = "codelinkBox";
-            this.codelinkBox.Size = new System.Drawing.Size(23, 22);
-            this.codelinkBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.codelinkBox.TabIndex = 4;
-            this.codelinkBox.TabStop = false;
-            this.toolTip3.SetToolTip(this.codelinkBox, "https://github.com/mcworkaholic/IS345-G5-Music-Player");
-            this.codelinkBox.Click += new System.EventHandler(this.codelinkBox_Click);
-            this.codelinkBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.codelinkBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // exitBox
-            // 
-            this.exitBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.exitBox.ErrorImage = null;
-            this.exitBox.Image = ((System.Drawing.Image)(resources.GetObject("exitBox.Image")));
-            this.exitBox.InitialImage = null;
-            this.exitBox.Location = new System.Drawing.Point(427, 3);
-            this.exitBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.exitBox.Name = "exitBox";
-            this.exitBox.Size = new System.Drawing.Size(30, 23);
-            this.exitBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.exitBox.TabIndex = 3;
-            this.exitBox.TabStop = false;
-            this.toolTip2.SetToolTip(this.exitBox, "Close");
-            this.exitBox.Click += new System.EventHandler(this.exitBox_Click);
-            this.exitBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.exitBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // minimizeBox
-            // 
-            this.minimizeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.minimizeBox.ErrorImage = null;
-            this.minimizeBox.Image = ((System.Drawing.Image)(resources.GetObject("minimizeBox.Image")));
-            this.minimizeBox.InitialImage = null;
-            this.minimizeBox.Location = new System.Drawing.Point(743, 4);
-            this.minimizeBox.Name = "minimizeBox";
-            this.minimizeBox.Size = new System.Drawing.Size(17, 17);
-            this.minimizeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.minimizeBox.TabIndex = 0;
-            this.minimizeBox.TabStop = false;
-            // 
-            // miniBox
-            // 
-            this.miniBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.miniBox.ErrorImage = null;
-            this.miniBox.Image = ((System.Drawing.Image)(resources.GetObject("miniBox.Image")));
-            this.miniBox.InitialImage = null;
-            this.miniBox.Location = new System.Drawing.Point(394, 3);
-            this.miniBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.miniBox.Name = "miniBox";
-            this.miniBox.Size = new System.Drawing.Size(33, 23);
-            this.miniBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.miniBox.TabIndex = 2;
-            this.miniBox.TabStop = false;
-            this.toolTip1.SetToolTip(this.miniBox, "Minimize");
-            this.miniBox.Click += new System.EventHandler(this.miniBox_Click);
-            this.miniBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.miniBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
             // passwordPanel
             // 
@@ -383,6 +272,120 @@
             this.panel1.Size = new System.Drawing.Size(460, 10);
             this.panel1.TabIndex = 31;
             // 
+            // usrerrBox
+            // 
+            this.usrerrBox.ErrorImage = null;
+            this.usrerrBox.Image = global::Music_Player.Properties.Resources.error;
+            this.usrerrBox.InitialImage = null;
+            this.usrerrBox.Location = new System.Drawing.Point(220, 5);
+            this.usrerrBox.Name = "usrerrBox";
+            this.usrerrBox.Size = new System.Drawing.Size(19, 20);
+            this.usrerrBox.TabIndex = 9;
+            this.usrerrBox.TabStop = false;
+            this.usrerrBox.Visible = false;
+            // 
+            // pwderrBox
+            // 
+            this.pwderrBox.ErrorImage = null;
+            this.pwderrBox.Image = ((System.Drawing.Image)(resources.GetObject("pwderrBox.Image")));
+            this.pwderrBox.Location = new System.Drawing.Point(220, 6);
+            this.pwderrBox.Name = "pwderrBox";
+            this.pwderrBox.Size = new System.Drawing.Size(19, 20);
+            this.pwderrBox.TabIndex = 13;
+            this.pwderrBox.TabStop = false;
+            this.pwderrBox.Visible = false;
+            // 
+            // cfrmpwderrBox
+            // 
+            this.cfrmpwderrBox.Image = ((System.Drawing.Image)(resources.GetObject("cfrmpwderrBox.Image")));
+            this.cfrmpwderrBox.Location = new System.Drawing.Point(220, 5);
+            this.cfrmpwderrBox.Name = "cfrmpwderrBox";
+            this.cfrmpwderrBox.Size = new System.Drawing.Size(19, 20);
+            this.cfrmpwderrBox.TabIndex = 10;
+            this.cfrmpwderrBox.TabStop = false;
+            this.cfrmpwderrBox.Visible = false;
+            // 
+            // codelinkBox
+            // 
+            this.codelinkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.codelinkBox.ErrorImage = null;
+            this.codelinkBox.Image = global::Music_Player.Properties.Resources.codelink;
+            this.codelinkBox.InitialImage = null;
+            this.codelinkBox.Location = new System.Drawing.Point(368, 4);
+            this.codelinkBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.codelinkBox.Name = "codelinkBox";
+            this.codelinkBox.Size = new System.Drawing.Size(23, 22);
+            this.codelinkBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.codelinkBox.TabIndex = 4;
+            this.codelinkBox.TabStop = false;
+            this.toolTip3.SetToolTip(this.codelinkBox, "https://github.com/mcworkaholic/IS345-G5-Music-Player");
+            this.codelinkBox.Click += new System.EventHandler(this.codelinkBox_Click);
+            this.codelinkBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.codelinkBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // exitBox
+            // 
+            this.exitBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.exitBox.ErrorImage = null;
+            this.exitBox.Image = global::Music_Player.Properties.Resources.close;
+            this.exitBox.InitialImage = null;
+            this.exitBox.Location = new System.Drawing.Point(427, 3);
+            this.exitBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.exitBox.Name = "exitBox";
+            this.exitBox.Size = new System.Drawing.Size(30, 23);
+            this.exitBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.exitBox.TabIndex = 3;
+            this.exitBox.TabStop = false;
+            this.toolTip2.SetToolTip(this.exitBox, "Close");
+            this.exitBox.Click += new System.EventHandler(this.exitBox_Click);
+            this.exitBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.exitBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // minimizeBox
+            // 
+            this.minimizeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.minimizeBox.ErrorImage = null;
+            this.minimizeBox.Image = ((System.Drawing.Image)(resources.GetObject("minimizeBox.Image")));
+            this.minimizeBox.InitialImage = null;
+            this.minimizeBox.Location = new System.Drawing.Point(743, 4);
+            this.minimizeBox.Name = "minimizeBox";
+            this.minimizeBox.Size = new System.Drawing.Size(17, 17);
+            this.minimizeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.minimizeBox.TabIndex = 0;
+            this.minimizeBox.TabStop = false;
+            // 
+            // miniBox
+            // 
+            this.miniBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.miniBox.ErrorImage = null;
+            this.miniBox.Image = global::Music_Player.Properties.Resources.minimize;
+            this.miniBox.InitialImage = null;
+            this.miniBox.Location = new System.Drawing.Point(394, 3);
+            this.miniBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.miniBox.Name = "miniBox";
+            this.miniBox.Size = new System.Drawing.Size(33, 23);
+            this.miniBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.miniBox.TabIndex = 2;
+            this.miniBox.TabStop = false;
+            this.toolTip1.SetToolTip(this.miniBox, "Minimize");
+            this.miniBox.Click += new System.EventHandler(this.miniBox_Click);
+            this.miniBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.miniBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // logoBox
+            // 
+            this.logoBox.BackColor = System.Drawing.Color.Transparent;
+            this.logoBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.logoBox.ErrorImage = null;
+            this.logoBox.Image = global::Music_Player.Properties.Resources.login_logo;
+            this.logoBox.InitialImage = null;
+            this.logoBox.Location = new System.Drawing.Point(164, 51);
+            this.logoBox.Name = "logoBox";
+            this.logoBox.Size = new System.Drawing.Size(144, 156);
+            this.logoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.logoBox.TabIndex = 14;
+            this.logoBox.TabStop = false;
+            // 
             // loginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -399,23 +402,23 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.Load += new System.EventHandler(this.LoginForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.usrerrBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cfrmpwderrBox)).EndInit();
             this.confirmPanel.ResumeLayout(false);
             this.confirmPanel.PerformLayout();
             this.buttonPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pwderrBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.logoBox)).EndInit();
             this.topPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.exitBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.miniBox)).EndInit();
             this.passwordPanel.ResumeLayout(false);
             this.passwordPanel.PerformLayout();
             this.usernamePanel.ResumeLayout(false);
             this.usernamePanel.PerformLayout();
             this.controlPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.usrerrBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pwderrBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cfrmpwderrBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.exitBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.miniBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logoBox)).EndInit();
             this.ResumeLayout(false);
 
         }

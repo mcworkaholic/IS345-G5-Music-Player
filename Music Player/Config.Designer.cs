@@ -38,12 +38,12 @@
             this.usageLabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.topPanel = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.exitBox = new System.Windows.Forms.PictureBox();
             this.minibox = new System.Windows.Forms.PictureBox();
             this.codelinkBox = new System.Windows.Forms.PictureBox();
             this.closeBox = new System.Windows.Forms.PictureBox();
             this.minimizeBox = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minibox)).BeginInit();
@@ -130,11 +130,20 @@
             this.topPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseMove);
             this.topPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseUp);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 302);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(576, 10);
+            this.panel1.TabIndex = 32;
+            // 
             // exitBox
             // 
             this.exitBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.exitBox.ErrorImage = null;
-            this.exitBox.Image = ((System.Drawing.Image)(resources.GetObject("exitBox.Image")));
+            this.exitBox.Image = global::Music_Player.Properties.Resources.close;
             this.exitBox.InitialImage = null;
             this.exitBox.Location = new System.Drawing.Point(547, 1);
             this.exitBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
@@ -151,7 +160,7 @@
             // 
             this.minibox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.minibox.ErrorImage = null;
-            this.minibox.Image = ((System.Drawing.Image)(resources.GetObject("minibox.Image")));
+            this.minibox.Image = global::Music_Player.Properties.Resources.minimize;
             this.minibox.InitialImage = null;
             this.minibox.Location = new System.Drawing.Point(516, 1);
             this.minibox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
@@ -206,15 +215,6 @@
             this.minimizeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.minimizeBox.TabIndex = 0;
             this.minimizeBox.TabStop = false;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 302);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(576, 10);
-            this.panel1.TabIndex = 32;
             // 
             // Config
             // 
