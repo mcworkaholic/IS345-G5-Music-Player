@@ -96,6 +96,11 @@ To get a local copy up and running follow these steps.
 
 * [https://github.com/othneildrew/Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 
+<!-- Copy-paste in your Readme.md file -->
+<a href = "https://github.com/Tanu-N-Prabhu/Python/graphs/contributors">
+  <img src = "https://contrib.rocks/image?repo = mcworkaholic/IS345-G5-Music-Player"/>
+</a>
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
