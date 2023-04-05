@@ -82,6 +82,10 @@ namespace Music_Player
         // for storing initial root node
         FileSystemTreeNode rootNode;
 
+        string songObj = "(Song)";
+        string albumObj = "(Album)";
+        string artistObj = "(Artist)";
+
 
         // Fullscreen capabilities
         private bool _isFullscreenToggle = false;
@@ -393,7 +397,8 @@ namespace Music_Player
         private void WindowsMediaPlayer_MediaChange(object sender, _WMPOCXEvents_MediaChangeEvent e)
         {
             // Get the duration of the media file being played
-            double duration = WindowsMediaPlayer.currentMedia.duration;
+            int duration = (int)WindowsMediaPlayer.currentMedia.duration;
+            audioPosTrackBar.Maximum = (int)duration;
 
             // Set volume of music to 0 while its changing, then set again to value of the volume trackbar
             MusicPlayer.Volume = 0;
@@ -405,7 +410,7 @@ namespace Music_Player
 
             var tree = FileSystemTreeNode.BuildTree(musicFolderPath);
             string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
-            var currentNode = tree.FindNodeByFullPath(currentSongPath);
+            var currentNode = tree.FindNodeByFullPath(currentSongPath, songObj);
             //string fileName = currentNode.FileName;
             //string artistName = currentNode.Parent.Parent.DisplayName;
             //string albumName = currentNode.Parent.DisplayName;
@@ -582,7 +587,7 @@ namespace Music_Player
             if (startupPath != string.Empty)
             {
                 LoadMusic(startupPath);
-                AddSearchSource(startupPath);
+                AddSearchSource();
 
                 // Add available audio devices
                 devices = GetAudioDevices();
@@ -614,7 +619,7 @@ namespace Music_Player
                 playlistBox.SelectedIndex = playlistBox.Items.Count - 1;
             }
         }
-        private void AddSearchSource(string path)
+        private void AddSearchSource()
         {
             var allNodes = rootNode.GetAllNodesExceptRoot();
             var autoCompleteSource = allNodes.Select(node => $"{node.DisplayName} {node.ObjectType}").ToList();
@@ -633,6 +638,50 @@ namespace Music_Player
             queueList.Clear();
             queueLabel.Visible = false;
             clearQueueButton.Visible = false;
+        }
+        private void ViewAlbum(FileSystemTreeNode node)
+        {
+            // clear existing treeview if there is one
+            treeView.Nodes.Clear();
+
+            // Get the first song in the album
+            var firstSongNode = node.Children.FirstOrDefault();
+
+            // Check if the album has any songs
+            if (firstSongNode != null)
+            {
+                // Get the album art from the first song
+                TagLib.File file_TAG = TagLib.File.Create(firstSongNode.FullPath);
+                if (file_TAG.Tag.Pictures.Length >= 1)
+                {
+                    var bin = (byte[])(file_TAG.Tag.Pictures[0].Data.Data);
+                    Image image = Image.FromStream(new MemoryStream(bin));
+                    libraryAlbumArtBox.Image = image;
+                }
+
+                // Add the album node to the TreeView control
+                var albumNode = new TreeNode(node.DisplayName);
+                treeView.Nodes.Add(albumNode);
+
+                // Add the first song to the TreeView control
+                var firstSongTreeNode = new TreeNode(firstSongNode.DisplayName);
+                albumNode.Nodes.Add(firstSongTreeNode);
+
+                // Iterate over the rest of the songs and add them to the TreeView control
+                foreach (var songNode in node.Children.Skip(1))
+                {
+                    var treeNode = new TreeNode(songNode.DisplayName);
+                    albumNode.Nodes.Add(treeNode);
+                }
+
+                // Show the TreeView control and hide the songslistBox control
+                treeView.ExpandAll();
+                songslistBox.Visible = false;
+                libraryPanel.Visible = true;
+                libraryAlbumArtBox.Visible = true;
+                treeView.Visible = true;
+                backBox.Visible = true;
+            }
         }
 
         private void OpenorPlay(string searchText)
@@ -677,56 +726,16 @@ namespace Music_Player
                     }
                     else if (node.ObjectType == "(Album)")
                     {
-                        // clear existing treeview if there is one
-                        treeView.Nodes.Clear();
-
-                        // Get the first song in the album
-                        var firstSongNode = node.Children.FirstOrDefault();
-
-                        // Check if the album has any songs
-                        if (firstSongNode != null)
-                        {
-                            // Get the album art from the first song
-                            TagLib.File file_TAG = TagLib.File.Create(firstSongNode.FullPath);
-                            if (file_TAG.Tag.Pictures.Length >= 1)
-                            {
-                                var bin = (byte[])(file_TAG.Tag.Pictures[0].Data.Data);
-                                Image image = Image.FromStream(new MemoryStream(bin));
-                                libraryAlbumArtBox.Image = image;
-                            }
-
-                            // Add the album node to the TreeView control
-                            var albumNode = new TreeNode(node.DisplayName);
-                            treeView.Nodes.Add(albumNode);
-
-                            // Add the first song to the TreeView control
-                            var firstSongTreeNode = new TreeNode(firstSongNode.DisplayName);
-                            albumNode.Nodes.Add(firstSongTreeNode);
-
-                            // Iterate over the rest of the songs and add them to the TreeView control
-                            foreach (var songNode in node.Children.Skip(1))
-                            {
-                                var treeNode = new TreeNode(songNode.DisplayName);
-                                albumNode.Nodes.Add(treeNode);
-                            }
-
-                            // Show the TreeView control and hide the songslistBox control
-                            treeView.ExpandAll();
-                            songslistBox.Visible = false;
-                            libraryPanel.Visible = true;
-                            libraryAlbumArtBox.Visible = true;
-                            treeView.Visible = true;
-                            backBox.Visible = true;
-
-                            resultsFound = true;
-                            break;
-                        }
-                        else if (node.ObjectType == "(Artist)")
-                        {
-                            //Implement
-                        }
+                        ViewAlbum(rootNode.FindNodeByDisplayName(searchText, albumObj));
+                        resultsFound = true;
+                        break;
+                    }
+                    else if (node.ObjectType == "(Artist)")
+                    {
+                        //Implement
                     }
                 }
+
                 else { resultsFound = false; }
             }
             if (resultsFound == false)
@@ -769,7 +778,7 @@ namespace Music_Player
         {
             // save artwork to their respective folders
             string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
-            var currentNode = rootNode.FindNodeByFullPath(currentSongPath);
+            var currentNode = rootNode.FindNodeByFullPath(currentSongPath, songObj);
             string fileName = "cover.jpg";
             string artFolderPath = currentNode.GetAlbumArtPath();
             string newImagePath = Path.Combine(artFolderPath, fileName);
@@ -884,8 +893,8 @@ namespace Music_Player
             }
             else
             {
-                // To be implemented
                 //insert song into playlist
+
             }
 
         }
@@ -1059,15 +1068,24 @@ namespace Music_Player
             clearBox.Visible = false;
             this.ActiveControl = null;
         }
-
-        // Opens GitHub link with default web browser
-        private void codelinkBox_Click(object sender, EventArgs e)
+        private void OpenLink(PictureBox pictureBox)
         {
-            string target = "https://github.com/mcworkaholic/IS345-G5-Music-Player";
-
-            //Use no more than one assignment when you test this code.
-            //string target = "ftp://ftp.microsoft.com";
-            //string target = "C:\\Program Files\\Microsoft Visual Studio\\INSTALL.HTM";
+            string target = "";
+            switch (pictureBox.Name.ToString())
+            {
+                case "githublinkBox":
+                    target = "https://github.com/mcworkaholic/IS345-G5-Music-Player";
+                    break;
+                case "y":
+                    // code block
+                    break;
+                case "z":
+                    // code block
+                    break;
+                default:
+                    // code block
+                    break;
+            }
             try
             {
                 System.Diagnostics.Process.Start(target);
@@ -1077,6 +1095,12 @@ namespace Music_Player
                 if (noBrowser.ErrorCode == -2147467259)
                     MessageBox.Show(noBrowser.Message);
             }
+        }
+
+        // Opens GitHub link with default web browser
+        private void githublinkBox_Click(object sender, EventArgs e)
+        {
+            OpenLink((Control)sender as PictureBox);
         }
 
         private void VideoContainer_KeyUp(object sender, _WMPOCXEvents_KeyUpEvent e)
@@ -1218,7 +1242,31 @@ namespace Music_Player
             songslistBox.Visible = true;
         }
 
-        // pauses audio output when the device combobox is clicked 
+        private void treeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Parent != null)
+            {
+                var clickedNode = rootNode.FindNodeByDisplayName(e.Node.Text, songObj);
+                if (clickedNode.ObjectType == "(Song)")
+                {
+                    MusicPlayer.Pause();
+                    WindowsMediaPlayer.Ctlcontrols.pause();
+                    WindowsMediaPlayer.URL = clickedNode.FullPath;
+                    Play(clickedNode.FullPath);
+                }
+            }
+        }
+
+        private void albumArtBox_Click(object sender, EventArgs e)
+        {
+            ViewAlbum(rootNode.FindNodeByFullPath(WindowsMediaPlayer.URL, songObj).Parent);
+        }
+
+        private void albumArtBox_DoubleClick(object sender, EventArgs e)
+        {
+            albumArtBox.Visible = false;
+        }
+
         private void deviceBox_Click(object sender, EventArgs e)
         {
             WindowsMediaPlayer.Ctlcontrols.pause();
