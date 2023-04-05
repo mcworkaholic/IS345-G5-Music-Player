@@ -24,15 +24,16 @@ namespace Music_Player
         }
         private void Config_Load(object sender, EventArgs e)
         {
-            listView.Scrollable = true;
             string startupFolder = dbUtils.GetStartUpFolder(connectionString);
             musicFolderItem = new ListViewItem("Music Directory");
             if (startupFolder == string.Empty)
             {
+                listView.Scrollable = false;
                 musicFolderItem.SubItems.Add("NULL");
             }
             else
             {
+                listView.Scrollable = true;
                 musicFolderItem.SubItems.Add(startupFolder);
             }
             listView.Items.Add(musicFolderItem);
