@@ -59,7 +59,7 @@ To get a local copy up and running follow these steps.
 * An editor such as Visual Studio
 
 
-### Installation
+## Installation
 
 1. Create a project folder on your desktop
 
@@ -72,7 +72,7 @@ To get a local copy up and running follow these steps.
 4. Open the project folder with the newly added files and click on the provided solution to get started
 
 <!-- Usage -->
-### Usage
+## Usage
 1. Create an account
 2. Save your password somewhere. It's hashed, so you won't be able to retrieve it
 3. Click on the gear icon to start configuration
@@ -81,20 +81,40 @@ To get a local copy up and running follow these steps.
 6. Click on the "refresh" button
 7. Double-click any song in the listbox to start playing
 
-### Directory Structure
-* If you wish to use your own directory it should look like the following:<space><space>
+## Directory Structure
+<p>If you wish to use your own directory it should look like the following:</p><space><space>
   
 ![Directory Structure](https://github.com/mcworkaholic/IS345-G5-Music-Player/blob/main/Music%20Player/img/tree-structure.png)
+
+
+## Run-time Screenshots
+
+#### Logging in
+
+![Login Form](https://github.com/mcworkaholic/IS345-G5-Music-Player/blob/main/Music%20Player/img/login-screenshot.png)
+
+#### Configuration
+
+![Configuration](https://github.com/mcworkaholic/IS345-G5-Music-Player/blob/main/Music%20Player/img/config-screenshot.png)
+
+#### Playing
+
+![Playing](https://github.com/mcworkaholic/IS345-G5-Music-Player/blob/main/Music%20Player/img/playing-screenshot.png)
+
+#### Equalizer
+
+![Equalizer](https://github.com/mcworkaholic/IS345-G5-Music-Player/blob/main/Music%20Player/img/equalizer-screenshot.png)
+
 
 <!-- CONTRIBUTING -->
 ## Contributing
 
-* [CONTRIBUTING.md](https://github.com/mcworkaholic/IS345-G5-Music-Player/blob/main/CONTRIBUTING.md)
+[CONTRIBUTING.md](https://github.com/mcworkaholic/IS345-G5-Music-Player/blob/main/CONTRIBUTING.md)
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [https://github.com/othneildrew/Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+[https://github.com/othneildrew/Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
