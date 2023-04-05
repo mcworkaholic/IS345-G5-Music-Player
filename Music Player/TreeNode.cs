@@ -35,22 +35,23 @@ namespace Music_Player
 
             return this.Parent.GetAlbumArtPath();
         }
-        //public FileSystemTreeNode FindNodeByDisplayName(string displayName)
-        //{
-        //    if (this.DisplayName == displayName)
-        //    {
-        //        return this;
-        //    }
-        //    foreach (var child in Children)
-        //    {
-        //        var foundNode = child.FindNodeByDisplayName(displayName);
-        //        if (foundNode != null)
-        //        {
-        //            return foundNode;
-        //        }
-        //    }
-        //    return null;
-        //}
+        public FileSystemTreeNode FindNodeByDisplayName(string displayName, string objectType)
+        {
+            if (this.DisplayName == displayName && this.ObjectType == objectType)
+            {
+                return this;
+            }
+            foreach (var child in Children)
+            {
+                var foundNode = child.FindNodeByDisplayName(displayName, objectType);
+                if (foundNode != null)
+                {
+                    return foundNode;
+                }
+            }
+            return null;
+        }
+
         //public FileSystemTreeNode FindNodeByFileName(string fileName)
         //{
         //    // retrieves corresponding node by its filename 
@@ -69,7 +70,7 @@ namespace Music_Player
         //    return null;
         //}
 
-        public FileSystemTreeNode FindNodeByFullPath(string path)
+        public FileSystemTreeNode FindNodeByFullPath(string path, string objectType)
         {
             if (this.FullPath == path)
             {
@@ -77,7 +78,7 @@ namespace Music_Player
             }
             foreach (var child in Children)
             {
-                var foundNode = child.FindNodeByFullPath(path);
+                var foundNode = child.FindNodeByFullPath(path, objectType);
                 if (foundNode != null)
                 {
                     return foundNode;
