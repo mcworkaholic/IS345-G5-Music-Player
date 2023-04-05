@@ -63,14 +63,28 @@ To get a local copy up and running follow these steps.
 
 1. Create a project folder on your desktop
 
-2.  Clone the repo
-3.  Open a terminal/powershell and type:
+2. Clone the repo
+3. Open a terminal/powershell and type:
    ```sh
    cd your-project-folder 
    git clone https://github.com/mcworkaholic/IS345-G5-Music-Player.git
    ```
-4.  Open the project folder w/newly added files and click on the provided solution to get started
+4. Open the project folder with the newly added files and click on the provided solution to get started
 
+<!-- Usage -->
+### Usage
+1. Create an account
+2. Save your password somewhere. It's hashed, so you won't be able to retrieve it
+3. Click on the gear icon to start configuration
+4. Double click on the "Music Directory" option, and then click on edit
+5. Select the "Music" directory you would like the application to start-up with in the future(there's one provided with the project)
+6. Click on the "refresh" button
+7. Double-click any song in the listbox to start playing
+
+### Directory Structure
+* If you wish to use your own directory it should look like the following:<space><space>
+
+![img_1.png](img_1.png)
 <!-- CONTRIBUTING -->
 ## Contributing
 
