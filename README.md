@@ -83,8 +83,8 @@ To get a local copy up and running follow these steps.
 
 ### Directory Structure
 * If you wish to use your own directory it should look like the following:<space><space>
-
-![img_1.png](img_1.png)
+  
+![directory structure](./Music Player/img/tree-structure.png)
 <!-- CONTRIBUTING -->
 ## Contributing
 
