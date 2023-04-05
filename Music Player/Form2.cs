@@ -68,6 +68,8 @@ namespace Music_Player
             connectionString = $@"Data Source={dbPath};";
             buttonPanel.Location = new System.Drawing.Point(34, 75);
 
+            SetFocus(usertextBox);
+
             // re-add event handlers
             exitBox.Click += exitBox_Click;
             miniBox.Click += miniBox_Click;
@@ -77,6 +79,8 @@ namespace Music_Player
         }
         private void LoginForm_Load(object sender, EventArgs e)
         {
+            SetFocus(usertextBox);
+
             // add to list of textboxes for iteration later
             TextboxList.Add(usertextBox);
             TextboxList.Add(passwordtextBox);
@@ -109,6 +113,8 @@ namespace Music_Player
 
         private void createButton_Click(object sender, EventArgs e)
         {
+            SetFocus(usertextBox);
+
             if (!createButtonClicked)
             {
                 buttonPanel.Location = new System.Drawing.Point(35, 99);
@@ -383,6 +389,13 @@ namespace Music_Player
                 if (noBrowser.ErrorCode == -2147467259)
                     MessageBox.Show(noBrowser.Message);
             }
+        }
+
+        private void SetFocus(Control control)
+        {
+            ActiveControl = control;
+            control.Select();
+            control.Focus();
         }
     }
 }

@@ -95,7 +95,7 @@
             this.confirmtextBox.Location = new System.Drawing.Point(114, 3);
             this.confirmtextBox.Name = "confirmtextBox";
             this.confirmtextBox.Size = new System.Drawing.Size(100, 22);
-            this.confirmtextBox.TabIndex = 4;
+            this.confirmtextBox.TabIndex = 2;
             this.confirmtextBox.TextChanged += new System.EventHandler(this.confirmtextBox_TextChanged);
             // 
             // usernameLabel
@@ -104,7 +104,7 @@
             this.usernameLabel.Location = new System.Drawing.Point(50, 6);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(61, 13);
-            this.usernameLabel.TabIndex = 3;
+            this.usernameLabel.TabIndex = 0;
             this.usernameLabel.Text = "Username:";
             // 
             // passwordLabel
@@ -180,7 +180,7 @@
             this.confirmPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.confirmPanel.Name = "confirmPanel";
             this.confirmPanel.Size = new System.Drawing.Size(270, 29);
-            this.confirmPanel.TabIndex = 11;
+            this.confirmPanel.TabIndex = 2;
             this.confirmPanel.Visible = false;
             // 
             // cnfmView
@@ -205,7 +205,7 @@
             this.buttonPanel.Location = new System.Drawing.Point(34, 100);
             this.buttonPanel.Name = "buttonPanel";
             this.buttonPanel.Size = new System.Drawing.Size(243, 27);
-            this.buttonPanel.TabIndex = 1;
+            this.buttonPanel.TabIndex = 3;
             // 
             // backButton
             // 
@@ -350,7 +350,7 @@
             this.passwordPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.passwordPanel.Name = "passwordPanel";
             this.passwordPanel.Size = new System.Drawing.Size(270, 29);
-            this.passwordPanel.TabIndex = 28;
+            this.passwordPanel.TabIndex = 1;
             // 
             // usernamePanel
             // 
@@ -361,7 +361,7 @@
             this.usernamePanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.usernamePanel.Name = "usernamePanel";
             this.usernamePanel.Size = new System.Drawing.Size(270, 29);
-            this.usernamePanel.TabIndex = 29;
+            this.usernamePanel.TabIndex = 0;
             // 
             // controlPanel
             // 
