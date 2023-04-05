@@ -74,7 +74,7 @@ To get a local copy up and running follow these steps.
 <!-- CONTRIBUTING -->
 ## Contributing
 
-* [CONTRIBUTING.md](https://github.com/mcworkaholic/IS345-G5-Music-Player/edit/main/CONTRIBUTING.md)
+* [CONTRIBUTING.md](https://github.com/mcworkaholic/IS345-G5-Music-Player/blob/main/CONTRIBUTING.md)
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
