@@ -15,6 +15,7 @@ namespace Music_Player
         {
             InitializeComponent();
         }
+        private dbUtils dbUtils = new dbUtils();
 
         // for moving borderless form
         int movX, movY;
@@ -73,12 +74,6 @@ namespace Music_Player
             createButton.Click += createButton_Click;
             loginButton.Click += loginButton_Click;
             backButton.Click += backButton_Click;
-        }
-        // Hash a password using Bcrypt
-        public static string HashPassword(string password)
-        {
-            string hashedPassword = BC.HashPassword(password);
-            return (hashedPassword);
         }
         private void LoginForm_Load(object sender, EventArgs e)
         {
@@ -159,18 +154,7 @@ namespace Music_Player
                         try
                         {
                             // Second click: perform insert and close form
-                            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
-                            {
-                                connection.Open();
-                                string sql = "INSERT INTO user (username, password) VALUES (@username, @password)";
-                                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
-                                {
-                                    string hash = HashPassword(passwordtextBox.Text);
-                                    command.Parameters.AddWithValue("@username", usertextBox.Text);
-                                    command.Parameters.AddWithValue("@password", hash);
-                                    command.ExecuteNonQuery();
-                                }
-                            }
+                            dbUtils.InsertUser(connectionString, usertextBox.Text, passwordtextBox.Text);
                             Program.OpenForm1OnClose = true;
                             this.Close();
                         }
@@ -207,27 +191,7 @@ namespace Music_Player
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            string username = usertextBox.Text;
-
-            // Get the stored hash 
-            string storedHash = "";
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
-            {
-                connection.Open();
-                string sql = "SELECT password, user_id FROM user WHERE username=@username";
-                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
-                {
-                    command.Parameters.AddWithValue("@username", username);
-                    using (SQLiteDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            storedHash = reader.GetString(0);
-                            Program.user_id = reader.GetInt32(1);
-                        }
-                    }
-                }
-            }
+            string storedHash = dbUtils.GetHash(connectionString, usertextBox.Text);
             if (passwordtextBox.Text.Length > 0 && usertextBox.Text.Length > 0)
             {
                 try
