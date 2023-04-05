@@ -38,18 +38,18 @@
             this.usageLabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.topPanel = new System.Windows.Forms.Panel();
+            this.exitBox = new System.Windows.Forms.PictureBox();
+            this.minibox = new System.Windows.Forms.PictureBox();
             this.codelinkBox = new System.Windows.Forms.PictureBox();
             this.closeBox = new System.Windows.Forms.PictureBox();
             this.minimizeBox = new System.Windows.Forms.PictureBox();
-            this.exitBox = new System.Windows.Forms.PictureBox();
-            this.minibox = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.topPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minibox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.minibox)).BeginInit();
             this.SuspendLayout();
             // 
             // listView
@@ -70,7 +70,7 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Option";
-            this.columnHeader1.Width = 100;
+            this.columnHeader1.Width = 150;
             // 
             // columnHeader2
             // 
@@ -130,6 +130,40 @@
             this.topPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseMove);
             this.topPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseUp);
             // 
+            // exitBox
+            // 
+            this.exitBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.exitBox.ErrorImage = null;
+            this.exitBox.Image = ((System.Drawing.Image)(resources.GetObject("exitBox.Image")));
+            this.exitBox.InitialImage = null;
+            this.exitBox.Location = new System.Drawing.Point(547, 1);
+            this.exitBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.exitBox.Name = "exitBox";
+            this.exitBox.Size = new System.Drawing.Size(26, 22);
+            this.exitBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.exitBox.TabIndex = 4;
+            this.exitBox.TabStop = false;
+            this.exitBox.Click += new System.EventHandler(this.exitBox_Click);
+            this.exitBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.exitBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // minibox
+            // 
+            this.minibox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.minibox.ErrorImage = null;
+            this.minibox.Image = ((System.Drawing.Image)(resources.GetObject("minibox.Image")));
+            this.minibox.InitialImage = null;
+            this.minibox.Location = new System.Drawing.Point(516, 1);
+            this.minibox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.minibox.Name = "minibox";
+            this.minibox.Size = new System.Drawing.Size(31, 22);
+            this.minibox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.minibox.TabIndex = 3;
+            this.minibox.TabStop = false;
+            this.minibox.Click += new System.EventHandler(this.minibox_Click);
+            this.minibox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.minibox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
             // codelinkBox
             // 
             this.codelinkBox.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -173,40 +207,6 @@
             this.minimizeBox.TabIndex = 0;
             this.minimizeBox.TabStop = false;
             // 
-            // exitBox
-            // 
-            this.exitBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.exitBox.ErrorImage = null;
-            this.exitBox.Image = ((System.Drawing.Image)(resources.GetObject("exitBox.Image")));
-            this.exitBox.InitialImage = null;
-            this.exitBox.Location = new System.Drawing.Point(547, 1);
-            this.exitBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.exitBox.Name = "exitBox";
-            this.exitBox.Size = new System.Drawing.Size(26, 22);
-            this.exitBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.exitBox.TabIndex = 4;
-            this.exitBox.TabStop = false;
-            this.exitBox.Click += new System.EventHandler(this.exitBox_Click);
-            this.exitBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.exitBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // minibox
-            // 
-            this.minibox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.minibox.ErrorImage = null;
-            this.minibox.Image = ((System.Drawing.Image)(resources.GetObject("minibox.Image")));
-            this.minibox.InitialImage = null;
-            this.minibox.Location = new System.Drawing.Point(516, 1);
-            this.minibox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.minibox.Name = "minibox";
-            this.minibox.Size = new System.Drawing.Size(31, 22);
-            this.minibox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.minibox.TabIndex = 3;
-            this.minibox.TabStop = false;
-            this.minibox.Click += new System.EventHandler(this.minibox_Click);
-            this.minibox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.minibox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -234,11 +234,11 @@
             this.Text = "Configuration";
             this.Load += new System.EventHandler(this.Config_Load);
             this.topPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.exitBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minibox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.exitBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.minibox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
