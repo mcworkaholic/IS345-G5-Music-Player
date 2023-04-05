@@ -45,9 +45,6 @@
             this.addtoplaylistButton = new System.Windows.Forms.Button();
             this.openplayButton = new System.Windows.Forms.Button();
             this.clearQueueButton = new System.Windows.Forms.Button();
-            this.saveArtButton = new System.Windows.Forms.Button();
-            this.fetchingPanel = new System.Windows.Forms.Panel();
-            this.fetchingLabel = new System.Windows.Forms.Label();
             this.topPanel = new System.Windows.Forms.Panel();
             this.githublinkBox = new System.Windows.Forms.PictureBox();
             this.closeBox = new System.Windows.Forms.PictureBox();
@@ -79,7 +76,6 @@
             this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.clearBox = new System.Windows.Forms.PictureBox();
             this.albumArtBox = new System.Windows.Forms.PictureBox();
-            this.fetchingPanel.SuspendLayout();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).BeginInit();
@@ -282,40 +278,6 @@
             this.clearQueueButton.Click += new System.EventHandler(this.clearQueueButton_Click);
             this.clearQueueButton.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.clearQueueButton.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // saveArtButton
-            // 
-            this.saveArtButton.Location = new System.Drawing.Point(414, 418);
-            this.saveArtButton.Name = "saveArtButton";
-            this.saveArtButton.Size = new System.Drawing.Size(111, 23);
-            this.saveArtButton.TabIndex = 22;
-            this.saveArtButton.TabStop = false;
-            this.saveArtButton.Text = "Save Artwork";
-            this.saveArtButton.UseVisualStyleBackColor = true;
-            this.saveArtButton.Visible = false;
-            this.saveArtButton.Click += new System.EventHandler(this.saveArtButton_Click);
-            this.saveArtButton.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.saveArtButton.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // fetchingPanel
-            // 
-            this.fetchingPanel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.fetchingPanel.Controls.Add(this.fetchingLabel);
-            this.fetchingPanel.Location = new System.Drawing.Point(0, 49);
-            this.fetchingPanel.Name = "fetchingPanel";
-            this.fetchingPanel.Size = new System.Drawing.Size(525, 318);
-            this.fetchingPanel.TabIndex = 25;
-            this.fetchingPanel.Visible = false;
-            // 
-            // fetchingLabel
-            // 
-            this.fetchingLabel.AutoSize = true;
-            this.fetchingLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.fetchingLabel.Location = new System.Drawing.Point(3, 0);
-            this.fetchingLabel.Name = "fetchingLabel";
-            this.fetchingLabel.Size = new System.Drawing.Size(102, 13);
-            this.fetchingLabel.TabIndex = 0;
-            this.fetchingLabel.Text = "fetching artwork...";
             // 
             // topPanel
             // 
@@ -731,8 +693,6 @@
             this.Controls.Add(this.eqButton);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.topPanel);
-            this.Controls.Add(this.fetchingPanel);
-            this.Controls.Add(this.saveArtButton);
             this.Controls.Add(this.clearQueueButton);
             this.Controls.Add(this.openplayButton);
             this.Controls.Add(this.addtoplaylistButton);
@@ -753,8 +713,6 @@
             this.Text = "🎵 Music Player";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Click += new System.EventHandler(this.Form1_Click);
-            this.fetchingPanel.ResumeLayout(false);
-            this.fetchingPanel.PerformLayout();
             this.topPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).EndInit();
@@ -799,9 +757,6 @@
         private System.Windows.Forms.Button addtoplaylistButton;
         private System.Windows.Forms.Button openplayButton;
         private System.Windows.Forms.Button clearQueueButton;
-        private System.Windows.Forms.Button saveArtButton;
-        private System.Windows.Forms.Panel fetchingPanel;
-        private System.Windows.Forms.Label fetchingLabel;
         private System.Windows.Forms.Panel topPanel;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button eqButton;

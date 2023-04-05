@@ -411,24 +411,6 @@ namespace Music_Player
             var tree = FileSystemTreeNode.BuildTree(musicFolderPath);
             string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
             var currentNode = tree.FindNodeByFullPath(currentSongPath, songObj);
-            //string fileName = currentNode.FileName;
-            //string artistName = currentNode.Parent.Parent.DisplayName;
-            //string albumName = currentNode.Parent.DisplayName;
-            //string albumArtPath = currentSongPath.Replace(fileName, "Album Art");
-            //string[] artPaths = Directory.GetFiles(albumArtPath);
-
-            //if (artPaths.Length > 0)
-            //{
-            //    albumArtBox.ImageLocation = artPaths[0];
-            //}
-            //// Check if the album artwork URL is already in the cache
-            //else if (albumArtCache.ContainsKey(albumName))
-            //{
-            //    // Set the image source to the cached artwork URL
-            //    albumArtBox.ImageLocation = albumArtCache[albumName];
-            //}
-            //else
-            //{
             try
             {
                 TagLib.File file_TAG = TagLib.File.Create(currentNode.FullPath);
@@ -438,73 +420,8 @@ namespace Music_Player
                     Image image = Image.FromStream(new MemoryStream(bin));
                     albumArtBox.Image = image;
                 }
-                else
-                {
-                    // Search for the album artwork URL and add it to the cache if needed
-                    //ApplySearch(artistName, albumName, albumArtPath);
-                }
             }
             catch (Exception ex) { MessageBox.Show("An unexpected error has occurred: " + ex.Message); }
-        }
-        private async Task SearchForAlbumCover(string artist, string album)
-        {
-            try
-            {
-                // Build the iTunes API URL
-                string url = $"https://itunes.apple.com/search?term=" + artist + "+" + album + "&country=us" + "&entity=album";
-                url.Replace(" ", "-");
-                // Make a request to the API
-                using (HttpClient client = new HttpClient())
-                {
-                    HttpResponseMessage response = await client.GetAsync(url);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-
-                    // Parse the JSON response
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    dynamic data = serializer.Deserialize<dynamic>(responseBody);
-
-                    // Get the first result
-                    dynamic result = data["results"][0];
-
-                    // Get the artwork URL
-                    string artworkUrl = result["artworkUrl100"].ToString().Replace("100x100bb.jpg", "100000x100000-999.jpg");
-
-                    // Add the artwork URL to the cache for this album
-                    albumArtCache[album] = artworkUrl;
-
-                    // Set the image source to the artwork URL
-                    albumArtBox.Load(artworkUrl);
-                    // Remove overlay 
-                    fetchingPanel.Visible = false;
-                    // Suggest to save
-                    saveArtButton.Focus();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred: " + ex.Message);
-            }
-        }
-        private async void ApplySearch(string artist, string album, string albumArtPath)
-        {
-            // Check if any artwork files exist in the Album Art folder
-            string[] artFiles = Directory.GetFiles(albumArtPath, "*.jpg");
-            if (artFiles.Length > 0)
-            {
-                // Set the image source to the first artwork file found
-                albumArtBox.ImageLocation = artFiles[0];
-            }
-            else
-            {
-                if (saveArtButton.Visible == false)
-                    saveArtButton.Visible = true;
-
-                // Show overlay
-                fetchingPanel.Visible = true;
-                // Search for the album artwork URL and add it to the cache
-                await SearchForAlbumCover(artist, album);
-            }
         }
         private void LoadMusic(string path)
         {
@@ -608,7 +525,7 @@ namespace Music_Player
         {
             form_Load();
         }
-        private void GetPlaylists(string action) //move to its own class
+        private void GetPlaylists(string action) 
         {
             int selectedIndex = playlistBox.SelectedIndex; // Store the selected index
             playlistBox.DataSource = dbUtils.GetPlaylists(connectionString);
@@ -623,7 +540,6 @@ namespace Music_Player
         {
             var allNodes = rootNode.GetAllNodesExceptRoot();
             var autoCompleteSource = allNodes.Select(node => $"{node.DisplayName} {node.ObjectType}").ToList();
-            autoCompleteSource.RemoveAll(node => node.Equals("Album Art")); // remove node and its children if node is album art
             AutoCompleteStringCollection MyCollection = new AutoCompleteStringCollection();
             foreach (var node in autoCompleteSource)
             {
@@ -774,29 +690,6 @@ namespace Music_Player
                 }
             }
         }
-        private void saveArtButton_Click(object sender, EventArgs e)
-        {
-            // save artwork to their respective folders
-            string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
-            var currentNode = rootNode.FindNodeByFullPath(currentSongPath, songObj);
-            string fileName = "cover.jpg";
-            string artFolderPath = currentNode.GetAlbumArtPath();
-            string newImagePath = Path.Combine(artFolderPath, fileName);
-
-            // create the file "cover.jpg" before saving the image
-            File.Create(newImagePath).Close();
-            Image currentAlbumImage = albumArtBox.Image;
-            SaveImage(currentAlbumImage, newImagePath);
-
-            // lastly
-            saveArtButton.Visible = false;
-        }
-        private void SaveImage(Image image, string filePath)
-        {
-            // Save the image as a JPEG file
-            image.Save(filePath, ImageFormat.Jpeg);
-        }
-
         private void searchTextBox_TextChanged(object sender, EventArgs e)
         {
             if (searchTextBox.Text.Length > 0)

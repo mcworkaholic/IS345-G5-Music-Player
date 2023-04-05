@@ -17,24 +17,6 @@ namespace Music_Player
         public FileSystemTreeNode Parent { get; set; }
         public IEnumerable<FileSystemTreeNode> Children => _children;
 
-        // Needs to be called from a "song" node
-        public string GetAlbumArtPath()
-        {
-            if (this.Parent == null)
-            {
-                return null;
-            }
-
-            foreach (var childNode in this.Parent.Children)
-            {
-                if (childNode.DisplayName == "Album Art" && childNode.NodeType == NodeType.Folder)
-                {
-                    return childNode.FullPath;
-                }
-            }
-
-            return this.Parent.GetAlbumArtPath();
-        }
         public FileSystemTreeNode FindNodeByDisplayName(string displayName, string objectType)
         {
             if (this.DisplayName == displayName && this.ObjectType == objectType)
@@ -72,7 +54,7 @@ namespace Music_Player
 
         public FileSystemTreeNode FindNodeByFullPath(string path, string objectType)
         {
-            if (this.FullPath == path)
+            if (this.FullPath == path && this.ObjectType == objectType)
             {
                 return this;
             }
