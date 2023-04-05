@@ -408,9 +408,8 @@ namespace Music_Player
             durationLabel.Visible = true;
             durationLabel.Text = $"Length: {TimeSpan.FromSeconds(duration):mm\\:ss}";
 
-            var tree = FileSystemTreeNode.BuildTree(musicFolderPath);
             string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
-            var currentNode = tree.FindNodeByFullPath(currentSongPath, songObj);
+            var currentNode = rootNode.FindNodeByFullPath(currentSongPath, songObj);
             try
             {
                 TagLib.File file_TAG = TagLib.File.Create(currentNode.FullPath);
@@ -496,7 +495,6 @@ namespace Music_Player
             // set visualization preset from windows media player
             SetCurrentEffectPreset(4);
             workingDirectory = Environment.CurrentDirectory;
-            musicFolderPath = Directory.GetParent(workingDirectory).Parent.FullName + "\\Music";
             dbPath = Directory.GetParent(workingDirectory).Parent.FullName + "\\Data\\users.db";
             connectionString = $@"Data Source={dbPath};";
             string startupPath = dbUtils.GetStartUpFolder(connectionString);
