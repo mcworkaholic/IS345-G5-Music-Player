@@ -40,38 +40,38 @@
             this.loginButton = new System.Windows.Forms.Button();
             this.confirmPanel = new System.Windows.Forms.Panel();
             this.cnfmView = new System.Windows.Forms.Button();
+            this.cfrmpwderrBox = new System.Windows.Forms.PictureBox();
             this.buttonPanel = new System.Windows.Forms.Panel();
             this.backButton = new System.Windows.Forms.Button();
             this.passView = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
-            this.passwordPanel = new System.Windows.Forms.Panel();
-            this.usernamePanel = new System.Windows.Forms.Panel();
-            this.controlPanel = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.toolTip3 = new System.Windows.Forms.ToolTip(this.components);
-            this.usrerrBox = new System.Windows.Forms.PictureBox();
-            this.pwderrBox = new System.Windows.Forms.PictureBox();
-            this.cfrmpwderrBox = new System.Windows.Forms.PictureBox();
             this.codelinkBox = new System.Windows.Forms.PictureBox();
             this.exitBox = new System.Windows.Forms.PictureBox();
             this.minimizeBox = new System.Windows.Forms.PictureBox();
             this.miniBox = new System.Windows.Forms.PictureBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
+            this.passwordPanel = new System.Windows.Forms.Panel();
+            this.pwderrBox = new System.Windows.Forms.PictureBox();
+            this.usernamePanel = new System.Windows.Forms.Panel();
+            this.usrerrBox = new System.Windows.Forms.PictureBox();
+            this.controlPanel = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.toolTip3 = new System.Windows.Forms.ToolTip(this.components);
             this.logoBox = new System.Windows.Forms.PictureBox();
             this.confirmPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cfrmpwderrBox)).BeginInit();
             this.buttonPanel.SuspendLayout();
             this.topPanel.SuspendLayout();
-            this.passwordPanel.SuspendLayout();
-            this.usernamePanel.SuspendLayout();
-            this.controlPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.usrerrBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pwderrBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cfrmpwderrBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.miniBox)).BeginInit();
+            this.passwordPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pwderrBox)).BeginInit();
+            this.usernamePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.usrerrBox)).BeginInit();
+            this.controlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -176,6 +176,16 @@
             this.cnfmView.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.cnfmView.MouseHover += new System.EventHandler(this.MouseHover);
             // 
+            // cfrmpwderrBox
+            // 
+            this.cfrmpwderrBox.Image = ((System.Drawing.Image)(resources.GetObject("cfrmpwderrBox.Image")));
+            this.cfrmpwderrBox.Location = new System.Drawing.Point(220, 5);
+            this.cfrmpwderrBox.Name = "cfrmpwderrBox";
+            this.cfrmpwderrBox.Size = new System.Drawing.Size(19, 20);
+            this.cfrmpwderrBox.TabIndex = 10;
+            this.cfrmpwderrBox.TabStop = false;
+            this.cfrmpwderrBox.Visible = false;
+            // 
             // buttonPanel
             // 
             this.buttonPanel.Controls.Add(this.backButton);
@@ -228,82 +238,6 @@
             this.topPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseDown);
             this.topPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseMove);
             this.topPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseUp);
-            // 
-            // passwordPanel
-            // 
-            this.passwordPanel.Controls.Add(this.passwordtextBox);
-            this.passwordPanel.Controls.Add(this.passwordLabel);
-            this.passwordPanel.Controls.Add(this.passView);
-            this.passwordPanel.Controls.Add(this.pwderrBox);
-            this.passwordPanel.Location = new System.Drawing.Point(3, 40);
-            this.passwordPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.passwordPanel.Name = "passwordPanel";
-            this.passwordPanel.Size = new System.Drawing.Size(270, 29);
-            this.passwordPanel.TabIndex = 1;
-            // 
-            // usernamePanel
-            // 
-            this.usernamePanel.Controls.Add(this.usertextBox);
-            this.usernamePanel.Controls.Add(this.usernameLabel);
-            this.usernamePanel.Controls.Add(this.usrerrBox);
-            this.usernamePanel.Location = new System.Drawing.Point(3, 11);
-            this.usernamePanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.usernamePanel.Name = "usernamePanel";
-            this.usernamePanel.Size = new System.Drawing.Size(270, 29);
-            this.usernamePanel.TabIndex = 0;
-            // 
-            // controlPanel
-            // 
-            this.controlPanel.Controls.Add(this.usernamePanel);
-            this.controlPanel.Controls.Add(this.passwordPanel);
-            this.controlPanel.Controls.Add(this.confirmPanel);
-            this.controlPanel.Controls.Add(this.buttonPanel);
-            this.controlPanel.Location = new System.Drawing.Point(68, 227);
-            this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(284, 139);
-            this.controlPanel.TabIndex = 30;
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 393);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(460, 10);
-            this.panel1.TabIndex = 31;
-            // 
-            // usrerrBox
-            // 
-            this.usrerrBox.ErrorImage = null;
-            this.usrerrBox.Image = global::Music_Player.Properties.Resources.error;
-            this.usrerrBox.InitialImage = null;
-            this.usrerrBox.Location = new System.Drawing.Point(220, 5);
-            this.usrerrBox.Name = "usrerrBox";
-            this.usrerrBox.Size = new System.Drawing.Size(19, 20);
-            this.usrerrBox.TabIndex = 9;
-            this.usrerrBox.TabStop = false;
-            this.usrerrBox.Visible = false;
-            // 
-            // pwderrBox
-            // 
-            this.pwderrBox.ErrorImage = null;
-            this.pwderrBox.Image = ((System.Drawing.Image)(resources.GetObject("pwderrBox.Image")));
-            this.pwderrBox.Location = new System.Drawing.Point(220, 6);
-            this.pwderrBox.Name = "pwderrBox";
-            this.pwderrBox.Size = new System.Drawing.Size(19, 20);
-            this.pwderrBox.TabIndex = 13;
-            this.pwderrBox.TabStop = false;
-            this.pwderrBox.Visible = false;
-            // 
-            // cfrmpwderrBox
-            // 
-            this.cfrmpwderrBox.Image = ((System.Drawing.Image)(resources.GetObject("cfrmpwderrBox.Image")));
-            this.cfrmpwderrBox.Location = new System.Drawing.Point(220, 5);
-            this.cfrmpwderrBox.Name = "cfrmpwderrBox";
-            this.cfrmpwderrBox.Size = new System.Drawing.Size(19, 20);
-            this.cfrmpwderrBox.TabIndex = 10;
-            this.cfrmpwderrBox.TabStop = false;
-            this.cfrmpwderrBox.Visible = false;
             // 
             // codelinkBox
             // 
@@ -372,6 +306,72 @@
             this.miniBox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.miniBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
+            // passwordPanel
+            // 
+            this.passwordPanel.Controls.Add(this.passwordtextBox);
+            this.passwordPanel.Controls.Add(this.passwordLabel);
+            this.passwordPanel.Controls.Add(this.passView);
+            this.passwordPanel.Controls.Add(this.pwderrBox);
+            this.passwordPanel.Location = new System.Drawing.Point(3, 40);
+            this.passwordPanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.passwordPanel.Name = "passwordPanel";
+            this.passwordPanel.Size = new System.Drawing.Size(270, 29);
+            this.passwordPanel.TabIndex = 1;
+            // 
+            // pwderrBox
+            // 
+            this.pwderrBox.ErrorImage = null;
+            this.pwderrBox.Image = ((System.Drawing.Image)(resources.GetObject("pwderrBox.Image")));
+            this.pwderrBox.Location = new System.Drawing.Point(220, 6);
+            this.pwderrBox.Name = "pwderrBox";
+            this.pwderrBox.Size = new System.Drawing.Size(19, 20);
+            this.pwderrBox.TabIndex = 13;
+            this.pwderrBox.TabStop = false;
+            this.pwderrBox.Visible = false;
+            // 
+            // usernamePanel
+            // 
+            this.usernamePanel.Controls.Add(this.usertextBox);
+            this.usernamePanel.Controls.Add(this.usernameLabel);
+            this.usernamePanel.Controls.Add(this.usrerrBox);
+            this.usernamePanel.Location = new System.Drawing.Point(3, 11);
+            this.usernamePanel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.usernamePanel.Name = "usernamePanel";
+            this.usernamePanel.Size = new System.Drawing.Size(270, 29);
+            this.usernamePanel.TabIndex = 0;
+            // 
+            // usrerrBox
+            // 
+            this.usrerrBox.ErrorImage = null;
+            this.usrerrBox.Image = global::Music_Player.Properties.Resources.error;
+            this.usrerrBox.InitialImage = null;
+            this.usrerrBox.Location = new System.Drawing.Point(220, 5);
+            this.usrerrBox.Name = "usrerrBox";
+            this.usrerrBox.Size = new System.Drawing.Size(19, 20);
+            this.usrerrBox.TabIndex = 9;
+            this.usrerrBox.TabStop = false;
+            this.usrerrBox.Visible = false;
+            // 
+            // controlPanel
+            // 
+            this.controlPanel.Controls.Add(this.usernamePanel);
+            this.controlPanel.Controls.Add(this.passwordPanel);
+            this.controlPanel.Controls.Add(this.confirmPanel);
+            this.controlPanel.Controls.Add(this.buttonPanel);
+            this.controlPanel.Location = new System.Drawing.Point(68, 227);
+            this.controlPanel.Name = "controlPanel";
+            this.controlPanel.Size = new System.Drawing.Size(284, 139);
+            this.controlPanel.TabIndex = 30;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 393);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(460, 10);
+            this.panel1.TabIndex = 31;
+            // 
             // logoBox
             // 
             this.logoBox.BackColor = System.Drawing.Color.Transparent;
@@ -398,26 +398,27 @@
             this.Controls.Add(this.logoBox);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "loginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.Load += new System.EventHandler(this.LoginForm_Load);
             this.confirmPanel.ResumeLayout(false);
             this.confirmPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cfrmpwderrBox)).EndInit();
             this.buttonPanel.ResumeLayout(false);
             this.topPanel.ResumeLayout(false);
-            this.passwordPanel.ResumeLayout(false);
-            this.passwordPanel.PerformLayout();
-            this.usernamePanel.ResumeLayout(false);
-            this.usernamePanel.PerformLayout();
-            this.controlPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.usrerrBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pwderrBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cfrmpwderrBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.miniBox)).EndInit();
+            this.passwordPanel.ResumeLayout(false);
+            this.passwordPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pwderrBox)).EndInit();
+            this.usernamePanel.ResumeLayout(false);
+            this.usernamePanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.usrerrBox)).EndInit();
+            this.controlPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.logoBox)).EndInit();
             this.ResumeLayout(false);
 

@@ -46,53 +46,55 @@
             this.openplayButton = new System.Windows.Forms.Button();
             this.clearQueueButton = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.githublinkBox = new System.Windows.Forms.PictureBox();
+            this.closeBox = new System.Windows.Forms.PictureBox();
+            this.minimizeBox = new System.Windows.Forms.PictureBox();
             this.clearButton = new System.Windows.Forms.Button();
             this.eqButton = new System.Windows.Forms.Button();
             this.deviceBox = new System.Windows.Forms.ComboBox();
             this.prevToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.previousBox = new System.Windows.Forms.PictureBox();
             this.nextToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.nextBox = new System.Windows.Forms.PictureBox();
             this.minimizeToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.closeToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.backBox = new System.Windows.Forms.PictureBox();
+            this.playPauseButton = new System.Windows.Forms.PictureBox();
+            this.volumeIconBox = new System.Windows.Forms.PictureBox();
+            this.settingsBox = new System.Windows.Forms.PictureBox();
             this.volumeBar = new System.Windows.Forms.TrackBar();
             this.audioControllerPanel = new System.Windows.Forms.Panel();
             this.audioPosTrackBar = new System.Windows.Forms.TrackBar();
             this.volumeToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.libraryPanel = new System.Windows.Forms.Panel();
+            this.libraryAlbumArtBox = new System.Windows.Forms.PictureBox();
             this.treeView = new System.Windows.Forms.TreeView();
             this.noLibraryLabel = new System.Windows.Forms.Label();
             this.configureLabel = new System.Windows.Forms.Label();
             this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.albumArtBox = new System.Windows.Forms.PictureBox();
-            this.libraryAlbumArtBox = new System.Windows.Forms.PictureBox();
-            this.backBox = new System.Windows.Forms.PictureBox();
-            this.playPauseButton = new System.Windows.Forms.PictureBox();
-            this.previousBox = new System.Windows.Forms.PictureBox();
-            this.volumeIconBox = new System.Windows.Forms.PictureBox();
-            this.nextBox = new System.Windows.Forms.PictureBox();
-            this.settingsBox = new System.Windows.Forms.PictureBox();
             this.clearBox = new System.Windows.Forms.PictureBox();
-            this.githublinkBox = new System.Windows.Forms.PictureBox();
-            this.closeBox = new System.Windows.Forms.PictureBox();
-            this.minimizeBox = new System.Windows.Forms.PictureBox();
             this.topPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.closeBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.previousBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nextBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
             this.audioControllerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.audioPosTrackBar)).BeginInit();
             this.libraryPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.previousBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nextBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clearBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.closeBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).BeginInit();
             this.SuspendLayout();
             // 
             // songslistBox
@@ -280,6 +282,7 @@
             // topPanel
             // 
             this.topPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.topPanel.Controls.Add(this.pictureBox1);
             this.topPanel.Controls.Add(this.githublinkBox);
             this.topPanel.Controls.Add(this.closeBox);
             this.topPanel.Controls.Add(this.minimizeBox);
@@ -293,6 +296,76 @@
             this.topPanel.MouseHover += new System.EventHandler(this.MouseHover);
             this.topPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseMove);
             this.topPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseUp);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox1.ErrorImage = null;
+            this.pictureBox1.Image = global::Music_Player.Properties.Resources.login_logo;
+            this.pictureBox1.InitialImage = null;
+            this.pictureBox1.Location = new System.Drawing.Point(3, 1);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(20, 22);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
+            // githublinkBox
+            // 
+            this.githublinkBox.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.githublinkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.githublinkBox.ErrorImage = null;
+            this.githublinkBox.Image = global::Music_Player.Properties.Resources.codelink;
+            this.githublinkBox.InitialImage = null;
+            this.githublinkBox.Location = new System.Drawing.Point(709, 1);
+            this.githublinkBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.githublinkBox.Name = "githublinkBox";
+            this.githublinkBox.Size = new System.Drawing.Size(23, 22);
+            this.githublinkBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.githublinkBox.TabIndex = 2;
+            this.githublinkBox.TabStop = false;
+            this.minimizeToolTip.SetToolTip(this.githublinkBox, "https://github.com/mcworkaholic/IS345-G5-Music-Player");
+            this.githublinkBox.Click += new System.EventHandler(this.githublinkBox_Click);
+            this.githublinkBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.githublinkBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // closeBox
+            // 
+            this.closeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.closeBox.ErrorImage = null;
+            this.closeBox.Image = global::Music_Player.Properties.Resources.close;
+            this.closeBox.InitialImage = null;
+            this.closeBox.Location = new System.Drawing.Point(766, 1);
+            this.closeBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.closeBox.Name = "closeBox";
+            this.closeBox.Size = new System.Drawing.Size(26, 22);
+            this.closeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.closeBox.TabIndex = 1;
+            this.closeBox.TabStop = false;
+            this.closeToolTip.SetToolTip(this.closeBox, "Close ");
+            this.closeBox.Click += new System.EventHandler(this.closeBox_Click);
+            this.closeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.closeBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // minimizeBox
+            // 
+            this.minimizeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.minimizeBox.ErrorImage = null;
+            this.minimizeBox.Image = global::Music_Player.Properties.Resources.minimize;
+            this.minimizeBox.InitialImage = null;
+            this.minimizeBox.Location = new System.Drawing.Point(735, 1);
+            this.minimizeBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.minimizeBox.Name = "minimizeBox";
+            this.minimizeBox.Size = new System.Drawing.Size(31, 22);
+            this.minimizeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.minimizeBox.TabIndex = 0;
+            this.minimizeBox.TabStop = false;
+            this.minimizeToolTip.SetToolTip(this.minimizeBox, "Minimize");
+            this.minimizeBox.Click += new System.EventHandler(this.minimizeBox_Click);
+            this.minimizeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.minimizeBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
             // clearButton
             // 
@@ -336,6 +409,117 @@
             this.deviceBox.TabIndex = 3;
             this.deviceBox.SelectedIndexChanged += new System.EventHandler(this.deviceBox_SelectedIndexChanged);
             this.deviceBox.Click += new System.EventHandler(this.deviceBox_Click);
+            // 
+            // previousBox
+            // 
+            this.previousBox.BackgroundImage = global::Music_Player.Properties.Resources.previous;
+            this.previousBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.previousBox.Enabled = false;
+            this.previousBox.ErrorImage = null;
+            this.previousBox.InitialImage = null;
+            this.previousBox.Location = new System.Drawing.Point(49, 22);
+            this.previousBox.Name = "previousBox";
+            this.previousBox.Size = new System.Drawing.Size(15, 17);
+            this.previousBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.previousBox.TabIndex = 5;
+            this.previousBox.TabStop = false;
+            this.prevToolTip.SetToolTip(this.previousBox, "Previous");
+            this.previousBox.Click += new System.EventHandler(this.previousBox_Click);
+            this.previousBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.previousBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // nextBox
+            // 
+            this.nextBox.BackgroundImage = global::Music_Player.Properties.Resources.next;
+            this.nextBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.nextBox.Enabled = false;
+            this.nextBox.ErrorImage = null;
+            this.nextBox.InitialImage = null;
+            this.nextBox.Location = new System.Drawing.Point(74, 22);
+            this.nextBox.Name = "nextBox";
+            this.nextBox.Size = new System.Drawing.Size(15, 17);
+            this.nextBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.nextBox.TabIndex = 6;
+            this.nextBox.TabStop = false;
+            this.nextToolTip.SetToolTip(this.nextBox, "Next");
+            this.nextBox.Click += new System.EventHandler(this.nextBox_Click);
+            this.nextBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.nextBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // backBox
+            // 
+            this.backBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.backBox.ErrorImage = null;
+            this.backBox.Image = global::Music_Player.Properties.Resources.backbutton;
+            this.backBox.InitialImage = null;
+            this.backBox.Location = new System.Drawing.Point(238, -1);
+            this.backBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.backBox.Name = "backBox";
+            this.backBox.Size = new System.Drawing.Size(25, 22);
+            this.backBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.backBox.TabIndex = 2;
+            this.backBox.TabStop = false;
+            this.closeToolTip.SetToolTip(this.backBox, "To Library");
+            this.backBox.Visible = false;
+            this.backBox.Click += new System.EventHandler(this.backBox_Click);
+            this.backBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.backBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // playPauseButton
+            // 
+            this.playPauseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.playPauseButton.Enabled = false;
+            this.playPauseButton.ErrorImage = null;
+            this.playPauseButton.Image = ((System.Drawing.Image)(resources.GetObject("playPauseButton.Image")));
+            this.playPauseButton.InitialImage = null;
+            this.playPauseButton.Location = new System.Drawing.Point(6, 16);
+            this.playPauseButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.playPauseButton.Name = "playPauseButton";
+            this.playPauseButton.Size = new System.Drawing.Size(33, 27);
+            this.playPauseButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.playPauseButton.TabIndex = 201;
+            this.playPauseButton.TabStop = false;
+            this.closeToolTip.SetToolTip(this.playPauseButton, "Play/Pause");
+            this.playPauseButton.Click += new System.EventHandler(this.playPauseButton_Click);
+            this.playPauseButton.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.playPauseButton.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // volumeIconBox
+            // 
+            this.volumeIconBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.volumeIconBox.Enabled = false;
+            this.volumeIconBox.ErrorImage = null;
+            this.volumeIconBox.Image = ((System.Drawing.Image)(resources.GetObject("volumeIconBox.Image")));
+            this.volumeIconBox.InitialImage = null;
+            this.volumeIconBox.Location = new System.Drawing.Point(102, 21);
+            this.volumeIconBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.volumeIconBox.Name = "volumeIconBox";
+            this.volumeIconBox.Size = new System.Drawing.Size(21, 19);
+            this.volumeIconBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.volumeIconBox.TabIndex = 202;
+            this.volumeIconBox.TabStop = false;
+            this.closeToolTip.SetToolTip(this.volumeIconBox, " Mute");
+            this.volumeIconBox.Click += new System.EventHandler(this.volumeIconBox_Click);
+            this.volumeIconBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.volumeIconBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // settingsBox
+            // 
+            this.settingsBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.settingsBox.ErrorImage = null;
+            this.settingsBox.Image = global::Music_Player.Properties.Resources.settings;
+            this.settingsBox.InitialImage = null;
+            this.settingsBox.Location = new System.Drawing.Point(256, 422);
+            this.settingsBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.settingsBox.Name = "settingsBox";
+            this.settingsBox.Size = new System.Drawing.Size(14, 20);
+            this.settingsBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.settingsBox.TabIndex = 3;
+            this.settingsBox.TabStop = false;
+            this.closeToolTip.SetToolTip(this.settingsBox, "More Settings");
+            this.settingsBox.Click += new System.EventHandler(this.settingsBox_Click);
+            this.settingsBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.settingsBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
             // volumeBar
             // 
@@ -407,6 +591,17 @@
             this.libraryPanel.TabIndex = 205;
             this.libraryPanel.Visible = false;
             // 
+            // libraryAlbumArtBox
+            // 
+            this.libraryAlbumArtBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.libraryAlbumArtBox.Location = new System.Drawing.Point(82, 17);
+            this.libraryAlbumArtBox.Name = "libraryAlbumArtBox";
+            this.libraryAlbumArtBox.Size = new System.Drawing.Size(100, 95);
+            this.libraryAlbumArtBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.libraryAlbumArtBox.TabIndex = 3;
+            this.libraryAlbumArtBox.TabStop = false;
+            this.libraryAlbumArtBox.Visible = false;
+            // 
             // treeView
             // 
             this.treeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -467,128 +662,6 @@
             this.albumArtBox.Click += new System.EventHandler(this.albumArtBox_Click);
             this.albumArtBox.DoubleClick += new System.EventHandler(this.albumArtBox_DoubleClick);
             // 
-            // libraryAlbumArtBox
-            // 
-            this.libraryAlbumArtBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.libraryAlbumArtBox.Location = new System.Drawing.Point(82, 17);
-            this.libraryAlbumArtBox.Name = "libraryAlbumArtBox";
-            this.libraryAlbumArtBox.Size = new System.Drawing.Size(100, 95);
-            this.libraryAlbumArtBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.libraryAlbumArtBox.TabIndex = 3;
-            this.libraryAlbumArtBox.TabStop = false;
-            this.libraryAlbumArtBox.Visible = false;
-            // 
-            // backBox
-            // 
-            this.backBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.backBox.ErrorImage = null;
-            this.backBox.Image = global::Music_Player.Properties.Resources.backbutton;
-            this.backBox.InitialImage = null;
-            this.backBox.Location = new System.Drawing.Point(238, -1);
-            this.backBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.backBox.Name = "backBox";
-            this.backBox.Size = new System.Drawing.Size(25, 22);
-            this.backBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.backBox.TabIndex = 2;
-            this.backBox.TabStop = false;
-            this.closeToolTip.SetToolTip(this.backBox, "To Library");
-            this.backBox.Visible = false;
-            this.backBox.Click += new System.EventHandler(this.backBox_Click);
-            this.backBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.backBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // playPauseButton
-            // 
-            this.playPauseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.playPauseButton.Enabled = false;
-            this.playPauseButton.ErrorImage = null;
-            this.playPauseButton.Image = ((System.Drawing.Image)(resources.GetObject("playPauseButton.Image")));
-            this.playPauseButton.InitialImage = null;
-            this.playPauseButton.Location = new System.Drawing.Point(6, 16);
-            this.playPauseButton.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.playPauseButton.Name = "playPauseButton";
-            this.playPauseButton.Size = new System.Drawing.Size(33, 27);
-            this.playPauseButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.playPauseButton.TabIndex = 201;
-            this.playPauseButton.TabStop = false;
-            this.closeToolTip.SetToolTip(this.playPauseButton, "Play/Pause");
-            this.playPauseButton.Click += new System.EventHandler(this.playPauseButton_Click);
-            this.playPauseButton.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.playPauseButton.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // previousBox
-            // 
-            this.previousBox.BackgroundImage = global::Music_Player.Properties.Resources.previous;
-            this.previousBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.previousBox.Enabled = false;
-            this.previousBox.ErrorImage = null;
-            this.previousBox.InitialImage = null;
-            this.previousBox.Location = new System.Drawing.Point(49, 22);
-            this.previousBox.Name = "previousBox";
-            this.previousBox.Size = new System.Drawing.Size(15, 17);
-            this.previousBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.previousBox.TabIndex = 5;
-            this.previousBox.TabStop = false;
-            this.prevToolTip.SetToolTip(this.previousBox, "Previous");
-            this.previousBox.Click += new System.EventHandler(this.previousBox_Click);
-            this.previousBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.previousBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // volumeIconBox
-            // 
-            this.volumeIconBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.volumeIconBox.Enabled = false;
-            this.volumeIconBox.ErrorImage = null;
-            this.volumeIconBox.Image = ((System.Drawing.Image)(resources.GetObject("volumeIconBox.Image")));
-            this.volumeIconBox.InitialImage = null;
-            this.volumeIconBox.Location = new System.Drawing.Point(102, 21);
-            this.volumeIconBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.volumeIconBox.Name = "volumeIconBox";
-            this.volumeIconBox.Size = new System.Drawing.Size(21, 19);
-            this.volumeIconBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.volumeIconBox.TabIndex = 202;
-            this.volumeIconBox.TabStop = false;
-            this.closeToolTip.SetToolTip(this.volumeIconBox, " Mute");
-            this.volumeIconBox.Click += new System.EventHandler(this.volumeIconBox_Click);
-            this.volumeIconBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.volumeIconBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // nextBox
-            // 
-            this.nextBox.BackgroundImage = global::Music_Player.Properties.Resources.next;
-            this.nextBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.nextBox.Enabled = false;
-            this.nextBox.ErrorImage = null;
-            this.nextBox.InitialImage = null;
-            this.nextBox.Location = new System.Drawing.Point(74, 22);
-            this.nextBox.Name = "nextBox";
-            this.nextBox.Size = new System.Drawing.Size(15, 17);
-            this.nextBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.nextBox.TabIndex = 6;
-            this.nextBox.TabStop = false;
-            this.nextToolTip.SetToolTip(this.nextBox, "Next");
-            this.nextBox.Click += new System.EventHandler(this.nextBox_Click);
-            this.nextBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.nextBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // settingsBox
-            // 
-            this.settingsBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.settingsBox.ErrorImage = null;
-            this.settingsBox.Image = global::Music_Player.Properties.Resources.settings;
-            this.settingsBox.InitialImage = null;
-            this.settingsBox.Location = new System.Drawing.Point(256, 422);
-            this.settingsBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-            this.settingsBox.Name = "settingsBox";
-            this.settingsBox.Size = new System.Drawing.Size(14, 20);
-            this.settingsBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.settingsBox.TabIndex = 3;
-            this.settingsBox.TabStop = false;
-            this.closeToolTip.SetToolTip(this.settingsBox, "More Settings");
-            this.settingsBox.Click += new System.EventHandler(this.settingsBox_Click);
-            this.settingsBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.settingsBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
             // clearBox
             // 
             this.clearBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
@@ -606,61 +679,6 @@
             this.clearBox.Click += new System.EventHandler(this.clearBox_Click);
             this.clearBox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.clearBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // githublinkBox
-            // 
-            this.githublinkBox.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.githublinkBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.githublinkBox.ErrorImage = null;
-            this.githublinkBox.Image = global::Music_Player.Properties.Resources.codelink;
-            this.githublinkBox.InitialImage = null;
-            this.githublinkBox.Location = new System.Drawing.Point(709, 1);
-            this.githublinkBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.githublinkBox.Name = "githublinkBox";
-            this.githublinkBox.Size = new System.Drawing.Size(23, 22);
-            this.githublinkBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.githublinkBox.TabIndex = 2;
-            this.githublinkBox.TabStop = false;
-            this.minimizeToolTip.SetToolTip(this.githublinkBox, "https://github.com/mcworkaholic/IS345-G5-Music-Player");
-            this.githublinkBox.Click += new System.EventHandler(this.githublinkBox_Click);
-            this.githublinkBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.githublinkBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // closeBox
-            // 
-            this.closeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.closeBox.ErrorImage = null;
-            this.closeBox.Image = global::Music_Player.Properties.Resources.close;
-            this.closeBox.InitialImage = null;
-            this.closeBox.Location = new System.Drawing.Point(766, 1);
-            this.closeBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.closeBox.Name = "closeBox";
-            this.closeBox.Size = new System.Drawing.Size(26, 22);
-            this.closeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.closeBox.TabIndex = 1;
-            this.closeBox.TabStop = false;
-            this.closeToolTip.SetToolTip(this.closeBox, "Close ");
-            this.closeBox.Click += new System.EventHandler(this.closeBox_Click);
-            this.closeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.closeBox.MouseHover += new System.EventHandler(this.MouseHover);
-            // 
-            // minimizeBox
-            // 
-            this.minimizeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.minimizeBox.ErrorImage = null;
-            this.minimizeBox.Image = global::Music_Player.Properties.Resources.minimize;
-            this.minimizeBox.InitialImage = null;
-            this.minimizeBox.Location = new System.Drawing.Point(735, 1);
-            this.minimizeBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.minimizeBox.Name = "minimizeBox";
-            this.minimizeBox.Size = new System.Drawing.Size(31, 22);
-            this.minimizeBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.minimizeBox.TabIndex = 0;
-            this.minimizeBox.TabStop = false;
-            this.minimizeToolTip.SetToolTip(this.minimizeBox, "Minimize");
-            this.minimizeBox.Click += new System.EventHandler(this.minimizeBox_Click);
-            this.minimizeBox.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.minimizeBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
             // Form1
             // 
@@ -692,31 +710,32 @@
             this.Controls.Add(this.WindowsMediaPlayer);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "🎵 Music Player";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Click += new System.EventHandler(this.Form1_Click);
             this.topPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.closeBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.previousBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nextBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.backBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).EndInit();
             this.audioControllerPanel.ResumeLayout(false);
             this.audioControllerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.audioPosTrackBar)).EndInit();
             this.libraryPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.backBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.previousBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nextBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clearBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.closeBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -768,6 +787,7 @@
         private System.Windows.Forms.PictureBox libraryAlbumArtBox;
         private System.Windows.Forms.Label noLibraryLabel;
         private System.Windows.Forms.Label configureLabel;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
