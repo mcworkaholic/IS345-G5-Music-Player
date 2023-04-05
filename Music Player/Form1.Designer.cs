@@ -72,10 +72,9 @@
             this.libraryAlbumArtBox = new System.Windows.Forms.PictureBox();
             this.treeView = new System.Windows.Forms.TreeView();
             this.noLibraryLabel = new System.Windows.Forms.Label();
-            this.configureLabel = new System.Windows.Forms.Label();
-            this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.albumArtBox = new System.Windows.Forms.PictureBox();
             this.clearBox = new System.Windows.Forms.PictureBox();
+            this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
@@ -92,9 +91,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.audioPosTrackBar)).BeginInit();
             this.libraryPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clearBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).BeginInit();
             this.SuspendLayout();
             // 
             // songslistBox
@@ -623,29 +622,6 @@
             this.noLibraryLabel.Text = "No Library Connected";
             this.noLibraryLabel.Visible = false;
             // 
-            // configureLabel
-            // 
-            this.configureLabel.AutoSize = true;
-            this.configureLabel.Location = new System.Drawing.Point(273, 425);
-            this.configureLabel.Name = "configureLabel";
-            this.configureLabel.Size = new System.Drawing.Size(74, 13);
-            this.configureLabel.TabIndex = 207;
-            this.configureLabel.Text = "👈 Configure";
-            this.configureLabel.Visible = false;
-            // 
-            // WindowsMediaPlayer
-            // 
-            this.WindowsMediaPlayer.Enabled = true;
-            this.WindowsMediaPlayer.Location = new System.Drawing.Point(0, 49);
-            this.WindowsMediaPlayer.Name = "WindowsMediaPlayer";
-            this.WindowsMediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("WindowsMediaPlayer.OcxState")));
-            this.WindowsMediaPlayer.Size = new System.Drawing.Size(525, 363);
-            this.WindowsMediaPlayer.TabIndex = 200;
-            this.WindowsMediaPlayer.TabStop = false;
-            this.WindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.WindowsMediaPlayer_PlayStateChange);
-            this.WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(this.WindowsMediaPlayer_MediaChange);
-            this.WindowsMediaPlayer.KeyUpEvent += new AxWMPLib._WMPOCXEvents_KeyUpEventHandler(this.VideoContainer_KeyUp);
-            // 
             // albumArtBox
             // 
             this.albumArtBox.BackColor = System.Drawing.Color.Black;
@@ -680,13 +656,25 @@
             this.clearBox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.clearBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
+            // WindowsMediaPlayer
+            // 
+            this.WindowsMediaPlayer.Enabled = true;
+            this.WindowsMediaPlayer.Location = new System.Drawing.Point(0, 49);
+            this.WindowsMediaPlayer.Name = "WindowsMediaPlayer";
+            this.WindowsMediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("WindowsMediaPlayer.OcxState")));
+            this.WindowsMediaPlayer.Size = new System.Drawing.Size(525, 363);
+            this.WindowsMediaPlayer.TabIndex = 200;
+            this.WindowsMediaPlayer.TabStop = false;
+            this.WindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.WindowsMediaPlayer_PlayStateChange);
+            this.WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(this.WindowsMediaPlayer_MediaChange);
+            this.WindowsMediaPlayer.KeyUpEvent += new AxWMPLib._WMPOCXEvents_KeyUpEventHandler(this.VideoContainer_KeyUp);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(796, 454);
-            this.Controls.Add(this.configureLabel);
             this.Controls.Add(this.noLibraryLabel);
             this.Controls.Add(this.libraryPanel);
             this.Controls.Add(this.audioControllerPanel);
@@ -733,9 +721,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.audioPosTrackBar)).EndInit();
             this.libraryPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clearBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -786,7 +774,6 @@
         private System.Windows.Forms.PictureBox backBox;
         private System.Windows.Forms.PictureBox libraryAlbumArtBox;
         private System.Windows.Forms.Label noLibraryLabel;
-        private System.Windows.Forms.Label configureLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

@@ -213,26 +213,6 @@ namespace Music_Player.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap souncloud_logo {
-            get {
-                object obj = ResourceManager.GetObject("souncloud_logo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap spotify_logo {
-            get {
-                object obj = ResourceManager.GetObject("spotify_logo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Volume {
             get {
                 object obj = ResourceManager.GetObject("Volume", resourceCulture);
