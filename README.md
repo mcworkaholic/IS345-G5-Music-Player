@@ -84,7 +84,9 @@ To get a local copy up and running follow these steps.
 ### Directory Structure
 * If you wish to use your own directory it should look like the following:<space><space>
   
-![directory structure](./Music Player/img/tree-structure.png)
+![Directory Structure](https://github.com/mcworkaholic/IS345-G5-Music-Player/blob/main/Music%20Player/img/tree-structure.png)
+<img src="https://github.com/mcworkaholic/IS345-G5-Music-Player/blob/main/Music%20Player/img/tree-structure.png">
+
 <!-- CONTRIBUTING -->
 ## Contributing
 
