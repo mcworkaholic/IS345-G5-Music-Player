@@ -250,15 +250,6 @@
     <None Include="img\next.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="img\souncloud-logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="img\spotify-logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="img\login-logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="img\logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
