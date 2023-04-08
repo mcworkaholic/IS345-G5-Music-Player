@@ -1,7 +1,9 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SQLite;
 using System.Windows.Forms;
-
 
 namespace Music_Player
 {
@@ -9,8 +11,13 @@ namespace Music_Player
     {
         private dbUtils dbUtils = new dbUtils();
         Form1 form1 = (Form1)ActiveForm;
-        ListViewItem musicFolderItem;
+        private BindingSource bindingSource = new BindingSource();
         private string connectionString;
+        readonly string default_startup_folder = "default_startup_folder";
+        readonly string scld_client_id = "scld_client_id";
+        readonly string scld_auth_token = "scld_auth_token";
+        readonly string soundcloud_details = "soundcloud_details";
+        readonly string user = "user";
         bool isMoving;
         int movX;
         int movY;
@@ -24,48 +31,55 @@ namespace Music_Player
         }
         private void Config_Load(object sender, EventArgs e)
         {
-            string startupFolder = dbUtils.GetStartUpFolder(connectionString);
-            musicFolderItem = new ListViewItem("Music Directory");
-            if (startupFolder == string.Empty)
+            dbUtils.GetConnection();
+            GetData(connectionString);
+        }
+        private void GetData(string connectionString)
+        {
+            bindingSource.DataSource = dbUtils.GetUserConfig();
+            dataGridView1.DataSource = bindingSource;
+            dataGridView1.Columns[0].Width = 160;
+            dataGridView1.Columns[1].Width = 210;
+            dataGridView1.Columns[2].Width = 210;
+            dataGridView1.Columns[3].Width = 210;
+            dataGridView1.Columns[0].ReadOnly = true;
+        }
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.InitialDirectory = "C:\\Users";
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                listView.Scrollable = false;
-                musicFolderItem.SubItems.Add("NULL");
+                dataGridView1.Rows[0].Cells[1].Value = dialog.FileName;
+                refreshButton.Enabled = true;
+                this.Focus();
+                refreshButton.Focus();
+            }
+        }
+        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            // Check if the changed cell is the desired cell
+            if (e.ColumnIndex == 1 && e.RowIndex == 0)
+            {
+                // Show the button
+                searchButton.Visible = true;
             }
             else
             {
-                listView.Scrollable = true;
-                musicFolderItem.SubItems.Add(startupFolder);
-            }
-            listView.Items.Add(musicFolderItem);
-        }
-
-        private void listView_ItemActivate(object sender, EventArgs e)
-        {
-            editButton.Enabled = true;
-        }
-
-        private void editButton_Click(object sender, EventArgs e)
-        {
-            if (listView.FocusedItem.Text == "Music Directory")
-            {
-                CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-                dialog.InitialDirectory = "C:\\Users";
-                dialog.IsFolderPicker = true;
-                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    musicFolderItem.SubItems.RemoveAt(1);
-                    musicFolderItem.SubItems.Add(dialog.FileName);
-                    dbUtils.UpdateStartUpFolder(connectionString, dialog.FileName);
-                    refreshButton.Enabled = true;
-                    this.Focus();
-                    refreshButton.Focus();
-                }
+                // Hide the button
+                searchButton.Visible = false;
             }
         }
         private void refreshButton_Click(object sender, EventArgs e)
         {
+            // Commit all current values, couldn't get sql adapter to work properly
+            dbUtils.UpdateChanges(user, default_startup_folder, dataGridView1.Rows[0].Cells[1].Value.ToString());
+            dbUtils.UpdateChanges(soundcloud_details, scld_client_id, dataGridView1.Rows[0].Cells[2].Value.ToString());
+            dbUtils.UpdateChanges(soundcloud_details, scld_auth_token, dataGridView1.Rows[0].Cells[3].Value.ToString());
+            this.Refresh();
+            GetData(connectionString);
             form1.Refresh();
-            this.Close();
         }
 
         private void exitBox_Click(object sender, EventArgs e)
@@ -107,6 +121,26 @@ namespace Music_Player
         private void topPanel_MouseUp(object sender, MouseEventArgs e)
         {
             isMoving = false;
+        }
+
+        private void soundcloudButton_Click(object sender, EventArgs e)
+        {
+            form1.OpenLink(soundcloudButton);
+        }
+
+        private void spotifyButton_Click(object sender, EventArgs e)
+        {
+            form1.OpenLink(spotifyButton);
+        }
+
+        private void youtubeButton_Click(object sender, EventArgs e)
+        {
+            form1.OpenLink(youtubeButton);
+        }
+
+        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            refreshButton.Enabled = true;
         }
     }
 }

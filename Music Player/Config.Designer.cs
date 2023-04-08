@@ -30,65 +30,29 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Config));
-            this.listView = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.editButton = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
             this.usageLabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.topPanel = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.exitBox = new System.Windows.Forms.PictureBox();
             this.minibox = new System.Windows.Forms.PictureBox();
             this.codelinkBox = new System.Windows.Forms.PictureBox();
             this.closeBox = new System.Windows.Forms.PictureBox();
             this.minimizeBox = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.soundcloudButton = new System.Windows.Forms.Button();
+            this.spotifyButton = new System.Windows.Forms.Button();
+            this.youtubeButton = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.searchButton = new System.Windows.Forms.Button();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minibox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // listView
-            // 
-            this.listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2});
-            this.listView.GridLines = true;
-            this.listView.HideSelection = false;
-            this.listView.Location = new System.Drawing.Point(10, 55);
-            this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(554, 207);
-            this.listView.TabIndex = 0;
-            this.listView.UseCompatibleStateImageBehavior = false;
-            this.listView.View = System.Windows.Forms.View.Details;
-            this.listView.ItemActivate += new System.EventHandler(this.listView_ItemActivate);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Option";
-            this.columnHeader1.Width = 150;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Value";
-            this.columnHeader2.Width = 700;
-            // 
-            // editButton
-            // 
-            this.editButton.Enabled = false;
-            this.editButton.Location = new System.Drawing.Point(408, 268);
-            this.editButton.Name = "editButton";
-            this.editButton.Size = new System.Drawing.Size(75, 23);
-            this.editButton.TabIndex = 1;
-            this.editButton.Text = "Edit";
-            this.editButton.UseVisualStyleBackColor = true;
-            this.editButton.Click += new System.EventHandler(this.editButton_Click);
-            this.editButton.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.editButton.MouseHover += new System.EventHandler(this.MouseHover);
             // 
             // refreshButton
             // 
@@ -109,9 +73,9 @@
             this.usageLabel.AutoSize = true;
             this.usageLabel.Location = new System.Drawing.Point(7, 39);
             this.usageLabel.Name = "usageLabel";
-            this.usageLabel.Size = new System.Drawing.Size(277, 13);
+            this.usageLabel.Size = new System.Drawing.Size(168, 13);
             this.usageLabel.TabIndex = 3;
-            this.usageLabel.Text = "Double click on any of the options to enable editing";
+            this.usageLabel.Text = "Click in the grid to start editing";
             // 
             // topPanel
             // 
@@ -129,15 +93,6 @@
             this.topPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseDown);
             this.topPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseMove);
             this.topPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseUp);
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 302);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(576, 10);
-            this.panel1.TabIndex = 32;
             // 
             // exitBox
             // 
@@ -216,17 +171,82 @@
             this.minimizeBox.TabIndex = 0;
             this.minimizeBox.TabStop = false;
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 302);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(576, 10);
+            this.panel1.TabIndex = 32;
+            // 
+            // soundcloudButton
+            // 
+            this.soundcloudButton.Location = new System.Drawing.Point(10, 268);
+            this.soundcloudButton.Name = "soundcloudButton";
+            this.soundcloudButton.Size = new System.Drawing.Size(87, 23);
+            this.soundcloudButton.TabIndex = 34;
+            this.soundcloudButton.Text = "Soundcloud";
+            this.soundcloudButton.UseVisualStyleBackColor = true;
+            this.soundcloudButton.Click += new System.EventHandler(this.soundcloudButton_Click);
+            // 
+            // spotifyButton
+            // 
+            this.spotifyButton.Location = new System.Drawing.Point(103, 268);
+            this.spotifyButton.Name = "spotifyButton";
+            this.spotifyButton.Size = new System.Drawing.Size(87, 23);
+            this.spotifyButton.TabIndex = 35;
+            this.spotifyButton.Text = "Spotify";
+            this.spotifyButton.UseVisualStyleBackColor = true;
+            this.spotifyButton.Click += new System.EventHandler(this.spotifyButton_Click);
+            // 
+            // youtubeButton
+            // 
+            this.youtubeButton.Location = new System.Drawing.Point(196, 268);
+            this.youtubeButton.Name = "youtubeButton";
+            this.youtubeButton.Size = new System.Drawing.Size(75, 23);
+            this.youtubeButton.TabIndex = 36;
+            this.youtubeButton.Text = "YouTube";
+            this.youtubeButton.UseVisualStyleBackColor = true;
+            this.youtubeButton.Click += new System.EventHandler(this.youtubeButton_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dataGridView1.Location = new System.Drawing.Point(10, 55);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(554, 207);
+            this.dataGridView1.TabIndex = 37;
+            this.dataGridView1.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEnter);
+            this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+            // 
+            // searchButton
+            // 
+            this.searchButton.Location = new System.Drawing.Point(408, 268);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(75, 23);
+            this.searchButton.TabIndex = 38;
+            this.searchButton.Text = "Search";
+            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Visible = false;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
+            // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(576, 312);
+            this.Controls.Add(this.searchButton);
+            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.youtubeButton);
+            this.Controls.Add(this.spotifyButton);
+            this.Controls.Add(this.soundcloudButton);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.topPanel);
             this.Controls.Add(this.usageLabel);
             this.Controls.Add(this.refreshButton);
-            this.Controls.Add(this.editButton);
-            this.Controls.Add(this.listView);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Config";
@@ -239,17 +259,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.codelinkBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ListView listView;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label usageLabel;
@@ -260,5 +276,10 @@
         private System.Windows.Forms.PictureBox exitBox;
         private System.Windows.Forms.PictureBox minibox;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button soundcloudButton;
+        private System.Windows.Forms.Button spotifyButton;
+        private System.Windows.Forms.Button youtubeButton;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button searchButton;
     }
 }
