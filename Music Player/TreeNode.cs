@@ -111,51 +111,54 @@ namespace Music_Player
                     ObjectType = "(Artist)"
                 };
                 rootNode.AddChild(artistNode);
-
-                foreach (var albumDirectoryPath in Directory.GetDirectories(subDirectoryPath))
+                try
                 {
-                    var albumNode = new FileSystemTreeNode
+                    foreach (var albumDirectoryPath in Directory.GetDirectories(subDirectoryPath))
                     {
-                        FullPath = albumDirectoryPath,
-                        FileName = Path.GetFileName(albumDirectoryPath),
-                        DisplayName = Path.GetFileName(albumDirectoryPath),
-                        NodeType = NodeType.Folder,
-                        ObjectType = "(Album)"
-                    };
-                    artistNode.AddChild(albumNode);
-
-                    foreach (var filePath in Directory.GetFiles(albumDirectoryPath))
-                    {
-                        string fileName = Path.GetFileNameWithoutExtension(filePath);
-                        int firstCharIndex = fileName.IndexOf("-");
-                        string title;
-                        if (firstCharIndex == -1)
+                        var albumNode = new FileSystemTreeNode
                         {
-                            if (fileName.IndexOf('.') != -1)
+                            FullPath = albumDirectoryPath,
+                            FileName = Path.GetFileName(albumDirectoryPath),
+                            DisplayName = Path.GetFileName(albumDirectoryPath),
+                            NodeType = NodeType.Folder,
+                            ObjectType = "(Album)"
+                        };
+                        artistNode.AddChild(albumNode);
+
+                        foreach (var filePath in Directory.GetFiles(albumDirectoryPath))
+                        {
+                            string fileName = Path.GetFileNameWithoutExtension(filePath);
+                            int firstCharIndex = fileName.IndexOf("-");
+                            string title;
+                            if (firstCharIndex == -1)
                             {
-                                title = fileName.Substring(fileName.IndexOf('.') + 1).Trim();
+                                if (fileName.IndexOf('.') != -1)
+                                {
+                                    title = fileName.Substring(fileName.IndexOf('.') + 1).Trim();
+                                }
+                                else
+                                {
+                                    title = Regex.Replace(fileName, @"^\d+\s*", "").Trim();
+                                }
                             }
                             else
                             {
-                                title = Regex.Replace(fileName, @"^\d+\s*", "").Trim();
+                                string[] parts = fileName.Split('-');
+                                title = parts[1].Trim();
                             }
+                            var node = new FileSystemTreeNode
+                            {
+                                FullPath = filePath,
+                                FileName = Path.GetFileName(filePath),
+                                DisplayName = title,
+                                NodeType = NodeType.File,
+                                ObjectType = "(Song)"
+                            };
+                            albumNode.AddChild(node);
                         }
-                        else
-                        {
-                            string[] parts = fileName.Split('-');
-                            title = parts[1].Trim();
-                        }
-                        var node = new FileSystemTreeNode
-                        {
-                            FullPath = filePath,
-                            FileName = Path.GetFileName(filePath),
-                            DisplayName = title,
-                            NodeType = NodeType.File,
-                            ObjectType = "(Song)"
-                        };
-                        albumNode.AddChild(node);
                     }
                 }
+                catch (System.UnauthorizedAccessException) { }
             }
             return rootNode;
         }
