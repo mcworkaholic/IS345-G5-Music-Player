@@ -79,6 +79,8 @@ namespace Music_Player
         }
         private void LoginForm_Load(object sender, EventArgs e)
         {
+            dbUtils.GetConnection();
+
             SetFocus(usertextBox);
 
             // add to list of textboxes for iteration later
@@ -160,7 +162,7 @@ namespace Music_Player
                         try
                         {
                             // Second click: perform insert and close form
-                            dbUtils.InsertUser(connectionString, usertextBox.Text, passwordtextBox.Text);
+                            dbUtils.InsertUser(usertextBox.Text, passwordtextBox.Text);
                             Program.OpenForm1OnClose = true;
                             this.Close();
                         }
@@ -197,7 +199,7 @@ namespace Music_Player
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            string storedHash = dbUtils.GetHash(connectionString, usertextBox.Text);
+            string storedHash = dbUtils.GetHash(usertextBox.Text);
             if (passwordtextBox.Text.Length > 0 && usertextBox.Text.Length > 0)
             {
                 try
@@ -375,20 +377,7 @@ namespace Music_Player
         // Opens GitHub link with default web browser
         private void codelinkBox_Click(object sender, EventArgs e)
         {
-            string target = "https://github.com/mcworkaholic/IS345-G5-Music-Player";
-
-            //Use no more than one assignment when you test this code.
-            //string target = "ftp://ftp.microsoft.com";
-            //string target = "C:\\Program Files\\Microsoft Visual Studio\\INSTALL.HTM";
-            try
-            {
-                System.Diagnostics.Process.Start(target);
-            }
-            catch (System.ComponentModel.Win32Exception noBrowser)
-            {
-                if (noBrowser.ErrorCode == -2147467259)
-                    MessageBox.Show(noBrowser.Message);
-            }
+            form1.OpenLink(codelinkBox);
         }
 
         private void SetFocus(Control control)
