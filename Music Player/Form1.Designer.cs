@@ -75,6 +75,7 @@
             this.albumArtBox = new System.Windows.Forms.PictureBox();
             this.clearBox = new System.Windows.Forms.PictureBox();
             this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
+            this.configureLabel = new System.Windows.Forms.Label();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
@@ -669,12 +670,23 @@
             this.WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(this.WindowsMediaPlayer_MediaChange);
             this.WindowsMediaPlayer.KeyUpEvent += new AxWMPLib._WMPOCXEvents_KeyUpEventHandler(this.VideoContainer_KeyUp);
             // 
+            // configureLabel
+            // 
+            this.configureLabel.AutoSize = true;
+            this.configureLabel.Location = new System.Drawing.Point(273, 425);
+            this.configureLabel.Name = "configureLabel";
+            this.configureLabel.Size = new System.Drawing.Size(74, 13);
+            this.configureLabel.TabIndex = 207;
+            this.configureLabel.Text = "👈 Configure";
+            this.configureLabel.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(796, 454);
+            this.Controls.Add(this.configureLabel);
             this.Controls.Add(this.noLibraryLabel);
             this.Controls.Add(this.libraryPanel);
             this.Controls.Add(this.audioControllerPanel);
@@ -775,6 +787,7 @@
         private System.Windows.Forms.PictureBox libraryAlbumArtBox;
         private System.Windows.Forms.Label noLibraryLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label configureLabel;
     }
 }
 

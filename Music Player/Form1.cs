@@ -22,27 +22,20 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Principal;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
 namespace Music_Player
 {
     public partial class Form1 : Form
     {
-        List<string> _devices = new List<string>();
         private MusicPlayer MusicPlayer = new MusicPlayer();//создание объекта музыкального плеера
         private dbUtils dbUtils = new dbUtils();
         EQ equalizerWindow;
-        private TimeSpan currentPosition = TimeSpan.Zero; // Initialize timespan, to be modified later when user clicks play or pause
 
         // tracking for queuing
-        int lastPlayingIndex;
         int currentSelectedIndex;
 
         // for moving borderless form
@@ -51,22 +44,17 @@ namespace Music_Player
 
         // initial states
         bool shuffleButtonClicked = false;
-        bool playPauseClicked = false;
         bool listBoxDoubleClick = false;
         bool stopUpdate;
         int shuffleButtonClickCount = 0;
-        int playPauseClickCount = 0;
         int playlistIndexChanged = 0;
         int deviceIndexChanged = 0;
-        int lastVolume;
+        int lastVolume = 85;
 
         //Create Global Variables of String Type Array to save the titles or name of the //Tracks and path of the track 
         string[] files, paths;
 
         // variables that are set on formload event
-        string workingDirectory;
-        string musicFolderPath;
-        string dbPath;
         string connectionString;
         (Dictionary<string, List<string>>, string) devices;
 
@@ -382,15 +370,18 @@ namespace Music_Player
                 shuffleButton.Text = "Shuffle";
             }
         }
-
-
-
         private void queueButton_Click(object sender, EventArgs e)
         {
             queueLabel.Visible = true;
             clearQueueButton.Visible = true;
-            currentSelectedIndex = songslistBox.SelectedIndex;
-            lastPlayingIndex = Array.IndexOf(paths, WindowsMediaPlayer.currentMedia.sourceURL);
+            if (treeView.Visible == false)
+            {
+                currentSelectedIndex = songslistBox.SelectedIndex;
+            }
+            else
+            {
+                currentSelectedIndex = Array.IndexOf(paths, rootNode.FindNodeByDisplayName(treeView.SelectedNode.Text, songObj).FullPath);
+            }
             queueList.Add(currentSelectedIndex);
             queueLabel.Text = $"Queued Songs: {queueList.Count}";
         }
@@ -488,16 +479,15 @@ namespace Music_Player
         {
             // made public to be called for refresh
 
+            dbUtils.GetConnection();
             WindowsMediaPlayer.settings.volume = 0;
             playPauseButton.Image = Properties.Resources.PausePlay;
             // Add a delegate for the MediaChange event.
             WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(WindowsMediaPlayer_MediaChange);
             // set visualization preset from windows media player
             SetCurrentEffectPreset(4);
-            workingDirectory = Environment.CurrentDirectory;
-            dbPath = Directory.GetParent(workingDirectory).Parent.FullName + "\\Data\\users.db";
-            connectionString = $@"Data Source={dbPath};";
-            string startupPath = dbUtils.GetStartUpFolder(connectionString);
+            connectionString = dbUtils.connectionString;
+            string startupPath = dbUtils.GetStartUpFolder();
 
             if (startupPath != string.Empty)
             {
@@ -523,10 +513,10 @@ namespace Music_Player
         {
             form_Load();
         }
-        private void GetPlaylists(string action) 
+        private void GetPlaylists(string action)
         {
             int selectedIndex = playlistBox.SelectedIndex; // Store the selected index
-            playlistBox.DataSource = dbUtils.GetPlaylists(connectionString);
+            playlistBox.DataSource = dbUtils.GetPlaylists();
             playlistBox.SelectedIndex = selectedIndex; // Set the selected index again
 
             if (action == "Add")
@@ -543,9 +533,7 @@ namespace Music_Player
             {
                 MyCollection.Add(node);
             }
-
             searchTextBox.AutoCompleteCustomSource = MyCollection;
-
         }
         private void clearQueueButton_Click(object sender, EventArgs e)
         {
@@ -720,7 +708,7 @@ namespace Music_Player
             }
             else
             {
-                dbUtils.InsertPlaylist(playlistBox, connectionString);
+                dbUtils.InsertPlaylist(playlistBox);
                 MessageBox.Show($"Playlist {playlistBox.Text} Added");
                 playlistBox.Text = string.Empty;
                 GetPlaylists("Add");
@@ -959,22 +947,22 @@ namespace Music_Player
             clearBox.Visible = false;
             this.ActiveControl = null;
         }
-        private void OpenLink(PictureBox pictureBox)
+        public void OpenLink(Control control)
         {
-            string target = "";
-            switch (pictureBox.Name.ToString())
+            string target;
+            switch (control.Name.ToString())
             {
                 case "githublinkBox":
                     target = "https://github.com/mcworkaholic/IS345-G5-Music-Player";
                     break;
-                case "y":
-                    // code block
+                case "soundcloudButton":
+                    target = "https://soundcloud.com/";
                     break;
-                case "z":
-                    // code block
+                case "spotifyButton":
+                    target = "https://open.spotify.com/";
                     break;
                 default:
-                    // code block
+                    target = "https://music.youtube.com/";
                     break;
             }
             try
