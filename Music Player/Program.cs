@@ -21,7 +21,7 @@ namespace Music_Player
 
             if (OpenForm1OnClose)
             {
-                Application.Run(new Form1());
+                Application.Run(new MusicPlayer());
             }
         }
     }
