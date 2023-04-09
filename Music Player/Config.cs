@@ -1,16 +1,16 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SQLite;
+using System.IO;
+using System.Diagnostics;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace Music_Player
 {
     public partial class Config : Form
     {
-        private dbUtils dbUtils = new dbUtils();
-        Form1 form1 = (Form1)ActiveForm;
+        private DBUtils dbUtils = new DBUtils();
+        MusicPlayer form1 = (MusicPlayer)ActiveForm;
         private BindingSource bindingSource = new BindingSource();
         private string connectionString;
         readonly string default_startup_folder = "default_startup_folder";
@@ -31,6 +31,7 @@ namespace Music_Player
         }
         private void Config_Load(object sender, EventArgs e)
         {
+            linkBox.SelectedIndex = -1;
             dbUtils.GetConnection();
             GetData(connectionString);
         }
@@ -59,6 +60,7 @@ namespace Music_Player
         }
         private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
         {
+            refreshButton.Enabled = true;
             // Check if the changed cell is the desired cell
             if (e.ColumnIndex == 1 && e.RowIndex == 0)
             {
@@ -79,12 +81,13 @@ namespace Music_Player
             dbUtils.UpdateChanges(soundcloud_details, scld_auth_token, dataGridView1.Rows[0].Cells[3].Value.ToString());
             this.Refresh();
             GetData(connectionString);
-            form1.Refresh();
+            form1.LoadLibrary(dbUtils.GetStartUpFolder());
         }
 
         private void exitBox_Click(object sender, EventArgs e)
         {
             this.Close();
+            this.Dispose();
         }
 
         private void minibox_Click(object sender, EventArgs e)
@@ -123,24 +126,93 @@ namespace Music_Player
             isMoving = false;
         }
 
-        private void soundcloudButton_Click(object sender, EventArgs e)
-        {
-            form1.OpenLink(soundcloudButton);
-        }
-
-        private void spotifyButton_Click(object sender, EventArgs e)
-        {
-            form1.OpenLink(spotifyButton);
-        }
-
-        private void youtubeButton_Click(object sender, EventArgs e)
-        {
-            form1.OpenLink(youtubeButton);
-        }
-
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             refreshButton.Enabled = true;
+        }
+
+        private void linkBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            goButton.Visible = true;
+        }
+
+        private void goButton_Click(object sender, EventArgs e)
+        {
+            if (linkBox.SelectedIndex > -1)
+            {
+                form1.OpenLink(linkBox.SelectedItem.ToString());
+            }
+        }
+
+        private void Config_Click(object sender, EventArgs e)
+        {
+            this.ActiveControl = null;
+        }
+
+        private void locateButton_Click(object sender, EventArgs e)
+        {
+            filefinderPanel.Visible = true;
+        }
+
+        private void directorytextBox_TextChanged(object sender, EventArgs e)
+        {
+            // Attach the KeyPress event
+            directorytextBox.KeyPress += directorytextBox_KeyPress;
+        }
+        private void SearchDirectories(string rootDirectory)
+        {
+            string exeDirectory = "C:\\Users\\Weston\\Desktop\\Music-Player\\IS345-G5-Music-Player-Origin\\Music Player\\Utilities";
+            string exeName = "music_dir_finder.exe";
+            string scriptPath = Path.Combine(exeDirectory, exeName);
+
+            ProcessStartInfo startInfo = new ProcessStartInfo(scriptPath);
+            startInfo.Arguments = rootDirectory;
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.CreateNoWindow = true;
+
+            HashSet<string> directories = new HashSet<string>();
+
+            Process process = new Process();
+            process.StartInfo = startInfo;
+            process.EnableRaisingEvents = true;
+            process.OutputDataReceived += new DataReceivedEventHandler((s, e) =>
+            {
+                if (!string.IsNullOrEmpty(e.Data) && directories.Add(e.Data))
+                {
+                    Invoke(new Action(() =>
+                    {
+                        if (!directorieslistBox.Items.Contains(e.Data))
+                        directorieslistBox.Items.Add(e.Data);
+                    }));
+                }
+            });
+
+            process.Start();
+            process.BeginOutputReadLine();
+        }
+        private void directorytextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                // Enter key is pressed, search the directory
+                string rootDirectory = Path.Combine("C:\\Users\\", directorytextBox.Text);
+                SearchDirectories(rootDirectory);
+                directorieslistBox.Items.Clear();
+                directorieslistBox.Visible = true;
+                backBox.Visible = true;
+                backBox.BringToFront();
+                usageLabel.Text = "Directory(s):";
+                directorieslistBox.HorizontalScrollbar = true;
+                e.Handled = true;
+            }
+        }
+
+        private void backBox_Click(object sender, EventArgs e)
+        {
+            directorieslistBox.Visible = false;
+            usageLabel.Text = "Click in the grid to start editing";
+            backBox.Visible = false;
         }
     }
 }

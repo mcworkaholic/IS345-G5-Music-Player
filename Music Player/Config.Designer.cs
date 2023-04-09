@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Config));
-            this.refreshButton = new System.Windows.Forms.Button();
             this.usageLabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.topPanel = new System.Windows.Forms.Panel();
@@ -40,11 +39,18 @@
             this.closeBox = new System.Windows.Forms.PictureBox();
             this.minimizeBox = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.soundcloudButton = new System.Windows.Forms.Button();
-            this.spotifyButton = new System.Windows.Forms.Button();
-            this.youtubeButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.goLabel = new System.Windows.Forms.Label();
+            this.linkBox = new System.Windows.Forms.ComboBox();
+            this.goButton = new System.Windows.Forms.Button();
+            this.locateButton = new System.Windows.Forms.Button();
+            this.refreshButton = new System.Windows.Forms.Button();
             this.searchButton = new System.Windows.Forms.Button();
+            this.filefinderPanel = new System.Windows.Forms.Panel();
+            this.directorytextBox = new System.Windows.Forms.TextBox();
+            this.hintLabel = new System.Windows.Forms.Label();
+            this.directorieslistBox = new System.Windows.Forms.ListBox();
+            this.backBox = new System.Windows.Forms.PictureBox();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minibox)).BeginInit();
@@ -52,21 +58,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.filefinderPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.backBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // refreshButton
-            // 
-            this.refreshButton.Enabled = false;
-            this.refreshButton.Location = new System.Drawing.Point(489, 268);
-            this.refreshButton.Name = "refreshButton";
-            this.refreshButton.Size = new System.Drawing.Size(75, 23);
-            this.refreshButton.TabIndex = 2;
-            this.refreshButton.Text = "Refresh";
-            this.toolTip1.SetToolTip(this.refreshButton, "Refresh Changes ");
-            this.refreshButton.UseVisualStyleBackColor = true;
-            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
-            this.refreshButton.MouseLeave += new System.EventHandler(this.MouseLeave);
-            this.refreshButton.MouseHover += new System.EventHandler(this.MouseHover);
             // 
             // usageLabel
             // 
@@ -180,36 +174,6 @@
             this.panel1.Size = new System.Drawing.Size(576, 10);
             this.panel1.TabIndex = 32;
             // 
-            // soundcloudButton
-            // 
-            this.soundcloudButton.Location = new System.Drawing.Point(10, 268);
-            this.soundcloudButton.Name = "soundcloudButton";
-            this.soundcloudButton.Size = new System.Drawing.Size(87, 23);
-            this.soundcloudButton.TabIndex = 34;
-            this.soundcloudButton.Text = "Soundcloud";
-            this.soundcloudButton.UseVisualStyleBackColor = true;
-            this.soundcloudButton.Click += new System.EventHandler(this.soundcloudButton_Click);
-            // 
-            // spotifyButton
-            // 
-            this.spotifyButton.Location = new System.Drawing.Point(103, 268);
-            this.spotifyButton.Name = "spotifyButton";
-            this.spotifyButton.Size = new System.Drawing.Size(87, 23);
-            this.spotifyButton.TabIndex = 35;
-            this.spotifyButton.Text = "Spotify";
-            this.spotifyButton.UseVisualStyleBackColor = true;
-            this.spotifyButton.Click += new System.EventHandler(this.spotifyButton_Click);
-            // 
-            // youtubeButton
-            // 
-            this.youtubeButton.Location = new System.Drawing.Point(196, 268);
-            this.youtubeButton.Name = "youtubeButton";
-            this.youtubeButton.Size = new System.Drawing.Size(75, 23);
-            this.youtubeButton.TabIndex = 36;
-            this.youtubeButton.Text = "YouTube";
-            this.youtubeButton.UseVisualStyleBackColor = true;
-            this.youtubeButton.Click += new System.EventHandler(this.youtubeButton_Click);
-            // 
             // dataGridView1
             // 
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
@@ -222,37 +186,162 @@
             this.dataGridView1.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEnter);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             // 
+            // goLabel
+            // 
+            this.goLabel.AutoSize = true;
+            this.goLabel.Location = new System.Drawing.Point(12, 279);
+            this.goLabel.Name = "goLabel";
+            this.goLabel.Size = new System.Drawing.Size(40, 13);
+            this.goLabel.TabIndex = 39;
+            this.goLabel.Text = "Go To:";
+            // 
+            // linkBox
+            // 
+            this.linkBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.linkBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.linkBox.FormattingEnabled = true;
+            this.linkBox.Items.AddRange(new object[] {
+            "SoundCloud",
+            "Spotify",
+            "Youtube"});
+            this.linkBox.Location = new System.Drawing.Point(58, 275);
+            this.linkBox.Name = "linkBox";
+            this.linkBox.Size = new System.Drawing.Size(95, 21);
+            this.linkBox.Sorted = true;
+            this.linkBox.TabIndex = 40;
+            this.linkBox.SelectedIndexChanged += new System.EventHandler(this.linkBox_SelectedIndexChanged);
+            // 
+            // goButton
+            // 
+            this.goButton.Location = new System.Drawing.Point(159, 275);
+            this.goButton.Name = "goButton";
+            this.goButton.Size = new System.Drawing.Size(33, 22);
+            this.goButton.TabIndex = 41;
+            this.goButton.Text = "Go";
+            this.goButton.UseVisualStyleBackColor = true;
+            this.goButton.Visible = false;
+            this.goButton.Click += new System.EventHandler(this.goButton_Click);
+            this.goButton.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.goButton.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // locateButton
+            // 
+            this.locateButton.Location = new System.Drawing.Point(259, 275);
+            this.locateButton.Name = "locateButton";
+            this.locateButton.Size = new System.Drawing.Size(84, 22);
+            this.locateButton.TabIndex = 42;
+            this.locateButton.Text = "Locate Audio";
+            this.locateButton.UseVisualStyleBackColor = true;
+            this.locateButton.Click += new System.EventHandler(this.locateButton_Click);
+            // 
+            // refreshButton
+            // 
+            this.refreshButton.Location = new System.Drawing.Point(479, 275);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(84, 22);
+            this.refreshButton.TabIndex = 43;
+            this.refreshButton.Text = "Refresh";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            this.refreshButton.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.refreshButton.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
             // searchButton
             // 
-            this.searchButton.Location = new System.Drawing.Point(408, 268);
+            this.searchButton.Location = new System.Drawing.Point(405, 275);
             this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(75, 23);
-            this.searchButton.TabIndex = 38;
+            this.searchButton.Size = new System.Drawing.Size(68, 22);
+            this.searchButton.TabIndex = 44;
             this.searchButton.Text = "Search";
             this.searchButton.UseVisualStyleBackColor = true;
-            this.searchButton.Visible = false;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
+            this.searchButton.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.searchButton.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // filefinderPanel
+            // 
+            this.filefinderPanel.Controls.Add(this.directorytextBox);
+            this.filefinderPanel.Controls.Add(this.hintLabel);
+            this.filefinderPanel.Location = new System.Drawing.Point(198, 268);
+            this.filefinderPanel.Name = "filefinderPanel";
+            this.filefinderPanel.Size = new System.Drawing.Size(201, 32);
+            this.filefinderPanel.TabIndex = 45;
+            this.filefinderPanel.Visible = false;
+            // 
+            // directorytextBox
+            // 
+            this.directorytextBox.Location = new System.Drawing.Point(88, 8);
+            this.directorytextBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.directorytextBox.Name = "directorytextBox";
+            this.directorytextBox.Size = new System.Drawing.Size(100, 22);
+            this.directorytextBox.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.directorytextBox, "Directory hint");
+            this.directorytextBox.TextChanged += new System.EventHandler(this.directorytextBox_TextChanged);
+            // 
+            // hintLabel
+            // 
+            this.hintLabel.AutoSize = true;
+            this.hintLabel.Location = new System.Drawing.Point(14, 12);
+            this.hintLabel.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.hintLabel.Name = "hintLabel";
+            this.hintLabel.Size = new System.Drawing.Size(74, 13);
+            this.hintLabel.TabIndex = 0;
+            this.hintLabel.Text = "👉   C:\\Users\\";
+            // 
+            // directorieslistBox
+            // 
+            this.directorieslistBox.FormattingEnabled = true;
+            this.directorieslistBox.Location = new System.Drawing.Point(9, 55);
+            this.directorieslistBox.Name = "directorieslistBox";
+            this.directorieslistBox.ScrollAlwaysVisible = true;
+            this.directorieslistBox.Size = new System.Drawing.Size(554, 212);
+            this.directorieslistBox.TabIndex = 46;
+            this.directorieslistBox.Visible = false;
+            // 
+            // backBox
+            // 
+            this.backBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.backBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.backBox.ErrorImage = null;
+            this.backBox.Image = global::Music_Player.Properties.Resources.backbutton;
+            this.backBox.InitialImage = null;
+            this.backBox.Location = new System.Drawing.Point(520, 59);
+            this.backBox.Margin = new System.Windows.Forms.Padding(0, 0, 3, 3);
+            this.backBox.Name = "backBox";
+            this.backBox.Size = new System.Drawing.Size(25, 22);
+            this.backBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.backBox.TabIndex = 47;
+            this.backBox.TabStop = false;
+            this.backBox.Visible = false;
+            this.backBox.Click += new System.EventHandler(this.backBox_Click);
+            this.backBox.MouseLeave += new System.EventHandler(this.MouseLeave);
+            this.backBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(576, 312);
+            this.Controls.Add(this.backBox);
+            this.Controls.Add(this.directorieslistBox);
+            this.Controls.Add(this.filefinderPanel);
             this.Controls.Add(this.searchButton);
+            this.Controls.Add(this.refreshButton);
+            this.Controls.Add(this.locateButton);
+            this.Controls.Add(this.goButton);
+            this.Controls.Add(this.linkBox);
+            this.Controls.Add(this.goLabel);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.youtubeButton);
-            this.Controls.Add(this.spotifyButton);
-            this.Controls.Add(this.soundcloudButton);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.topPanel);
             this.Controls.Add(this.usageLabel);
-            this.Controls.Add(this.refreshButton);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Config";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Configuration";
             this.Load += new System.EventHandler(this.Config_Load);
+            this.Click += new System.EventHandler(this.Config_Click);
             this.topPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minibox)).EndInit();
@@ -260,13 +349,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minimizeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.filefinderPanel.ResumeLayout(false);
+            this.filefinderPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.backBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label usageLabel;
         private System.Windows.Forms.Panel topPanel;
@@ -276,10 +367,17 @@
         private System.Windows.Forms.PictureBox exitBox;
         private System.Windows.Forms.PictureBox minibox;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button soundcloudButton;
-        private System.Windows.Forms.Button spotifyButton;
-        private System.Windows.Forms.Button youtubeButton;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label goLabel;
+        private System.Windows.Forms.ComboBox linkBox;
+        private System.Windows.Forms.Button goButton;
+        private System.Windows.Forms.Button locateButton;
+        private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.Button searchButton;
+        private System.Windows.Forms.Panel filefinderPanel;
+        private System.Windows.Forms.TextBox directorytextBox;
+        private System.Windows.Forms.Label hintLabel;
+        private System.Windows.Forms.ListBox directorieslistBox;
+        private System.Windows.Forms.PictureBox backBox;
     }
 }
