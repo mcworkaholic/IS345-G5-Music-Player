@@ -21,7 +21,7 @@ CREATE TABLE playlist (
 );
 
 CREATE TABLE playlist_song (
-  playlist_song_id INTEGER PRIMARY KEY,
+  playlist_song_id INTEGER PRIMARY KEY AUTOINCREMENT,
   playlist_id INTEGER NOT NULL,
   song_id INTEGER NOT NULL,
   FOREIGN KEY (playlist_id) REFERENCES playlist(playlist_id),
@@ -31,11 +31,9 @@ CREATE TABLE playlist_song (
 CREATE TABLE song (
   song_id INTEGER PRIMARY KEY AUTOINCREMENT,
   song_display_name VARCHAR(50) NOT NULL,
-  song_file_name VARCHAR(50) NOT NULL,
-  song_path TEXT NOT NULL,
   song_artist TEXT NOT NULL,
-  song_album TEXT,
+  song_album TEXT NOT NULL,
   song_genre TEXT,
-  song_release_year INTEGER,
+  song_release TEXT,
   song_duration INTEGER
 );
