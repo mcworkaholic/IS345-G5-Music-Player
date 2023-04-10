@@ -9,13 +9,16 @@
 #    directory: "/" # Location of package manifests
 #    schedule:
 #      interval: "weekly"
-
+  
 version: 2
 updates:
   - package-ecosystem: "nuget"
     directory: "./Music Player"
     schedule:
       interval: "weekly"
+      day: "sunday"
+      # 7am central
+      time: "12:00"
     open-pull-requests-limit: 10
     target-branch: "main"
     nuget:
@@ -23,6 +26,9 @@ updates:
       csproj: "./Music Player/Music Player.csproj"
       directory: "./Music Player/packages"
     allow:
-    - dependency-name: "*"
-      updates:
-    - type: "all"
+    - dependency-type: "all"
+    # Add reviewers
+    labels:
+      - "dependencies"
+    reviewers:
+      - "mcworkaholic"
