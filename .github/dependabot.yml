@@ -22,17 +22,7 @@ updates:
       packages-config: "./Music Player/packages.config"
       csproj: "./Music Player/Music Player.csproj"
       directory: "./Music Player/packages"
-  - package-ecosystem: "pip"
-    directory: "./Music Player/Scripts/Python/music_dir_finder"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 10
-    target-branch: "main"
-    ignore:
-      - dependency-name: "python"
-        versions: [3.11.2]
-    dependency-file: "requirements.txt"
-    allow:
-      - dependency-name: "*"
-        updates:
-          - type: "all"
+     allow:
+        - dependency-name: "*"
+          updates:
+            - type: "all"
