@@ -42,4 +42,4 @@ In general, we follow the ["fork-and-pull" Git workflow](https://github.com/susa
 4. Commit changes to the branch
 5. Following any formatting and testing guidelines specific to this repo
 6. Push changes to your fork
-7. Open a PR in our repository.
+7. Open a Pull Request in our repository.
