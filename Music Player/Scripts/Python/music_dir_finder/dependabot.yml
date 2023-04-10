@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    target-branch: "main"
+    ignore:
+      - dependency-name: "python"
+        versions: [3.11.2]
+    dependency-file: "requirements.txt"
+    allow:
+      - dependency-name: "*"
+        updates:
+          - type: "all"

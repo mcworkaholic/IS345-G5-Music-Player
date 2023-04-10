@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "./Music Player"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    target-branch: "main"
+    nuget:
+      packages-config: "./Music Player/packages.config"
+      csproj: "./Music Player/Music Player.csproj"
+      directory: "./Music Player/packages"
