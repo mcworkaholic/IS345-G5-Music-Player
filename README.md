@@ -58,6 +58,8 @@ To get a local copy up and running follow these steps.
 
 * Windows OS
 
+* Windows Media Player (Legacy) & visualization plugin of your choice (optional)
+
 * An editor such as Visual Studio
 
 
