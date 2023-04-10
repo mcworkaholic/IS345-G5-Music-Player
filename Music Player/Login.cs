@@ -21,8 +21,6 @@ namespace Music_Player
         int movX, movY;
         bool isMoving;
 
-        string connectionString;
-
         List<TextBox> TextboxList = new List<TextBox>();
         List<PictureBox> errorBoxList = new List<PictureBox>();
 
@@ -41,16 +39,6 @@ namespace Music_Player
             InitializeComponent();
             createButtonClicked = false;
 
-            // add to list of textboxes for iteration later
-            TextboxList.Add(usertextBox);
-            TextboxList.Add(passwordtextBox);
-            TextboxList.Add(confirmtextBox);
-
-            //add to list of error boxes for iteration later
-            errorBoxList.Add(usrerrBox);
-            errorBoxList.Add(pwderrBox);
-            errorBoxList.Add(cfrmpwderrBox);
-
             // Set to no text.
             passwordtextBox.Text = "";
             confirmtextBox.Text = "";
@@ -62,10 +50,6 @@ namespace Music_Player
             // The control will allow no more than 50 characters.
             passwordtextBox.MaxLength = 50;
 
-            // set path to provided database
-            string workingDirectory = Environment.CurrentDirectory;
-            string dbPath = Directory.GetParent(workingDirectory).Parent.FullName + "\\Data\\users.db";
-            connectionString = $@"Data Source={dbPath};";
             buttonPanel.Location = new System.Drawing.Point(34, 75);
 
             SetFocus(usertextBox);
@@ -104,12 +88,7 @@ namespace Music_Player
             // The control will allow no more than 50 characters.
             passwordtextBox.MaxLength = 50;
 
-            // set path to provided database
-            string workingDirectory = Environment.CurrentDirectory;
-            string dbPath = Directory.GetParent(workingDirectory).Parent.FullName + "\\Data\\users.db";
-            connectionString = $@"Data Source={dbPath};";
-
-            // Initial location
+            // Initial panel location
             buttonPanel.Location = new System.Drawing.Point(34, 75);
         }
 
@@ -251,7 +230,6 @@ namespace Music_Player
         {
             ResetState();
         }
-
         private void passwordtextBox_TextChanged(object sender, EventArgs e)
         {
             if (passwordtextBox.Text.Length > 0)
@@ -335,7 +313,7 @@ namespace Music_Player
         }
 
 
-        // Next 7 events handle the moving of the form, opening, closing, & cursor behavior
+        // Next 8 events handle the moving of the form, opening, closing, & general behavior
         private void topPanel_MouseDown(object sender, MouseEventArgs e)
         {
             isMoving = true;
@@ -374,13 +352,18 @@ namespace Music_Player
             // Change cursor to default when hovering away
             this.Cursor = Cursors.Default;
         }
+        private void loginForm_Click(object sender, EventArgs e)
+        {
+            this.ActiveControl = null;
+        }
 
-        // Opens GitHub link with default web browser
+        
         private void codelinkBox_Click(object sender, EventArgs e)
         {
             form1.OpenLink("codelinkBox");
         }
 
+        // method to circumvent the wonky tab-order
         private void SetFocus(Control control)
         {
             ActiveControl = control;

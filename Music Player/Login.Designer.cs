@@ -403,6 +403,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.Load += new System.EventHandler(this.LoginForm_Load);
+            this.Click += new System.EventHandler(this.loginForm_Click);
             this.confirmPanel.ResumeLayout(false);
             this.confirmPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cfrmpwderrBox)).EndInit();
