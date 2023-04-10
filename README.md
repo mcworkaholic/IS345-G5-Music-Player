@@ -30,17 +30,19 @@ By Weston Evans, Ahmed Mahklooq, and Mobeen Shahid
 <!-- TECHNOLOGIES -->
 ## Technologies
 
-<ul>
-  <li><a href="https://img.shields.io">
+   <a href="https://img.shields.io">
         <img src="https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white"
-            alt=".Net Badge"></a></li>
-  <li><a href="https://img.shields.io">
+            alt=".Net Badge"></a>
+  <a href="https://img.shields.io">
         <img src="https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white"
-            alt="C# badge"></a></li>
-  <li><a href="https://img.shields.io">
+            alt="C# badge"></a>
+  <a href="https://img.shields.io">
         <img src="https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white"
-            alt="SQlite Badge"></a></li>
-</ul>
+            alt="SQlite Badge"></a>
+   <a href="https://img.shields.io">
+        <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"
+            alt="Python Badge"></a>
+ 
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -55,6 +57,8 @@ To get a local copy up and running follow these steps.
   <p><a href="https://github.com/git-guides/install-git">https://github.com/git-guides/install-git</a></p>
 
 * Windows OS
+
+* Windows Media Player (Legacy) & visualization plugin of your choice (optional)
 
 * An editor such as Visual Studio
 
@@ -76,10 +80,11 @@ To get a local copy up and running follow these steps.
 1. Create an account
 2. Save your password somewhere. It's hashed, so you won't be able to retrieve it
 3. Click on the gear icon to start configuration
-4. Double click on the "Music Directory" option, and then click on edit
-5. Select the "Music" directory you would like the application to start-up with in the future(there's one provided with the project)
-6. Click on the "refresh" button
-7. Double-click any song in the listbox to start playing
+4. Click in the "Music Folder" column, specify your path by hand, OR
+5. Click on the "Search" button once it appears and select the music directory you would like the application to start-up with in the future(there's one provided with the project)
+6. Click on the "refresh" button to commit your changes
+7. At this point, the music/library listbox should be populated.
+8. Double-click any song in the listbox to start playing
 
 ## Directory Structure
 <p>If you wish to use your own directory it should look like the following:</p><space><space>
