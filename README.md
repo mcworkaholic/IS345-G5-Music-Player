@@ -78,10 +78,11 @@ To get a local copy up and running follow these steps.
 1. Create an account
 2. Save your password somewhere. It's hashed, so you won't be able to retrieve it
 3. Click on the gear icon to start configuration
-4. Double click on the "Music Directory" option, and then click on edit
-5. Select the "Music" directory you would like the application to start-up with in the future(there's one provided with the project)
-6. Click on the "refresh" button
-7. Double-click any song in the listbox to start playing
+4. Click in the "Music Folder" column, specify your path by hand, OR
+5. Click on the "Search" button once it appears and select the music directory you would like the application to start-up with in the future(there's one provided with the project)
+6. Click on the "refresh" button to commit your changes
+7. At this point, the music/library listbox should be populated.
+8. Double-click any song in the listbox to start playing
 
 ## Directory Structure
 <p>If you wish to use your own directory it should look like the following:</p><space><space>
