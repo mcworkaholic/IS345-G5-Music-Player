@@ -22,7 +22,7 @@ updates:
       packages-config: "./Music Player/packages.config"
       csproj: "./Music Player/Music Player.csproj"
       directory: "./Music Player/packages"
-     allow:
-        - dependency-name: "*"
-          updates:
-            - type: "all"
+    allow:
+    - dependency-name: "*"
+      updates:
+    - type: "all"
