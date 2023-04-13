@@ -1,4 +1,4 @@
-# Ugli Player, a C# Music Player<br><br>
+# RhythmRanger, a C# Music Player<br><br>
 By mcworkaholic et al
 
 
