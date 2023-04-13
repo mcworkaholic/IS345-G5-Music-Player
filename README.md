@@ -1,4 +1,4 @@
-# Group Project: C# Music Player, Demonstration of Trees and Queues<br><br>
+# Ugli Player, a C# Music Player<br><br>
 By mcworkaholic et al
 
 
