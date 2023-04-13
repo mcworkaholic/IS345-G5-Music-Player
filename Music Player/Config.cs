@@ -1,9 +1,10 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
-using System.IO;
-using System.Diagnostics;
-using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Music_Player
 {
@@ -153,15 +154,9 @@ namespace Music_Player
         {
             filefinderPanel.Visible = true;
         }
-
-        private void directorytextBox_TextChanged(object sender, EventArgs e)
-        {
-            // Attach the KeyPress event
-            directorytextBox.KeyPress += directorytextBox_KeyPress;
-        }
         private void SearchDirectories(string rootDirectory)
         {
-            string exeDirectory = "C:\\Users\\Weston\\Desktop\\Music-Player\\IS345-G5-Music-Player-Origin\\Music Player\\Utilities";
+            string exeDirectory = "C:\\Users\\Weston\\Desktop\\Music-Player\\IS345-G5-Music-Player-Origin\\Music Player\\Utilities"; // Change to relative file path instead of absolute
             string exeName = "music_dir_finder.exe";
             string scriptPath = Path.Combine(exeDirectory, exeName);
 
@@ -183,7 +178,8 @@ namespace Music_Player
                     Invoke(new Action(() =>
                     {
                         if (!directorieslistBox.Items.Contains(e.Data))
-                        directorieslistBox.Items.Add(e.Data);
+                            searchingLabel.Visible = false;
+                            directorieslistBox.Items.Add(e.Data);
                     }));
                 }
             });
@@ -197,7 +193,19 @@ namespace Music_Player
             {
                 // Enter key is pressed, search the directory
                 string rootDirectory = Path.Combine("C:\\Users\\", directorytextBox.Text);
-                SearchDirectories(rootDirectory);
+
+                // Error handling
+                if (!Directory.Exists(rootDirectory))
+                {
+                    MessageBox.Show("Please enter a valid directory hint.", "Invalid Directory Hint", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    searchingLabel.Visible = true;
+                    SearchDirectories(rootDirectory);
+                }
+
+                // Behaviors
                 directorieslistBox.Items.Clear();
                 directorieslistBox.Visible = true;
                 backBox.Visible = true;
@@ -207,12 +215,35 @@ namespace Music_Player
                 e.Handled = true;
             }
         }
-
         private void backBox_Click(object sender, EventArgs e)
         {
             directorieslistBox.Visible = false;
             usageLabel.Text = "Click in the grid to start editing";
             backBox.Visible = false;
         }
+
+
+        private void directorieslistBox_DoubleClick(object sender, EventArgs e)
+        {   // Really Slow
+            // Get the selected directory path from the list box
+            string selectedDirectory = directorieslistBox.SelectedItem.ToString();
+
+            // Open the selected directory in File Explorer
+            Process.Start("explorer.exe", selectedDirectory);
+        }
+
+        //private void DataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        //{
+        //    // Vertical text from column 0, or adjust below, if first column(s) to be skipped
+        //    if (e.RowIndex == -1 && e.ColumnIndex >= 0)
+        //    {
+        //        e.PaintBackground(e.CellBounds, true);
+        //        e.Graphics.TranslateTransform(e.CellBounds.Left, e.CellBounds.Bottom);
+        //        e.Graphics.RotateTransform(270);
+        //        e.Graphics.DrawString(e.FormattedValue.ToString(), e.CellStyle.Font, Brushes.Black, 5, 5);
+        //        e.Graphics.ResetTransform();
+        //        e.Handled = true;
+        //    }
+        //}
     }
 }

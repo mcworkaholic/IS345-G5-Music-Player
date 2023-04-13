@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Config));
             this.usageLabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.directorytextBox = new System.Windows.Forms.TextBox();
             this.topPanel = new System.Windows.Forms.Panel();
             this.exitBox = new System.Windows.Forms.PictureBox();
             this.minibox = new System.Windows.Forms.PictureBox();
@@ -47,10 +48,13 @@
             this.refreshButton = new System.Windows.Forms.Button();
             this.searchButton = new System.Windows.Forms.Button();
             this.filefinderPanel = new System.Windows.Forms.Panel();
-            this.directorytextBox = new System.Windows.Forms.TextBox();
             this.hintLabel = new System.Windows.Forms.Label();
             this.directorieslistBox = new System.Windows.Forms.ListBox();
             this.backBox = new System.Windows.Forms.PictureBox();
+            this.searchingLabel = new System.Windows.Forms.Label();
+            this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
+            this.MinimizetoolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.ClosetoolTip = new System.Windows.Forms.ToolTip(this.components);
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minibox)).BeginInit();
@@ -70,6 +74,16 @@
             this.usageLabel.Size = new System.Drawing.Size(168, 13);
             this.usageLabel.TabIndex = 3;
             this.usageLabel.Text = "Click in the grid to start editing";
+            // 
+            // directorytextBox
+            // 
+            this.directorytextBox.Location = new System.Drawing.Point(88, 8);
+            this.directorytextBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.directorytextBox.Name = "directorytextBox";
+            this.directorytextBox.Size = new System.Drawing.Size(100, 22);
+            this.directorytextBox.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.directorytextBox, "Directory hint");
+            this.directorytextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.directorytextBox_KeyPress);
             // 
             // topPanel
             // 
@@ -101,6 +115,7 @@
             this.exitBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.exitBox.TabIndex = 4;
             this.exitBox.TabStop = false;
+            this.ClosetoolTip.SetToolTip(this.exitBox, "Close");
             this.exitBox.Click += new System.EventHandler(this.exitBox_Click);
             this.exitBox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.exitBox.MouseHover += new System.EventHandler(this.MouseHover);
@@ -118,6 +133,7 @@
             this.minibox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.minibox.TabIndex = 3;
             this.minibox.TabStop = false;
+            this.MinimizetoolTip.SetToolTip(this.minibox, "Minimize");
             this.minibox.Click += new System.EventHandler(this.minibox_Click);
             this.minibox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.minibox.MouseHover += new System.EventHandler(this.MouseHover);
@@ -226,11 +242,11 @@
             // 
             // locateButton
             // 
-            this.locateButton.Location = new System.Drawing.Point(259, 275);
+            this.locateButton.Location = new System.Drawing.Point(243, 275);
             this.locateButton.Name = "locateButton";
-            this.locateButton.Size = new System.Drawing.Size(84, 22);
+            this.locateButton.Size = new System.Drawing.Size(114, 22);
             this.locateButton.TabIndex = 42;
-            this.locateButton.Text = "Locate Audio";
+            this.locateButton.Text = "Locate Audio Files";
             this.locateButton.UseVisualStyleBackColor = true;
             this.locateButton.Click += new System.EventHandler(this.locateButton_Click);
             // 
@@ -262,21 +278,11 @@
             // 
             this.filefinderPanel.Controls.Add(this.directorytextBox);
             this.filefinderPanel.Controls.Add(this.hintLabel);
-            this.filefinderPanel.Location = new System.Drawing.Point(198, 268);
+            this.filefinderPanel.Location = new System.Drawing.Point(198, 267);
             this.filefinderPanel.Name = "filefinderPanel";
             this.filefinderPanel.Size = new System.Drawing.Size(201, 32);
             this.filefinderPanel.TabIndex = 45;
             this.filefinderPanel.Visible = false;
-            // 
-            // directorytextBox
-            // 
-            this.directorytextBox.Location = new System.Drawing.Point(88, 8);
-            this.directorytextBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
-            this.directorytextBox.Name = "directorytextBox";
-            this.directorytextBox.Size = new System.Drawing.Size(100, 22);
-            this.directorytextBox.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.directorytextBox, "Directory hint");
-            this.directorytextBox.TextChanged += new System.EventHandler(this.directorytextBox_TextChanged);
             // 
             // hintLabel
             // 
@@ -294,9 +300,10 @@
             this.directorieslistBox.Location = new System.Drawing.Point(9, 55);
             this.directorieslistBox.Name = "directorieslistBox";
             this.directorieslistBox.ScrollAlwaysVisible = true;
-            this.directorieslistBox.Size = new System.Drawing.Size(554, 212);
+            this.directorieslistBox.Size = new System.Drawing.Size(555, 212);
             this.directorieslistBox.TabIndex = 46;
             this.directorieslistBox.Visible = false;
+            this.directorieslistBox.DoubleClick += new System.EventHandler(this.directorieslistBox_DoubleClick);
             // 
             // backBox
             // 
@@ -312,16 +319,29 @@
             this.backBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.backBox.TabIndex = 47;
             this.backBox.TabStop = false;
+            this.toolTip2.SetToolTip(this.backBox, "To Config");
             this.backBox.Visible = false;
             this.backBox.Click += new System.EventHandler(this.backBox_Click);
             this.backBox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.backBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // searchingLabel
+            // 
+            this.searchingLabel.AutoSize = true;
+            this.searchingLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.searchingLabel.Location = new System.Drawing.Point(250, 152);
+            this.searchingLabel.Name = "searchingLabel";
+            this.searchingLabel.Size = new System.Drawing.Size(67, 13);
+            this.searchingLabel.TabIndex = 49;
+            this.searchingLabel.Text = "Searching...";
+            this.searchingLabel.Visible = false;
             // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(576, 312);
+            this.Controls.Add(this.searchingLabel);
             this.Controls.Add(this.backBox);
             this.Controls.Add(this.directorieslistBox);
             this.Controls.Add(this.filefinderPanel);
@@ -379,5 +399,9 @@
         private System.Windows.Forms.Label hintLabel;
         private System.Windows.Forms.ListBox directorieslistBox;
         private System.Windows.Forms.PictureBox backBox;
+        private System.Windows.Forms.Label searchingLabel;
+        private System.Windows.Forms.ToolTip toolTip2;
+        private System.Windows.Forms.ToolTip ClosetoolTip;
+        private System.Windows.Forms.ToolTip MinimizetoolTip;
     }
 }
