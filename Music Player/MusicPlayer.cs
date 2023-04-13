@@ -1,20 +1,21 @@
 ﻿
 // Author: Weston Evans/mcworkaholic on Github
 // 
-// Application purpose: [ This application was intended to become a decently
+// Application purpose:  This application was intended to become a decently
 // functioning music player with a mix of old and new technologies.
 // In the future I plan on adding archiving functionality with a few Python scripts, with the ability to sync with services such as Soundcloud, Spotify, and Youtube Music.
 
 // The design is pretty intuitive, all you have to do is first create an account(this is what keeps track of each profile's playlists)
-// and then double click on any song in the listbox to get started. In the future I'm going to allow the user to define what folder is opened up at the start.
+// and then double click on any song in the listbox to get started.
+// In the future I'm going to allow the user to define what folder is opened up at the start.  ✔️
 
 // Each icon that does not have text, has a tooltip describing what the action does. 
-// The search textbox is autopopulated with every node contained in the tree besides the root from TreeNode.cs,
+// The search textbox is autopopulated with every node contained in the tree besides the root from FileSystemTreeNode.cs,
 // to allow the user to make fast searches and either play a song or open an album.
 
 // The audio is controlled from MusicPlayer.cs, and the audio/video is synced with the visuals from the WindowsMediaPlayer component(hacky I know).
 
-// You will notice that some functionalities do not work, and that some refactoring can be done. I plan on fixing that for the next project. ]
+// You will notice that some functionalities do not work, and that some refactoring can be done. I plan on fixing that for the final project. 
 
 using AxWMPLib;
 using Microsoft.Win32;
@@ -26,13 +27,18 @@ using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using System.Windows.Forms;
+using Cursors = System.Windows.Forms.Cursors;
 
 namespace Music_Player
 {
     public partial class MusicPlayer : Form
     {
-        private MusicPlayerClass MusicPlayerClass = new MusicPlayerClass();//создание объекта музыкального плеера
+        private MusicPlayerClass MusicPlayerClass = new MusicPlayerClass(); //создание объекта музыкального плеера
+
+        private GlobalKeyboardHook _globalKeyboardHook; // initiate
+
         private DBUtils dbUtils = new DBUtils();
+
         EQ equalizerWindow;
 
         // tracking for queuing
@@ -52,7 +58,7 @@ namespace Music_Player
         int deviceIndexChanged = 0;
         int lastVolume = 85;
 
-        //Create Global Variables of String Type Array to save the titles or name of the //Tracks and path of the track 
+        //Create Global Variables of String Type Array to save the path of the track 
         List<string> paths;
 
         // variables that are set on formload event
@@ -63,7 +69,7 @@ namespace Music_Player
         List<int> queueList = new List<int>();
 
         // Create a dictionary to cache album artwork URLs
-        Dictionary<string, string> albumArtCache = new Dictionary<string, string>();
+        //Dictionary<string, string> albumArtCache = new Dictionary<string, string>();
 
         // for storing initial root node
         FileSystemTreeNode rootNode;
@@ -86,15 +92,39 @@ namespace Music_Player
         public MusicPlayer()
         {
             InitializeComponent();
-
-            // key events for pressing "ENTER" key while in the songslistbox, while it is the active control
-            librarylistBox.PreviewKeyDown += songsListBox_PreviewKeyDown;
-            librarylistBox.KeyDown += new KeyEventHandler(songslistBox_KeyDown);
         }
 
         public string GlobalConnectionString
         {
             get { return connectionString; }
+        }
+        private void buttonHook_Click(object sender, EventArgs e)
+        {
+            // Hooks only into specified Keys (here "Space").
+            _globalKeyboardHook = new GlobalKeyboardHook(new Keys[] { Keys.Space });
+
+            // Hooks into all keys.
+            //_globalKeyboardHook = new GlobalKeyboardHook();
+            _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
+        }
+
+        private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
+        {
+            // EDT: No need to filter for VkSnapshot anymore. This now gets handled
+            // through the constructor of GlobalKeyboardHook(...).
+            if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
+            {
+                // Now you can access both, the key and virtual code
+                Keys loggedKey = e.KeyboardData.Key;
+                int loggedVkCode = e.KeyboardData.VirtualCode;
+                MusicPlayerClass.Volume = 0;
+                volumeBar.Value = 0;
+            }
+            else if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyUp)
+            {
+                volumeBar.Value = lastVolume;
+                MusicPlayerClass.Volume = volumeBar.Value;
+            }
         }
 
         private void songslistBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -105,6 +135,7 @@ namespace Music_Player
                 //only plays when double clicked, a single click only changes the listbox so the user can add the selected song to a queue or playlist
                 WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
                 Play(WindowsMediaPlayer.URL);
+               
                 // reset the flag
                 listBoxDoubleClick = false;
             }
@@ -120,7 +151,7 @@ namespace Music_Player
                 }
             }
         }
-        private void songslistBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void songslistBox_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             int currentIndex;
             if (e.Button == MouseButtons.Left)
@@ -379,8 +410,14 @@ namespace Music_Player
             }
             else
             {
-                //currentSelectedIndex = Array.IndexOf(paths, rootNode.FindNodeByDisplayName(treeView.SelectedNode.Text, songObj).FullPath);
-                currentSelectedIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(librarylistBox.SelectedItem.ToString(), songObj).FullPath));
+                if(librarylistBox.Visible == true)
+                {
+                    currentSelectedIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(librarylistBox.SelectedItem.ToString(), songObj).FullPath));
+                }
+                else
+                {
+                    currentSelectedIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(treeView.SelectedNode.Text, songObj).FullPath));
+                }
             }
             queueList.Add(currentSelectedIndex);
             queueLabel.Text = $"Queued Songs: {queueList.Count}";
@@ -484,6 +521,7 @@ namespace Music_Player
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            buttonHook_Click(sender, e);
             dbUtils.GetConnection();
             WindowsMediaPlayer.settings.volume = 0;
             playPauseButton.Image = Properties.Resources.PausePlay;
@@ -600,7 +638,7 @@ namespace Music_Player
                 backBox.Visible = true;
             }
         }
-
+       
         private void OpenorPlay(string item, string itemType)
         {
             if (itemType.StartsWith("s"))
@@ -640,7 +678,7 @@ namespace Music_Player
                             WindowsMediaPlayer.URL = songPath;
                             Play(songPath);
 
-                            searchTextBox.Clear();
+                            //searchTextBox.Clear();
                             openplayButton.Enabled = false;
                             resultsFound = true;
                             break; // Stop searching
@@ -653,7 +691,7 @@ namespace Music_Player
                         }
                         else if (node.ObjectType == "(Artist)")
                         {
-                            // Implement
+                            // Not Implemented yet
                         }
                     }
 
@@ -708,9 +746,9 @@ namespace Music_Player
             string searchText = searchTextBox.Text?.ToString();
             string query;
             string queryType;
-            if (!string.IsNullOrEmpty(searchText) && !string.IsNullOrEmpty(selectedPlaylist))
+            if (!string.IsNullOrEmpty(searchText) && playlistBox.Text != string.Empty)
             {
-                MessageBox.Show("Please select either a playlist or enter a search term, not both.");
+                MessageBox.Show("Please select either a playlist or enter a search term before clicking, not both.");
                 return;
             }
             else if (!string.IsNullOrEmpty(searchText))
@@ -736,18 +774,11 @@ namespace Music_Player
             {
                 openplayButton.Enabled = true;
             }
-
-            else if (playlistBox.SelectedIndex > -1)
-            {
-                openplayButton.Enabled = true;
-            }
-
-            else if (searchTextBox.Text.Length == 0 && playlistBox.SelectedIndex == -1)
+            else
             {
                 openplayButton.Enabled = false;
             }
         }
-
         private void Form1_Click(object sender, EventArgs e)
         {
             this.ActiveControl = null;
@@ -782,13 +813,19 @@ namespace Music_Player
                 else
                 {
                     //insert song into playlist from library
-                    dbUtils.InsertSong(rootNode.FindNodeByDisplayName((string)librarylistBox.SelectedItem, songObj), playlistBox.SelectedItem.ToString());
+                    if (!dbUtils.GetPlaylistSongs(Program.user_id, playlistBox.SelectedItem.ToString()).Contains(librarylistBox.SelectedItem))
+                        dbUtils.InsertSong(rootNode.FindNodeByDisplayName((string)librarylistBox.SelectedItem, songObj), playlistBox.SelectedItem.ToString());
+                    else
+                        MessageBox.Show("Song is already in the selected playlist");
                 }
             }
             else
             {
                 //insert song into playlist from album
-                dbUtils.InsertSong(rootNode.FindNodeByDisplayName(treeView.SelectedNode.Text, songObj), playlistBox.SelectedItem.ToString());
+                if (!dbUtils.GetPlaylistSongs(Program.user_id, playlistBox.SelectedItem.ToString()).Contains(treeView.SelectedNode.Text))
+                    dbUtils.InsertSong(rootNode.FindNodeByDisplayName(treeView.SelectedNode.Text, songObj), playlistBox.SelectedItem.ToString());
+                else
+                    MessageBox.Show("Song is already in the selected playlist");
             }
         }
 
@@ -820,10 +857,11 @@ namespace Music_Player
             }
         }
 
+        // Clears playlistBox values, toggles behaviors
         private void clearButton_Click(object sender, EventArgs e)
         {
             playlistBox.Text = string.Empty;
-            playlistBox.SelectedIndex = -1;
+            playlistBox.ResetText();
             addtoplaylistButton.Enabled = false;
             openplayButton.Enabled = false;
             if (searchTextBox.Text.Length == 0 && playlistBox.SelectedIndex == -1)
@@ -835,14 +873,14 @@ namespace Music_Player
         }
 
         // Next 5 events handle the moving of the form + opening and closing ////
-        private void topPanel_MouseDown(object sender, MouseEventArgs e)
+        private void topPanel_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             isMoving = true;
             movX = e.X;
             movY = e.Y;
         }
 
-        private void topPanel_MouseMove(object sender, MouseEventArgs e)
+        private void topPanel_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (isMoving) // based on bool flag
             {
@@ -850,7 +888,7 @@ namespace Music_Player
             }
         }
 
-        private void topPanel_MouseUp(object sender, MouseEventArgs e)
+        private void topPanel_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             isMoving = false;
         }
@@ -866,17 +904,7 @@ namespace Music_Player
 
         }
 
-
-        //// Next 2 events are for controlling song navigation with the left & right arrows, if "ENTER" key, plays song ///
-        private void songsListBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.IsInputKey = true;
-            }
-        }
-
-        private void songslistBox_KeyDown(object sender, KeyEventArgs e)
+        private void songslistBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -1094,7 +1122,7 @@ namespace Music_Player
                 WindowsMediaPlayer.Ctlcontrols.currentPosition = position.TotalSeconds;
             }
         }
-        private void audioPosTrackBar_MouseUp(object sender, MouseEventArgs e)
+        private void audioPosTrackBar_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -1105,7 +1133,7 @@ namespace Music_Player
             }
         }
 
-        private void audioPosTrackBar_MouseDown(object sender, MouseEventArgs e)
+        private void audioPosTrackBar_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -1117,7 +1145,7 @@ namespace Music_Player
         }
 
         // Stores last known volume 
-        private void volumeBar_MouseUp(object sender, MouseEventArgs e)
+        private void volumeBar_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             lastVolume = volumeBar.Value;
         }
@@ -1160,7 +1188,6 @@ namespace Music_Player
             WindowsMediaPlayer.Ctlcontrols.pause();
             MusicPlayerClass.Pause();
         }
-
         private void vizButton_Click(object sender, EventArgs e)
         {
             // To be implemented 

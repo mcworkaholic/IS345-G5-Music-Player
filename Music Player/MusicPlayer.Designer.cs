@@ -76,6 +76,8 @@
             this.clearBox = new System.Windows.Forms.PictureBox();
             this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.configureLabel = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.searchTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
@@ -405,6 +407,7 @@
             this.deviceBox.Size = new System.Drawing.Size(168, 21);
             this.deviceBox.Sorted = true;
             this.deviceBox.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.deviceBox, "Audio Device Selector");
             this.deviceBox.SelectedIndexChanged += new System.EventHandler(this.deviceBox_SelectedIndexChanged);
             this.deviceBox.Click += new System.EventHandler(this.deviceBox_Click);
             // 
@@ -583,7 +586,7 @@
             this.albumPanel.Controls.Add(this.libraryAlbumArtBox);
             this.albumPanel.Controls.Add(this.backBox);
             this.albumPanel.Controls.Add(this.treeView);
-            this.albumPanel.Location = new System.Drawing.Point(532, 47);
+            this.albumPanel.Location = new System.Drawing.Point(532, 49);
             this.albumPanel.Name = "albumPanel";
             this.albumPanel.Size = new System.Drawing.Size(264, 318);
             this.albumPanel.TabIndex = 205;
@@ -678,7 +681,7 @@
             this.configureLabel.Text = "👈 Configure";
             this.configureLabel.Visible = false;
             // 
-            // Form1
+            // MusicPlayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -710,7 +713,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "MusicPlayer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Click += new System.EventHandler(this.Form1_Click);
@@ -786,6 +789,8 @@
         private System.Windows.Forms.Label noLibraryLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label configureLabel;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolTip searchTooltip;
     }
 }
 
