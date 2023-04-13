@@ -1,5 +1,5 @@
 # Group Project: C# Music Player, Demonstration of Trees and Queues<br><br>
-By Weston Evans, Ahmed Mahklooq, and Mobeen Shahid
+By Weston Evans et al
 
 
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
