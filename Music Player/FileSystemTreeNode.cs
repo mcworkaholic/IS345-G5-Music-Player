@@ -34,24 +34,6 @@ namespace Music_Player
             return null;
         }
 
-        //public FileSystemTreeNode FindNodeByFileName(string fileName)
-        //{
-        //    // retrieves corresponding node by its filename 
-        //    if (this.FileName == fileName)
-        //    {
-        //        return this;
-        //    }
-        //    foreach (var child in Children)
-        //    {
-        //        var foundNode = child.FindNodeByFileName(fileName);
-        //        if (foundNode != null)
-        //        {
-        //            return foundNode;
-        //        }
-        //    }
-        //    return null;
-        //}
-
         public FileSystemTreeNode FindNodeByFullPath(string path, string objectType)
         {
             if (this.FullPath == path && this.ObjectType == objectType)
