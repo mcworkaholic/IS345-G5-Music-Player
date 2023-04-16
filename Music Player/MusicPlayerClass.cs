@@ -18,11 +18,11 @@ namespace Music_Player
         private Equalizer _equalizer;
 
         public event EventHandler<PlaybackStoppedEventArgs> PlaybackStopped;
-        public IEnumerable<MMDevice> EnumerateWasapiDevices()
+        public IEnumerable<MMDevice> EnumerateWasapiDevices(DataFlow dataFlow, DeviceState deviceState)
         {
             using (MMDeviceEnumerator enumerator = new MMDeviceEnumerator())
             {
-                return enumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active);
+                return enumerator.EnumAudioEndpoints(dataFlow, deviceState);
             }
         }
         public static MMDevice GetDefaultSoundDevice()
