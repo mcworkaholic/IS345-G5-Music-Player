@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.IO;
 using System.Windows.Forms;
 using BC = BCrypt.Net.BCrypt;
 using TextBox = System.Windows.Forms.TextBox;
@@ -357,7 +356,7 @@ namespace Music_Player
             this.ActiveControl = null;
         }
 
-        
+
         private void codelinkBox_Click(object sender, EventArgs e)
         {
             form1.OpenLink("codelinkBox");
