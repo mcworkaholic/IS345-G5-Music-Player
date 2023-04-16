@@ -18,6 +18,7 @@
 // You will notice that some functionalities do not work, and that some refactoring can be done. I plan on fixing that for the final project. 
 
 using AxWMPLib;
+using CSCore.CoreAudioAPI;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -117,6 +118,8 @@ namespace Music_Player
                 // Now you can access both, the key and virtual code
                 Keys loggedKey = e.KeyboardData.Key;
                 int loggedVkCode = e.KeyboardData.VirtualCode;
+
+                this.ActiveControl = null;
                 MusicPlayerClass.Volume = 0;
                 volumeBar.Value = 0;
             }
@@ -135,7 +138,7 @@ namespace Music_Player
                 //only plays when double clicked, a single click only changes the listbox so the user can add the selected song to a queue or playlist
                 WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
                 Play(WindowsMediaPlayer.URL);
-               
+
                 // reset the flag
                 listBoxDoubleClick = false;
             }
@@ -172,7 +175,6 @@ namespace Music_Player
                     Play(WindowsMediaPlayer.URL);
                     // reset the flag
                     listBoxDoubleClick = false;
-
                 }
             }
             else
@@ -410,7 +412,7 @@ namespace Music_Player
             }
             else
             {
-                if(librarylistBox.Visible == true)
+                if (librarylistBox.Visible == true)
                 {
                     currentSelectedIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(librarylistBox.SelectedItem.ToString(), songObj).FullPath));
                 }
@@ -504,7 +506,7 @@ namespace Music_Player
             var devices = new Dictionary<string, List<string>>();
 
             // Retrieve all active audio devices
-            foreach (var dev in MusicPlayerClass.EnumerateWasapiDevices())
+            foreach (var dev in MusicPlayerClass.EnumerateWasapiDevices(DataFlow.Render, DeviceState.Active))
             {
                 if (!devices.ContainsKey(dev.FriendlyName))
                 {
@@ -638,7 +640,7 @@ namespace Music_Player
                 backBox.Visible = true;
             }
         }
-       
+
         private void OpenorPlay(string item, string itemType)
         {
             if (itemType.StartsWith("s"))
@@ -1188,6 +1190,16 @@ namespace Music_Player
             WindowsMediaPlayer.Ctlcontrols.pause();
             MusicPlayerClass.Pause();
         }
+
+        private void playlistBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Mutes the annoying windows beep sound
+                openplayButton.PerformClick();
+            }
+        }
+
         private void vizButton_Click(object sender, EventArgs e)
         {
             // To be implemented 

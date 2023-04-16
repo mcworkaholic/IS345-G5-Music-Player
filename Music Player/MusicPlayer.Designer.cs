@@ -194,6 +194,7 @@
             this.playlistBox.TabIndex = 2;
             this.playlistBox.SelectedIndexChanged += new System.EventHandler(this.playlistBox_SelectedIndexChanged);
             this.playlistBox.TextChanged += new System.EventHandler(this.playlistBox_TextChanged);
+            this.playlistBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.playlistBox_KeyDown);
             // 
             // searchTextBox
             // 
