@@ -787,11 +787,11 @@
         private System.Windows.Forms.TreeView treeView;
         private System.Windows.Forms.PictureBox backBox;
         private System.Windows.Forms.PictureBox libraryAlbumArtBox;
-        private System.Windows.Forms.Label noLibraryLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label configureLabel;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolTip searchTooltip;
+        public System.Windows.Forms.Label noLibraryLabel;
     }
 }
 

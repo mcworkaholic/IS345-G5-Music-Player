@@ -500,6 +500,13 @@ namespace Music_Player
                 }
             }
             paths = filePaths;
+
+            // Populate Device dropdown with the system's devices, play through default
+            LoadDevices();
+
+            // Remove setup labels
+            noLibraryLabel.Visible = false;
+            configureLabel.Visible = false;
         }
         private (Dictionary<string, List<string>>, string) GetAudioDevices()
         {
@@ -520,6 +527,17 @@ namespace Music_Player
             string defaultDeviceName = MusicPlayerClass.GetDefaultSoundDevice().FriendlyName;
             return (devices, defaultDeviceName);
         }
+        private void LoadDevices()
+        {
+            // Add available audio devices
+            devices = GetAudioDevices();
+            foreach (var device in devices.Item1)
+            {
+                deviceBox.Items.Add(device.Key);
+            }
+            // Set the initial selected index based on the default audio endpoint
+            deviceBox.SelectedIndex = deviceBox.FindStringExact(devices.Item2);
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -538,16 +556,7 @@ namespace Music_Player
             {
                 LoadLibrary(startupPath);
                 AddSearchSource();
-
-                // Add available audio devices
-                devices = GetAudioDevices();
-                foreach (var device in devices.Item1)
-                {
-                    deviceBox.Items.Add(device.Key);
-                }
-
-                // Set the initial selected index based on the default audio endpoint
-                deviceBox.SelectedIndex = deviceBox.FindStringExact(devices.Item2);
+                LoadDevices();
 
                 // Add Playlists
                 GetPlaylists("Load");
