@@ -22,7 +22,7 @@ namespace Music_Player
         public void GetConnection()
         {
             var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var dbFolderPath = Path.Combine(appDataPath, @"Ugli\");
+            var dbFolderPath = Path.Combine(appDataPath, @"RhythmRanger\");
             var dbPath = Path.Combine(dbFolderPath, @"users.db");
             if (!Directory.Exists(dbFolderPath))
             {
