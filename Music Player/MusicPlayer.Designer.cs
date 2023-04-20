@@ -46,6 +46,8 @@
             this.openplayButton = new System.Windows.Forms.Button();
             this.clearQueueButton = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
+            this.minimumbox = new System.Windows.Forms.PictureBox();
+            this.maximizebox = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.githublinkBox = new System.Windows.Forms.PictureBox();
             this.closeBox = new System.Windows.Forms.PictureBox();
@@ -79,6 +81,8 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.searchTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.topPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.minimumbox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maximizebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).BeginInit();
@@ -105,9 +109,10 @@
             this.librarylistBox.FormattingEnabled = true;
             this.librarylistBox.HorizontalExtent = 1000;
             this.librarylistBox.HorizontalScrollbar = true;
+            this.librarylistBox.ItemHeight = 23;
             this.librarylistBox.Location = new System.Drawing.Point(531, 49);
             this.librarylistBox.Name = "librarylistBox";
-            this.librarylistBox.Size = new System.Drawing.Size(264, 316);
+            this.librarylistBox.Size = new System.Drawing.Size(264, 303);
             this.librarylistBox.TabIndex = 0;
             this.librarylistBox.SelectedIndexChanged += new System.EventHandler(this.songslistBox_SelectedIndexChanged);
             this.librarylistBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.songslistBox_KeyDown);
@@ -155,7 +160,7 @@
             this.durationLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.durationLabel.Location = new System.Drawing.Point(220, 23);
             this.durationLabel.Name = "durationLabel";
-            this.durationLabel.Size = new System.Drawing.Size(49, 13);
+            this.durationLabel.Size = new System.Drawing.Size(72, 23);
             this.durationLabel.TabIndex = 100;
             this.durationLabel.Text = "Length: ";
             this.durationLabel.Visible = false;
@@ -179,7 +184,7 @@
             this.queueLabel.AutoSize = true;
             this.queueLabel.Location = new System.Drawing.Point(528, 32);
             this.queueLabel.Name = "queueLabel";
-            this.queueLabel.Size = new System.Drawing.Size(92, 13);
+            this.queueLabel.Size = new System.Drawing.Size(135, 23);
             this.queueLabel.TabIndex = 13;
             this.queueLabel.Text = "Songs in Queue:";
             this.queueLabel.Visible = false;
@@ -190,7 +195,7 @@
             this.playlistBox.Location = new System.Drawing.Point(582, 373);
             this.playlistBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.playlistBox.Name = "playlistBox";
-            this.playlistBox.Size = new System.Drawing.Size(132, 21);
+            this.playlistBox.Size = new System.Drawing.Size(132, 31);
             this.playlistBox.TabIndex = 2;
             this.playlistBox.SelectedIndexChanged += new System.EventHandler(this.playlistBox_SelectedIndexChanged);
             this.playlistBox.TextChanged += new System.EventHandler(this.playlistBox_TextChanged);
@@ -203,7 +208,7 @@
             this.searchTextBox.Location = new System.Drawing.Point(582, 397);
             this.searchTextBox.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(132, 22);
+            this.searchTextBox.Size = new System.Drawing.Size(132, 29);
             this.searchTextBox.TabIndex = 1;
             this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
             // 
@@ -213,7 +218,7 @@
             this.searchLabel.Location = new System.Drawing.Point(534, 400);
             this.searchLabel.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.searchLabel.Name = "searchLabel";
-            this.searchLabel.Size = new System.Drawing.Size(44, 13);
+            this.searchLabel.Size = new System.Drawing.Size(65, 23);
             this.searchLabel.TabIndex = 16;
             this.searchLabel.Text = "Search:";
             // 
@@ -223,7 +228,7 @@
             this.playlistLabel.Location = new System.Drawing.Point(528, 376);
             this.playlistLabel.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.playlistLabel.Name = "playlistLabel";
-            this.playlistLabel.Size = new System.Drawing.Size(50, 13);
+            this.playlistLabel.Size = new System.Drawing.Size(73, 23);
             this.playlistLabel.TabIndex = 17;
             this.playlistLabel.Text = "Playlists:";
             // 
@@ -283,6 +288,8 @@
             // topPanel
             // 
             this.topPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.topPanel.Controls.Add(this.minimumbox);
+            this.topPanel.Controls.Add(this.maximizebox);
             this.topPanel.Controls.Add(this.pictureBox1);
             this.topPanel.Controls.Add(this.githublinkBox);
             this.topPanel.Controls.Add(this.closeBox);
@@ -297,6 +304,28 @@
             this.topPanel.MouseHover += new System.EventHandler(this.MouseHover);
             this.topPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseMove);
             this.topPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseUp);
+            // 
+            // minimumbox
+            // 
+            this.minimumbox.Image = global::Music_Player.Properties.Resources.min2;
+            this.minimumbox.Location = new System.Drawing.Point(706, 3);
+            this.minimumbox.Name = "minimumbox";
+            this.minimumbox.Size = new System.Drawing.Size(28, 20);
+            this.minimumbox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.minimumbox.TabIndex = 5;
+            this.minimumbox.TabStop = false;
+            this.minimumbox.Click += new System.EventHandler(this.minimumbox_Click);
+            // 
+            // maximizebox
+            // 
+            this.maximizebox.Image = global::Music_Player.Properties.Resources.max5;
+            this.maximizebox.Location = new System.Drawing.Point(740, 3);
+            this.maximizebox.Name = "maximizebox";
+            this.maximizebox.Size = new System.Drawing.Size(23, 20);
+            this.maximizebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.maximizebox.TabIndex = 4;
+            this.maximizebox.TabStop = false;
+            this.maximizebox.Click += new System.EventHandler(this.maximizebox_Click_1);
             // 
             // pictureBox1
             // 
@@ -320,7 +349,7 @@
             this.githublinkBox.ErrorImage = null;
             this.githublinkBox.Image = global::Music_Player.Properties.Resources.codelink;
             this.githublinkBox.InitialImage = null;
-            this.githublinkBox.Location = new System.Drawing.Point(709, 1);
+            this.githublinkBox.Location = new System.Drawing.Point(640, 1);
             this.githublinkBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.githublinkBox.Name = "githublinkBox";
             this.githublinkBox.Size = new System.Drawing.Size(23, 22);
@@ -356,7 +385,7 @@
             this.minimizeBox.ErrorImage = null;
             this.minimizeBox.Image = global::Music_Player.Properties.Resources.minimize;
             this.minimizeBox.InitialImage = null;
-            this.minimizeBox.Location = new System.Drawing.Point(735, 1);
+            this.minimizeBox.Location = new System.Drawing.Point(666, 1);
             this.minimizeBox.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.minimizeBox.Name = "minimizeBox";
             this.minimizeBox.Size = new System.Drawing.Size(31, 22);
@@ -405,7 +434,7 @@
             this.deviceBox.FormattingEnabled = true;
             this.deviceBox.Location = new System.Drawing.Point(85, 422);
             this.deviceBox.Name = "deviceBox";
-            this.deviceBox.Size = new System.Drawing.Size(168, 21);
+            this.deviceBox.Size = new System.Drawing.Size(168, 31);
             this.deviceBox.Sorted = true;
             this.deviceBox.TabIndex = 3;
             this.toolTip1.SetToolTip(this.deviceBox, "Audio Device Selector");
@@ -620,7 +649,7 @@
             this.noLibraryLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.noLibraryLabel.Location = new System.Drawing.Point(605, 58);
             this.noLibraryLabel.Name = "noLibraryLabel";
-            this.noLibraryLabel.Size = new System.Drawing.Size(118, 13);
+            this.noLibraryLabel.Size = new System.Drawing.Size(177, 23);
             this.noLibraryLabel.TabIndex = 206;
             this.noLibraryLabel.Text = "No Library Connected";
             this.noLibraryLabel.Visible = false;
@@ -671,20 +700,21 @@
             this.WindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.WindowsMediaPlayer_PlayStateChange);
             this.WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(this.WindowsMediaPlayer_MediaChange);
             this.WindowsMediaPlayer.KeyUpEvent += new AxWMPLib._WMPOCXEvents_KeyUpEventHandler(this.VideoContainer_KeyUp);
+            this.WindowsMediaPlayer.Enter += new System.EventHandler(this.WindowsMediaPlayer_Enter);
             // 
             // configureLabel
             // 
             this.configureLabel.AutoSize = true;
             this.configureLabel.Location = new System.Drawing.Point(273, 425);
             this.configureLabel.Name = "configureLabel";
-            this.configureLabel.Size = new System.Drawing.Size(74, 13);
+            this.configureLabel.Size = new System.Drawing.Size(113, 23);
             this.configureLabel.TabIndex = 207;
             this.configureLabel.Text = "👈 Configure";
             this.configureLabel.Visible = false;
             // 
             // MusicPlayer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(796, 454);
@@ -719,6 +749,8 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Click += new System.EventHandler(this.Form1_Click);
             this.topPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.minimumbox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maximizebox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).EndInit();
@@ -792,6 +824,8 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolTip searchTooltip;
         public System.Windows.Forms.Label noLibraryLabel;
+        private System.Windows.Forms.PictureBox maximizebox;
+        private System.Windows.Forms.PictureBox minimumbox;
     }
 }
 

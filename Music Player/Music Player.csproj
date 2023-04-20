@@ -255,6 +255,21 @@
   <ItemGroup>
     <None Include="img\logo.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Max3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\max4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\min1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\min2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\max5.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -1208,6 +1208,26 @@ namespace Music_Player
                 openplayButton.PerformClick();
             }
         }
+        
+
+      
+        
+        private void maximizebox_Click_1(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Maximized;
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.Bounds = Screen.PrimaryScreen.Bounds;
+        }
+
+        private void WindowsMediaPlayer_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void minimumbox_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+        }
 
         private void vizButton_Click(object sender, EventArgs e)
         {
