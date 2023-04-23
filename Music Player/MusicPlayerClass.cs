@@ -6,7 +6,6 @@ using CSCore.Streams.Effects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Music_Player
@@ -128,17 +127,20 @@ namespace Music_Player
             if (_soundOut != null)
                 _soundOut.Pause();
         }
-        public int Shuffle(ListBox songsListBox)
+        public List<int> Shuffle(List<int> songIndexes)
         {
-            // shuffle functionality generates a random number within an array of indexes from the listbox
-            // and changes the currently selected index
             var random = new Random();
-            int[] indexes = new int[songsListBox.Items.Count];
-            for (var i = 0; i < indexes.Length; i += 1)
-                indexes[i] = i;
-            List<int> list = indexes.ToList();
-            int newIndex = random.Next(list.Count);
-            return newIndex;
+            List<int> shuffledIndexes = new List<int>();
+
+            // Add each element from the input list to the shuffledIndexes list
+            // with a randomly generated index
+            foreach (int index in songIndexes)
+            {
+                int randomIndex = random.Next(shuffledIndexes.Count + 1);
+                shuffledIndexes.Insert(randomIndex, index);
+            }
+
+            return shuffledIndexes;
         }
 
         public Equalizer GetEqualizer()
