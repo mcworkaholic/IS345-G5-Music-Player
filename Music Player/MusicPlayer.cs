@@ -62,6 +62,9 @@ namespace Music_Player
         //Create Global Variables of String Type Array to save the path of the track 
         List<string> paths;
 
+        List<int> trackIndexes = new List<int>();
+        int atIndex = 0;
+
         // variables that are set on formload event
         string connectionString;
         (Dictionary<string, List<string>>, string) devices;
@@ -264,17 +267,18 @@ namespace Music_Player
                 }
                 else
                 {
-                    // while loop ensures that the same song that is currently playing is not shuffled to next
-                    int randomizedIndex;
-                    do
+                    if (atIndex == trackIndexes.Count - 1)
                     {
-                        randomizedIndex = MusicPlayerClass.Shuffle(librarylistBox);
-                    } while (randomizedIndex == librarylistBox.SelectedIndex);
+                        trackIndexes.Clear();
+                        shuffle();
+                        atIndex = 0;
+                    }
 
-                    librarylistBox.SelectedIndex = randomizedIndex;
+                    atIndex++;
+                    librarylistBox.SelectedIndex = trackIndexes[atIndex];
+                    WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
+                    Play(WindowsMediaPlayer.URL);
                 }
-                WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
-                Play(WindowsMediaPlayer.URL);
             }
             playTimer.Enabled = false;
         }
@@ -300,13 +304,26 @@ namespace Music_Player
             }
             else if (shuffleButtonClicked == true)
             {
-                // while loop ensures that the same song that is currently playing is not shuffled to next
-                while (MusicPlayerClass.Shuffle(librarylistBox) != paths.FindIndex(path => path.Contains(WindowsMediaPlayer.URL)))
+
+                if (atIndex == trackIndexes.Count - 1)
                 {
-                    librarylistBox.SelectedIndex = MusicPlayerClass.Shuffle(librarylistBox);
-                    Play(paths[librarylistBox.SelectedIndex]);
-                    break;
+                    trackIndexes.Clear();
+                    shuffle();
+                    atIndex = 0;
                 }
+
+                atIndex++;
+                librarylistBox.SelectedIndex = trackIndexes[atIndex];
+                WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
+                Play(WindowsMediaPlayer.URL);
+
+                //// while loop ensures that the same song that is currently playing is not shuffled to next
+                //while (MusicPlayerClass.Shuffle(librarylistBox) != paths.FindIndex(path => path.Contains(WindowsMediaPlayer.URL)))
+                //{
+                //    librarylistBox.SelectedIndex = MusicPlayerClass.Shuffle(librarylistBox);
+                //    Play(paths[librarylistBox.SelectedIndex]);
+                //    break;
+                //}
             }
         }
         private void Play(string songPath)
@@ -369,18 +386,39 @@ namespace Music_Player
                 }
                 else if (shuffleButtonClicked == true)
                 {
-                    // while loop ensures that the same song that is currently playing is not shuffled to next
-                    while (MusicPlayerClass.Shuffle(librarylistBox) != paths.FindIndex(path => path.Contains(WindowsMediaPlayer.URL)))
+                    if (atIndex == trackIndexes.Count - 1)
                     {
-                        librarylistBox.SelectedIndex = MusicPlayerClass.Shuffle(librarylistBox);
-                        WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
-                        Play(WindowsMediaPlayer.URL);
-                        break;
+                        trackIndexes.Clear();
+                        shuffle();
+                        atIndex = 0;
                     }
+
+                    atIndex++;
+                    librarylistBox.SelectedIndex = trackIndexes[atIndex];
+                    WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
+                    Play(WindowsMediaPlayer.URL);
+
+                    //// while loop ensures that the same song that is currently playing is not shuffled to next
+                    //while (MusicPlayerClass.Shuffle(librarylistBox) != paths.FindIndex(path => path.Contains(WindowsMediaPlayer.URL)))
+                    //{
+                    //    librarylistBox.SelectedIndex = MusicPlayerClass.Shuffle(librarylistBox);
+                    //    WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
+                    //    Play(WindowsMediaPlayer.URL);
+                    //    break;
+                    //}
                 }
             }
         }
-
+        private void shuffle()
+        {
+            List<int> indexList = new List<int>();
+            for (int i = 0; i < librarylistBox.Items.Count; i++)
+            {
+                indexList.Add(i);
+            }
+            indexList.Remove(librarylistBox.SelectedIndex);
+            trackIndexes = MusicPlayerClass.Shuffle(indexList);
+        }
         private void shuffleButton_Click(object sender, EventArgs e)
         {
             // each button click increments the global counter
@@ -394,12 +432,15 @@ namespace Music_Player
                 //set button text as indicator
                 // shuffle mode ON
                 shuffleButton.Text = "🔀 Shuffle";
+                shuffle();
             }
             else
             {
                 //set button text as indicator
                 // shuffle mode OFF
                 shuffleButton.Text = "Shuffle";
+                trackIndexes.Clear();
+                atIndex = 0;
             }
         }
         private void queueButton_Click(object sender, EventArgs e)
