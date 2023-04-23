@@ -155,9 +155,10 @@ namespace Music_Player
         }
         private void SearchDirectories(string rootDirectory)
         {
-            string exeDirectory = "C:\\Users\\Weston\\Desktop\\Music-Player\\IS345-G5-Music-Player-Origin\\Music Player\\Utilities"; // Change to relative file path instead of absolute
-            string exeName = "music_dir_finder.exe";
-            string scriptPath = Path.Combine(exeDirectory, exeName);
+            string workingDirectory = Environment.CurrentDirectory;
+            string exeDirectory = Directory.GetParent(workingDirectory).Parent.FullName + "\\Utilities";
+            string exeFile = "music_dir_finder.exe";
+            string scriptPath = Path.Combine(exeDirectory, exeFile);
 
             ProcessStartInfo startInfo = new ProcessStartInfo(scriptPath);
             startInfo.Arguments = rootDirectory;
