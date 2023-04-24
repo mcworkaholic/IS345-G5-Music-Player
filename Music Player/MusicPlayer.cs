@@ -115,22 +115,26 @@ namespace Music_Player
 
         private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
         {
-            // EDT: No need to filter for VkSnapshot anymore. This now gets handled
-            // through the constructor of GlobalKeyboardHook(...).
-            if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
+            // Stops sound from cutting out when user is typing on a diff application or webpage
+            if (this.Focused == true)
             {
-                // Now you can access both, the key and virtual code
-                Keys loggedKey = e.KeyboardData.Key;
-                int loggedVkCode = e.KeyboardData.VirtualCode;
+                // EDT: No need to filter for VkSnapshot anymore. This now gets handled
+                // through the constructor of GlobalKeyboardHook(...).
+                if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
+                {
+                    // Now you can access both, the key and virtual code
+                    Keys loggedKey = e.KeyboardData.Key;
+                    int loggedVkCode = e.KeyboardData.VirtualCode;
 
-                this.ActiveControl = null;
-                MusicPlayerClass.Volume = 0;
-                volumeBar.Value = 0;
-            }
-            else if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyUp)
-            {
-                volumeBar.Value = lastVolume;
-                MusicPlayerClass.Volume = volumeBar.Value;
+                    this.ActiveControl = null;
+                    MusicPlayerClass.Volume = 0;
+                    volumeBar.Value = 0;
+                }
+                else if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyUp)
+                {
+                    volumeBar.Value = lastVolume;
+                    MusicPlayerClass.Volume = volumeBar.Value;
+                }
             }
         }
 
@@ -592,7 +596,7 @@ namespace Music_Player
             WindowsMediaPlayer.settings.volume = 0;
             playPauseButton.Image = Properties.Resources.PausePlay;
             // Add a delegate for the MediaChange event.
-            WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(WindowsMediaPlayer_MediaChange);
+            WindowsMediaPlayer.MediaChange += new _WMPOCXEvents_MediaChangeEventHandler(WindowsMediaPlayer_MediaChange);
             // set visualization preset from windows media player
             SetCurrentEffectPreset(4);
             connectionString = dbUtils.connectionString;
