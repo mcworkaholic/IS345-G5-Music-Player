@@ -278,14 +278,12 @@ namespace Music_Player
                         CallShuffle();
                         atIndex = 0;
                     }
-
-                    atIndex++;
-                    librarylistBox.SelectedIndex = trackIndexes[atIndex];
-                    WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
-                    Play(WindowsMediaPlayer.URL);
                 }
+                playTimer.Enabled = false;
+                atIndex++;
+                WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
+                Play(WindowsMediaPlayer.URL);
             }
-            playTimer.Enabled = false;
         }
 
         private void previousBox_Click(object sender, EventArgs e)
