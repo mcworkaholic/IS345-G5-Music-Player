@@ -544,8 +544,11 @@ namespace Music_Player
             }
             paths = filePaths;
 
-            // Populate Device dropdown with the system's devices, play through default
-            LoadDevices();
+            if (deviceBox.Items.Count == 0)
+            {
+                // Populate Device dropdown with the system's devices, play through default
+                LoadDevices();
+            }
 
             // Remove setup labels
             noLibraryLabel.Visible = false;
