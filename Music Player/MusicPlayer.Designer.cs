@@ -78,6 +78,10 @@
             this.configureLabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.searchTooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.rightClickMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
@@ -97,6 +101,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clearBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).BeginInit();
+            this.rightClickMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // librarylistBox
@@ -634,12 +639,11 @@
             this.albumArtBox.Location = new System.Drawing.Point(0, 49);
             this.albumArtBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.albumArtBox.Name = "albumArtBox";
-            this.albumArtBox.Size = new System.Drawing.Size(73, 73);
+            this.albumArtBox.Size = new System.Drawing.Size(64, 61);
             this.albumArtBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.albumArtBox.TabIndex = 10;
             this.albumArtBox.TabStop = false;
-            this.albumArtBox.Click += new System.EventHandler(this.albumArtBox_Click);
-            this.albumArtBox.DoubleClick += new System.EventHandler(this.albumArtBox_DoubleClick);
+            this.albumArtBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.albumArtBox_MouseDown);
             // 
             // clearBox
             // 
@@ -670,6 +674,7 @@
             this.WindowsMediaPlayer.TabStop = false;
             this.WindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.WindowsMediaPlayer_PlayStateChange);
             this.WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(this.WindowsMediaPlayer_MediaChange);
+            this.WindowsMediaPlayer.ClickEvent += new AxWMPLib._WMPOCXEvents_ClickEventHandler(this.WindowsMediaPlayer_ClickEvent);
             this.WindowsMediaPlayer.KeyUpEvent += new AxWMPLib._WMPOCXEvents_KeyUpEventHandler(this.VideoContainer_KeyUp);
             // 
             // configureLabel
@@ -681,6 +686,47 @@
             this.configureLabel.TabIndex = 207;
             this.configureLabel.Text = "👈 Configure";
             this.configureLabel.Visible = false;
+            // 
+            // rightClickMenuStrip
+            // 
+            this.rightClickMenuStrip.AutoSize = false;
+            this.rightClickMenuStrip.BackColor = System.Drawing.SystemColors.Window;
+            this.rightClickMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showToolStripMenuItem,
+            this.hideToolStripMenuItem,
+            this.openToolStripMenuItem});
+            this.rightClickMenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
+            this.rightClickMenuStrip.Name = "rightClickMenuStrip";
+            this.rightClickMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.rightClickMenuStrip.ShowCheckMargin = true;
+            this.rightClickMenuStrip.ShowImageMargin = false;
+            this.rightClickMenuStrip.Size = new System.Drawing.Size(170, 92);
+            // 
+            // showToolStripMenuItem
+            // 
+            this.showToolStripMenuItem.BackColor = System.Drawing.SystemColors.Window;
+            this.showToolStripMenuItem.Checked = true;
+            this.showToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showToolStripMenuItem.Name = "showToolStripMenuItem";
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showToolStripMenuItem.Text = "Show Album";
+            this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
+            // 
+            // hideToolStripMenuItem
+            // 
+            this.hideToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.hideToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
+            this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hideToolStripMenuItem.Text = "Hide Album";
+            this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Text = "Open Album";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // MusicPlayer
             // 
@@ -738,6 +784,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clearBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).EndInit();
+            this.rightClickMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -792,6 +839,10 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolTip searchTooltip;
         public System.Windows.Forms.Label noLibraryLabel;
+        private System.Windows.Forms.ContextMenuStrip rightClickMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hideToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
     }
 }
 

@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -270,7 +271,7 @@ namespace Music_Player
                     if (atIndex == trackIndexes.Count - 1)
                     {
                         trackIndexes.Clear();
-                        shuffle();
+                        CallShuffle();
                         atIndex = 0;
                     }
 
@@ -308,7 +309,7 @@ namespace Music_Player
                 if (atIndex == trackIndexes.Count - 1)
                 {
                     trackIndexes.Clear();
-                    shuffle();
+                    CallShuffle();
                     atIndex = 0;
                 }
 
@@ -389,7 +390,7 @@ namespace Music_Player
                     if (atIndex == trackIndexes.Count - 1)
                     {
                         trackIndexes.Clear();
-                        shuffle();
+                        CallShuffle();
                         atIndex = 0;
                     }
 
@@ -409,7 +410,7 @@ namespace Music_Player
                 }
             }
         }
-        private void shuffle()
+        private void CallShuffle()
         {
             List<int> indexList = new List<int>();
             for (int i = 0; i < librarylistBox.Items.Count; i++)
@@ -432,7 +433,7 @@ namespace Music_Player
                 //set button text as indicator
                 // shuffle mode ON
                 shuffleButton.Text = "🔀 Shuffle";
-                shuffle();
+                CallShuffle();
             }
             else
             {
@@ -483,6 +484,7 @@ namespace Music_Player
             var currentNode = rootNode.FindNodeByFullPath(currentSongPath, songObj);
             try
             {
+                // GET IMAGE HERE
                 TagLib.File file_TAG = TagLib.File.Create(currentNode.FullPath);
                 if (file_TAG.Tag.Pictures.Length >= 1)
                 {
@@ -1225,16 +1227,6 @@ namespace Music_Player
             }
         }
 
-        private void albumArtBox_Click(object sender, EventArgs e)
-        {
-            ViewAlbum(rootNode.FindNodeByFullPath(WindowsMediaPlayer.URL, songObj).Parent);
-        }
-
-        private void albumArtBox_DoubleClick(object sender, EventArgs e)
-        {
-            albumArtBox.Visible = false;
-        }
-
         private void deviceBox_Click(object sender, EventArgs e)
         {
             WindowsMediaPlayer.Ctlcontrols.pause();
@@ -1249,6 +1241,71 @@ namespace Music_Player
                 openplayButton.PerformClick();
             }
         }
+
+        private void albumArtBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (WindowsMediaPlayer.currentMedia != null)
+            {
+                switch (e.Button)
+                {
+                    case MouseButtons.Right:
+                        {
+                            rightClickMenuStrip.Width = 130;
+                            rightClickMenuStrip.Show(this, new Point(e.X, e.Y));//places the menu at the pointer position
+                        }
+                        break;
+                }
+            }
+        }
+        private void hideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            albumArtBox.Hide();
+            showToolStripMenuItem.Checked = false;
+            hideToolStripMenuItem.Checked = true;
+        }
+
+        private void showToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
+            var currentNode = rootNode.FindNodeByFullPath(currentSongPath, songObj);
+            TagLib.File file_TAG = TagLib.File.Create(currentNode.FullPath);
+            if (file_TAG.Tag.Pictures.Length >= 1)
+            {
+                var bin = file_TAG.Tag.Pictures[0].Data.Data;
+                Image image = Image.FromStream(new MemoryStream(bin));
+                albumArtBox.Image = image;
+            }
+
+                albumArtBox.Visible = true;
+            hideToolStripMenuItem.Checked = false;
+            showToolStripMenuItem.Checked = true;
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ViewAlbum(rootNode.FindNodeByFullPath(WindowsMediaPlayer.URL, songObj).Parent);
+        }
+
+        private void WindowsMediaPlayer_ClickEvent(object sender, _WMPOCXEvents_ClickEvent e)
+        {
+            if (WindowsMediaPlayer.currentMedia != null)
+            {
+                switch (e.nButton)
+                {
+                    case 2:
+                        {
+                            rightClickMenuStrip.Width = 170;
+                            rightClickMenuStrip.Show(this, new Point(e.fX, e.fY - 17));//places the menu at the pointer position
+                        }
+                        break;
+                }
+            }
+        }
+       private void ToolStripMenuItem_MouseHover(object sender, EventArgs e)
+        {
+
+        }
+        
 
         private void vizButton_Click(object sender, EventArgs e)
         {
