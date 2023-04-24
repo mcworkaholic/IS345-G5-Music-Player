@@ -599,7 +599,6 @@ namespace Music_Player
             {
                 LoadLibrary(startupPath);
                 AddSearchSource();
-                LoadDevices();
 
                 // Add Playlists
                 GetPlaylists("Load");
