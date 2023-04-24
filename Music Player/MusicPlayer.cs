@@ -269,6 +269,9 @@ namespace Music_Player
                         // if at the end of the selected list, jump to the first song (index 0 of current list of songs)
                         librarylistBox.SelectedIndex = 0;
                     }
+                    int currentIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(librarylistBox.SelectedItem.ToString(), songObj).FullPath));
+                    WindowsMediaPlayer.URL = paths[currentIndex];
+                    librarylistBox.SelectedIndex = currentIndex;
                 }
                 else
                 {
@@ -278,12 +281,13 @@ namespace Music_Player
                         CallShuffle();
                         atIndex = 0;
                     }
+                    atIndex++;
+                    WindowsMediaPlayer.URL = paths[trackIndexes[atIndex]];
+                    librarylistBox.SelectedIndex = trackIndexes[atIndex];
                 }
-                playTimer.Enabled = false;
-                atIndex++;
-                WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
                 Play(WindowsMediaPlayer.URL);
             }
+            playTimer.Enabled = false;
         }
 
         private void previousBox_Click(object sender, EventArgs e)
