@@ -31,7 +31,10 @@ namespace Music_Player
                 using (SQLiteConnection connection = new SQLiteConnection($"Data Source={dbPath}"))
                 {
                     connection.Open();
-                    string createTables = "CREATE TABLE user (\r\n  user_id INTEGER PRIMARY KEY AUTOINCREMENT,\r\n  username VARCHAR(50) UNIQUE NOT NULL,\r\n  password TEXT NOT NULL,\r\n  default_startup_folder TEXT\r\n);\r\n\r\nCREATE TABLE playlist (\r\n  playlist_id INTEGER PRIMARY KEY AUTOINCREMENT,\r\n  user_id INTEGER NOT NULL,\r\n  playlist_name VARCHAR(50) NOT NULL COLLATE NOCASE UNIQUE, \r\n  FOREIGN KEY (user_id) REFERENCES user (user_id)\r\n);\r\n\r\nCREATE TABLE playlist_song (\r\n  playlist_song_id INTEGER PRIMARY KEY,\r\n  playlist_id INTEGER NOT NULL,\r\n  song_id INTEGER NOT NULL,\r\n  FOREIGN KEY (playlist_id) REFERENCES playlist(playlist_id),\r\n  FOREIGN KEY (song_id) REFERENCES song(song_id)\r\n);\r\n\r\nCREATE TABLE song (\r\n  song_id INTEGER PRIMARY KEY AUTOINCREMENT,\r\n  song_display_name VARCHAR(50) NOT NULL,\r\n  song_artist TEXT NOT NULL,\r\n  song_album TEXT NOT NULL,\r\n  song_genre TEXT,\r\n  song_release TEXT,\r\n  song_duration INTEGER\r\n);";
+                    string createTables = "CREATE TABLE user, (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username VARCHAR(50) UNIQUE NOT NULL, password TEXT NOT NULL, default_startup_folder TEXT;  " +
+                        "CREATE TABLE playlist ( playlist_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, playlist_name VARCHAR(50) NOT NULL COLLATE NOCASE UNIQUE, FOREIGN KEY (user_id) REFERENCES user (user_id)); " +
+                        "CREATE TABLE playlist_song (playlist_song_id INTEGER PRIMARY KEY, playlist_id INTEGER NOT NULL, song_id INTEGER NOT NULL, FOREIGN KEY (playlist_id) REFERENCES playlist(playlist_id), FOREIGN KEY (song_id) REFERENCES song(song_id));" +
+                        "CREATE TABLE song (song_id INTEGER PRIMARY KEY AUTOINCREMENT, song_display_name VARCHAR(50) NOT NULL, song_artist TEXT NOT NULL, song_album TEXT NOT NULL, song_genre TEXT, song_release TEXT, song_duration INTEGER);";
                     using (SQLiteCommand command = new SQLiteCommand(createTables, connection))
                     {
                         command.ExecuteNonQuery();
@@ -136,6 +139,12 @@ namespace Music_Player
                         }
                     }
                 }
+                string scldInsert = "INSERT INTO soundcloud_details (user_id) VALUES (@user_id)";
+                using (SQLiteCommand command = new SQLiteCommand(scldInsert, connection))
+                {
+                    command.Parameters.AddWithValue("@user_id", Program.user_id);
+                    command.ExecuteNonQuery();
+                }
                 string playlistInsert = "INSERT INTO playlist (user_id, playlist_name) VALUES (@user_id, 'Library')";
                 using (SQLiteCommand command = new SQLiteCommand(playlistInsert, connection))
                 {
@@ -234,8 +243,7 @@ namespace Music_Player
         public DataTable GetUserConfig()
         {
             DataTable dt = new DataTable();
-            string sql = "SELECT username AS 'Application Username', default_startup_folder AS 'Music Folder', FROM user " +
-                "WHERE user.user_id = @user_id;";
+            string sql = "SELECT username AS 'Application Username', default_startup_folder AS 'Music Folder' FROM user WHERE user_id = @user_id;";
             using (SQLiteConnection connection = new SQLiteConnection($"Data Source={connectionString}"))
             {
                 using (SQLiteCommand command = new SQLiteCommand(sql, connection))

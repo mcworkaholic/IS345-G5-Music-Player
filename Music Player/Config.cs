@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Music_Player
@@ -38,8 +39,6 @@ namespace Music_Player
             dataGridView1.DataSource = bindingSource;
             dataGridView1.Columns[0].Width = 160;
             dataGridView1.Columns[1].Width = 210;
-            dataGridView1.Columns[2].Width = 210;
-            dataGridView1.Columns[3].Width = 210;
             dataGridView1.Columns[0].ReadOnly = true;
         }
         private void searchButton_Click(object sender, EventArgs e)
@@ -240,5 +239,17 @@ namespace Music_Player
         //        e.Handled = true;
         //    }
         //}
+
+        //rounded corners
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // width of ellipse
+            int nHeightEllipse // height of ellipse
+        );
     }
 }
