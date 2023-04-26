@@ -14,9 +14,6 @@ namespace Music_Player
         private BindingSource bindingSource = new BindingSource();
         private string connectionString;
         readonly string default_startup_folder = "default_startup_folder";
-        readonly string scld_client_id = "scld_client_id";
-        readonly string scld_auth_token = "scld_auth_token";
-        readonly string soundcloud_details = "soundcloud_details";
         readonly string user = "user";
         bool isMoving;
         int movX;
@@ -77,8 +74,6 @@ namespace Music_Player
         {
             // Commit all current values, couldn't get sql adapter to work properly
             dbUtils.UpdateChanges(user, default_startup_folder, dataGridView1.Rows[0].Cells[1].Value.ToString());
-            dbUtils.UpdateChanges(soundcloud_details, scld_client_id, dataGridView1.Rows[0].Cells[2].Value.ToString());
-            dbUtils.UpdateChanges(soundcloud_details, scld_auth_token, dataGridView1.Rows[0].Cells[3].Value.ToString());
             this.Refresh();
             GetData(connectionString);
             form1.LoadLibrary(dbUtils.GetStartUpFolder());

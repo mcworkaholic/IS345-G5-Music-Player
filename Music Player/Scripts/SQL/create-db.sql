@@ -5,14 +5,6 @@ CREATE TABLE user (
   default_startup_folder TEXT
 );
 
-CREATE TABLE soundcloud_details (
-  scld_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id INTEGER NOT NULL,
-  scld_client_id TEXT,
-  scld_auth_token TEXT,
-  FOREIGN KEY (user_id) REFERENCES user (user_id)
-);
-
 CREATE TABLE playlist (
   playlist_id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER NOT NULL,
