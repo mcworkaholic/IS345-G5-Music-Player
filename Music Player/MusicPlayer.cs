@@ -27,14 +27,28 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Windows.Forms;
+using WMPLib;
 using Cursors = System.Windows.Forms.Cursors;
 
 namespace Music_Player
 {
     public partial class MusicPlayer : Form
     {
+        //rounded corners
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // width of ellipse
+            int nHeightEllipse // height of ellipse
+        );
+
         private MusicPlayerClass MusicPlayerClass = new MusicPlayerClass(); //создание объекта музыкального плеера
 
         private GlobalKeyboardHook _globalKeyboardHook; // initiate
@@ -97,6 +111,7 @@ namespace Music_Player
         public MusicPlayer()
         {
             InitializeComponent();
+            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 10, 10));
         }
 
         public string GlobalConnectionString
@@ -598,7 +613,7 @@ namespace Music_Player
             WindowsMediaPlayer.settings.volume = 0;
             playPauseButton.Image = Properties.Resources.PausePlay;
             // Add a delegate for the MediaChange event.
-            WindowsMediaPlayer.MediaChange += new _WMPOCXEvents_MediaChangeEventHandler(WindowsMediaPlayer_MediaChange);
+            WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(WindowsMediaPlayer_MediaChange);
             // set visualization preset from windows media player
             SetCurrentEffectPreset(4);
             connectionString = dbUtils.connectionString;
@@ -1313,7 +1328,6 @@ namespace Music_Player
         {
 
         }
-        
 
         private void vizButton_Click(object sender, EventArgs e)
         {

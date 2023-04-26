@@ -1,19 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Drawing.Drawing2D;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using BC = BCrypt.Net.BCrypt;
 using TextBox = System.Windows.Forms.TextBox;
+using System.Drawing.Imaging;
 
 namespace Music_Player
 {
     public partial class loginForm : Form
     {
+        //rounded corners
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // width of ellipse
+            int nHeightEllipse // height of ellipse
+        );
+
         MusicPlayer form1 = new MusicPlayer();
         public loginForm()
         {
             InitializeComponent();
+            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 15, 15));
         }
+
         private DBUtils dbUtils = new DBUtils();
 
         // for moving borderless form
