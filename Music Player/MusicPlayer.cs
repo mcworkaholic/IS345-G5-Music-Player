@@ -1313,14 +1313,17 @@ namespace Music_Player
         {
             if (WindowsMediaPlayer.currentMedia != null)
             {
-                switch (e.nButton)
+                if (WindowsMediaPlayer.fullScreen == false)
                 {
-                    case 2:
-                        {
-                            rightClickMenuStrip.Width = 170;
-                            rightClickMenuStrip.Show(this, new Point(e.fX, e.fY - 17));//places the menu at the pointer position
-                        }
-                        break;
+                    switch (e.nButton)
+                    {
+                        case 2:
+                            {
+                                rightClickMenuStrip.Width = 170;
+                                rightClickMenuStrip.Show(this, new Point(e.fX, e.fY - 17));//places the menu at the pointer position
+                            }
+                            break;
+                    }
                 }
             }
         }
