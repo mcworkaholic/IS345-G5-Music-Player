@@ -160,6 +160,14 @@ namespace Music_Player
                         {
                             // Second click: perform insert and close form
                             dbUtils.InsertUser(usertextBox.Text, passwordtextBox.Text);
+                            username = usertextBox.Text;
+                            password = passwordtextBox.Text;
+                            Program.OpenForm1OnClose = true;
+                            MessageBox.Show($"Account created for user {usertextBox.Text}. Please continue to login with your new credentials.");
+                            backButton.PerformClick();
+                            usertextBox.Text = username;
+                            passwordtextBox.Text = password;
+                            loginButton.Focus();
                         }
                         catch (SQLiteException ex)
                         {
@@ -173,17 +181,6 @@ namespace Music_Player
                                 passView.Visible = false;
                                 cnfmView.Visible = false;
                                 MessageBox.Show("Username already exists. Please choose a different username.", "Username In Use", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                            else
-                            {
-                                username = usertextBox.Text;
-                                password = passwordtextBox.Text;
-                                Program.OpenForm1OnClose = true;
-                                MessageBox.Show($"Account created for user {usertextBox.Text}. Please continue to login with your new credentials.");
-                                backButton.PerformClick();
-                                usertextBox.Text = username;
-                                passwordtextBox.Text = password;
-                                loginButton.Focus();
                             }
                         }
                     }
@@ -206,53 +203,53 @@ namespace Music_Player
         private void loginButton_Click(object sender, EventArgs e)
         {
             string storedHash = dbUtils.GetHash(usertextBox.Text);
-            if (passwordtextBox.Text.Length > 0 && usertextBox.Text.Length > 0)
-            {
-                try
+                if (passwordtextBox.Text.Length > 0 && usertextBox.Text.Length > 0)
                 {
-                    if (BC.Verify(passwordtextBox.Text, storedHash))
+                    try
+                    {
+                        if (BC.Verify(passwordtextBox.Text, storedHash))
 
-                    {
-                        Program.OpenForm1OnClose = true;
-                        this.Close();
-                        this.Dispose();
-                    }
-                    else
-                    {
-                        // Passwords don't match, so deny login
-                        MessageBox.Show("Invalid username or password.", "Invalid Credentials", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        usrerrBox.Visible = true;
-                        pwderrBox.Visible = true;
-                    }
-                }
-                catch (System.ArgumentException)
-                {
-                    // username not found, so deny login
-                    MessageBox.Show("Invalid username, please create an account.", "Invalid Credentials", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    usrerrBox.Visible = true;
-                    pwderrBox.Visible = true;
-                }
-
-            }
-            else
-            {
-                foreach (TextBox textbox in TextboxList)
-                {
-                    if (textbox.Text == string.Empty)
-                    {
-                        if (textbox == usertextBox)
                         {
-                            usrerrBox.Visible = true;
+                            Program.OpenForm1OnClose = true;
+                            this.Close();
+                            this.Dispose();
                         }
-                        else if (textbox == passwordtextBox)
+                        else
                         {
+                            // Passwords don't match, so deny login
+                            MessageBox.Show("Invalid username or password.", "Invalid Credentials", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            usrerrBox.Visible = true;
                             pwderrBox.Visible = true;
                         }
                     }
+                    catch (System.ArgumentException)
+                    {
+                        // username not found, so deny login
+                        MessageBox.Show("Invalid username, please create an account.", "Invalid Credentials", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        usrerrBox.Visible = true;
+                        pwderrBox.Visible = true;
+                    }
+
+                }
+                else
+                {
+                    foreach (TextBox textbox in TextboxList)
+                    {
+                        if (textbox.Text == string.Empty)
+                        {
+                            if (textbox == usertextBox)
+                            {
+                                usrerrBox.Visible = true;
+                            }
+                            else if (textbox == passwordtextBox)
+                            {
+                                pwderrBox.Visible = true;
+                            }
+                        }
+                    }
                 }
             }
-        }
-
+        
         private void backButton_Click(object sender, EventArgs e)
         {
             ResetState();
