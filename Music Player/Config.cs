@@ -1,10 +1,12 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using BC = BCrypt.Net.BCrypt;
 
 namespace Music_Player
 {
@@ -12,13 +14,32 @@ namespace Music_Player
     {
         private DBUtils dbUtils = new DBUtils();
         MusicPlayer form1 = (MusicPlayer)ActiveForm;
-        private BindingSource bindingSource = new BindingSource();
         private string connectionString;
-        readonly string default_startup_folder = "default_startup_folder";
-        readonly string user = "user";
+
+        // can be null, 0, or 1, where 0 or null = false, 1 = true
+        public string encryptAfterExit;
+
+        // form movement
         bool isMoving;
         int movX;
         int movY;
+
+        // indicators for whether values have been changed or clicked
+        bool checkChanged = false;
+        bool libChanged = false;
+        bool passChanged = false;
+        bool passClicked = false;
+        bool refreshClicked = false;
+
+        // counter for odd, even clicks
+        int passclickCount;
+
+        // Database values
+        string username;
+        string password;
+        string defaultStartupFolder;
+        string encryptOnExit;
+
         public Config()
         {
             InitializeComponent();
@@ -35,11 +56,32 @@ namespace Music_Player
         }
         private void GetData(string connectionString)
         {
-            bindingSource.DataSource = dbUtils.GetUserConfig();
-            dataGridView1.DataSource = bindingSource;
-            dataGridView1.Columns[0].Width = 160;
-            dataGridView1.Columns[1].Width = 210;
-            dataGridView1.Columns[0].ReadOnly = true;
+            List<string> userConfig = dbUtils.GetUserConfig();
+            if (userConfig != null)
+            {
+                username = userConfig[0];
+                password = userConfig[1];
+                defaultStartupFolder = userConfig[2];
+                encryptAfterExit = userConfig[3];
+
+                userBox.Text = username;
+                passBox.Text = password;
+                libraryBox.Text = defaultStartupFolder;
+
+                switch (encryptAfterExit)
+                {
+                    case "null":
+                        encryptcheckBox.Checked = false; 
+                        break;
+                    case "False":
+                        encryptcheckBox.Checked = false;
+                        break;
+                    case "True":
+                        encryptcheckBox.Checked = true;
+                        break;
+                }
+
+            }
         }
         private void searchButton_Click(object sender, EventArgs e)
         {
@@ -48,38 +90,46 @@ namespace Music_Player
             dialog.IsFolderPicker = true;
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                dataGridView1.Rows[0].Cells[1].Value = dialog.FileName;
+                libraryBox.Text = dialog.FileName;
                 refreshButton.Enabled = true;
+                libChanged = true;
                 this.Focus();
                 refreshButton.Focus();
             }
         }
-        private void dataGridView1_CellEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            refreshButton.Enabled = true;
-            // Check if the changed cell is the desired cell
-            if (e.ColumnIndex == 1 && e.RowIndex == 0)
-            {
-                // Show the button
-                searchButton.Visible = true;
-            }
-            else
-            {
-                // Hide the button
-                searchButton.Visible = false;
-            }
-        }
         private void refreshButton_Click(object sender, EventArgs e)
         {
-            // Commit all current values, couldn't get sql adapter to work properly
-            dbUtils.UpdateChanges(user, default_startup_folder, dataGridView1.Rows[0].Cells[1].Value.ToString());
+            if (checkChanged)
+            {
+                dbUtils.UpdateChanges("user", "encrypt_on_exit", encryptAfterExit.ToString());
+            }
+            if (libChanged)
+            {
+                dbUtils.UpdateChanges("user", "default_startup_folder", libraryBox.Text);
+                form1.LoadLibrary(dbUtils.GetStartUpFolder());
+            }
+            refreshClicked = true;
             this.Refresh();
-            GetData(connectionString);
-            form1.LoadLibrary(dbUtils.GetStartUpFolder());
         }
-
+        private void PromptForSave()
+        {
+            // Prompt for saving changes
+            DialogResult dialogResult = MessageBox.Show("Changes were detected. Would you like to save them before closing?", "Save Changes", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                //Commit changes, then close
+                refreshButton.PerformClick();
+            }
+        }
         private void exitBox_Click(object sender, EventArgs e)
         {
+            if (!refreshClicked)
+            {
+                if (passChanged || libChanged || checkChanged)
+                {
+                    PromptForSave();
+                }
+            }
             this.Close();
             this.Dispose();
         }
@@ -120,17 +170,7 @@ namespace Music_Player
             isMoving = false;
         }
 
-        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            refreshButton.Enabled = true;
-        }
-
         private void linkBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            goButton.Visible = true;
-        }
-
-        private void goButton_Click(object sender, EventArgs e)
         {
             if (linkBox.SelectedIndex > -1)
             {
@@ -149,6 +189,9 @@ namespace Music_Player
         }
         private void SearchDirectories(string rootDirectory)
         {
+            searchingLabel.Visible = true;
+            searchingLabel.BringToFront();
+
             string workingDirectory = Environment.CurrentDirectory;
             string exeDirectory = Directory.GetParent(workingDirectory).Parent.FullName + "\\Utilities";
             string exeFile = "music_dir_finder.exe";
@@ -172,7 +215,9 @@ namespace Music_Player
                     Invoke(new Action(() =>
                     {
                         if (!directorieslistBox.Items.Contains(e.Data))
+                        {
                             searchingLabel.Visible = false;
+                        }
                         directorieslistBox.Items.Add(e.Data);
                     }));
                 }
@@ -204,7 +249,6 @@ namespace Music_Player
                 directorieslistBox.Visible = true;
                 backBox.Visible = true;
                 backBox.BringToFront();
-                usageLabel.Text = "Directory(s):";
                 directorieslistBox.HorizontalScrollbar = true;
                 e.Handled = true;
             }
@@ -212,7 +256,6 @@ namespace Music_Player
         private void backBox_Click(object sender, EventArgs e)
         {
             directorieslistBox.Visible = false;
-            usageLabel.Text = "Click in the grid to start editing";
             backBox.Visible = false;
         }
 
@@ -226,20 +269,6 @@ namespace Music_Player
             Process.Start("explorer.exe", selectedDirectory);
         }
 
-        //private void DataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
-        //{
-        //    // Vertical text from column 0, or adjust below, if first column(s) to be skipped
-        //    if (e.RowIndex == -1 && e.ColumnIndex >= 0)
-        //    {
-        //        e.PaintBackground(e.CellBounds, true);
-        //        e.Graphics.TranslateTransform(e.CellBounds.Left, e.CellBounds.Bottom);
-        //        e.Graphics.RotateTransform(270);
-        //        e.Graphics.DrawString(e.FormattedValue.ToString(), e.CellStyle.Font, Brushes.Black, 5, 5);
-        //        e.Graphics.ResetTransform();
-        //        e.Handled = true;
-        //    }
-        //}
-
         //rounded corners
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
@@ -251,5 +280,107 @@ namespace Music_Player
             int nWidthEllipse, // width of ellipse
             int nHeightEllipse // height of ellipse
         );
+
+        private void editButton_Click(object sender, EventArgs e)
+        {
+            foreach (Control control in configPanel.Controls)
+            {
+                if(control is TextBox)
+                {
+                    control.Enabled = true;
+                }
+            }
+        }
+
+        private void libraryBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            searchButton.Visible = true;
+        }
+
+        private void encryptcheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            refreshButton.Enabled = true;
+            checkChanged = true;
+
+            switch (encryptcheckBox.CheckState)
+            {
+                case CheckState.Checked: encryptAfterExit = "True"; break;
+                case CheckState.Unchecked: encryptAfterExit = "False"; break;
+            }
+        }
+
+        private void libraryBox_TextChanged(object sender, EventArgs e)
+        {
+            refreshButton.Enabled = true;
+        }
+
+        private void passBox_Click(object sender, EventArgs e)
+        {
+            passBox.SelectionLength = 0;
+            if (passBox.Enabled == true)
+            {
+
+                passclickCount++;
+                passClicked = (passclickCount % 2 == 1);
+                if (passclickCount % 2 == 1)
+                {
+                    oldpassLabel.Visible = true;
+                    newpassLabel.Visible = true;
+                    oldpassBox.Visible = true;
+                    newpassBox.Visible = true;
+                }
+                else
+                {
+                    oldpassLabel.Visible = false;
+                    newpassLabel.Visible = false;
+                    oldpassBox.Visible = false;
+                    newpassBox.Visible = false;
+                }
+            }
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            string storedHash = dbUtils.GetHash(Program.username);
+
+            if (!BC.Verify(oldpassBox.Text, storedHash))
+            {
+                MessageBox.Show("Old password doesn't match your records. Please try again.", "Password Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (newpassBox.Text != null)
+            {
+                dbUtils.UpdateChanges("user", "password", dbUtils.HashPassword(newpassBox.Text));
+
+                passBox.Text = dbUtils.HashPassword(newpassBox.Text);
+                passChanged = true;
+
+                // could use states here instead
+                oldpassLabel.Visible = false;
+                newpassLabel.Visible = false;
+                oldpassBox.Visible = false;
+                newpassBox.Visible = false;
+                saveButton.Visible = false;
+                passBox.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("New password must not be empty. Please try again.", "Password Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void newpassBox_TextChanged(object sender, EventArgs e)
+        {
+            saveButton.Visible = true;
+        }
+
+        private void configPanel_Click(object sender, EventArgs e)
+        {
+            this.ActiveControl = null;
+        }
+
+        private void passBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            passBox.SelectionLength = 0;
+        }
     }
 }
