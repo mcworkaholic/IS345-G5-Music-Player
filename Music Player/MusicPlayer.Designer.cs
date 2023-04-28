@@ -63,6 +63,7 @@
             this.playPauseButton = new System.Windows.Forms.PictureBox();
             this.volumeIconBox = new System.Windows.Forms.PictureBox();
             this.settingsBox = new System.Windows.Forms.PictureBox();
+            this.nolibbox = new System.Windows.Forms.PictureBox();
             this.volumeBar = new System.Windows.Forms.TrackBar();
             this.audioControllerPanel = new System.Windows.Forms.Panel();
             this.audioPosTrackBar = new System.Windows.Forms.TrackBar();
@@ -75,13 +76,13 @@
             this.albumArtBox = new System.Windows.Forms.PictureBox();
             this.clearBox = new System.Windows.Forms.PictureBox();
             this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
-            this.configureLabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.searchTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.rightClickMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configurehintLabel = new System.Windows.Forms.Label();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
@@ -93,6 +94,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nolibbox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
             this.audioControllerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.audioPosTrackBar)).BeginInit();
@@ -110,10 +112,11 @@
             this.librarylistBox.FormattingEnabled = true;
             this.librarylistBox.HorizontalExtent = 1000;
             this.librarylistBox.HorizontalScrollbar = true;
-            this.librarylistBox.Location = new System.Drawing.Point(531, 49);
+            this.librarylistBox.Location = new System.Drawing.Point(528, 49);
             this.librarylistBox.Name = "librarylistBox";
             this.librarylistBox.Size = new System.Drawing.Size(264, 316);
-            this.librarylistBox.TabIndex = 0;
+            this.librarylistBox.TabIndex = 600;
+            this.librarylistBox.TabStop = false;
             this.librarylistBox.SelectedIndexChanged += new System.EventHandler(this.songslistBox_SelectedIndexChanged);
             this.librarylistBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.songslistBox_KeyDown);
             this.librarylistBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.songslistBox_MouseDoubleClick);
@@ -129,7 +132,7 @@
             this.shuffleButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.shuffleButton.Location = new System.Drawing.Point(389, 19);
             this.shuffleButton.Name = "shuffleButton";
-            this.shuffleButton.Size = new System.Drawing.Size(59, 23);
+            this.shuffleButton.Size = new System.Drawing.Size(59, 22);
             this.shuffleButton.TabIndex = 7;
             this.shuffleButton.TabStop = false;
             this.shuffleButton.Text = "Shuffle";
@@ -145,7 +148,7 @@
             this.queueButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.queueButton.Location = new System.Drawing.Point(454, 19);
             this.queueButton.Name = "queueButton";
-            this.queueButton.Size = new System.Drawing.Size(64, 23);
+            this.queueButton.Size = new System.Drawing.Size(64, 22);
             this.queueButton.TabIndex = 8;
             this.queueButton.TabStop = false;
             this.queueButton.Text = " ➕ Queue";
@@ -168,12 +171,12 @@
             // vizButton
             // 
             this.vizButton.Enabled = false;
-            this.vizButton.Location = new System.Drawing.Point(326, 19);
+            this.vizButton.Location = new System.Drawing.Point(311, 19);
             this.vizButton.Name = "vizButton";
-            this.vizButton.Size = new System.Drawing.Size(57, 23);
+            this.vizButton.Size = new System.Drawing.Size(72, 22);
             this.vizButton.TabIndex = 12;
             this.vizButton.TabStop = false;
-            this.vizButton.Text = "Next Viz";
+            this.vizButton.Text = "Plugin";
             this.vizButton.UseVisualStyleBackColor = true;
             this.vizButton.Click += new System.EventHandler(this.vizButton_Click);
             this.vizButton.MouseLeave += new System.EventHandler(this.MouseLeave);
@@ -197,6 +200,7 @@
             this.playlistBox.Name = "playlistBox";
             this.playlistBox.Size = new System.Drawing.Size(132, 21);
             this.playlistBox.TabIndex = 2;
+            this.playlistBox.TabStop = false;
             this.playlistBox.SelectedIndexChanged += new System.EventHandler(this.playlistBox_SelectedIndexChanged);
             this.playlistBox.TextChanged += new System.EventHandler(this.playlistBox_TextChanged);
             this.playlistBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.playlistBox_KeyDown);
@@ -210,6 +214,7 @@
             this.searchTextBox.Name = "searchTextBox";
             this.searchTextBox.Size = new System.Drawing.Size(132, 22);
             this.searchTextBox.TabIndex = 1;
+            this.searchTextBox.TabStop = false;
             this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
             // 
             // searchLabel
@@ -260,7 +265,7 @@
             // openplayButton
             // 
             this.openplayButton.Enabled = false;
-            this.openplayButton.Location = new System.Drawing.Point(720, 396);
+            this.openplayButton.Location = new System.Drawing.Point(718, 396);
             this.openplayButton.Name = "openplayButton";
             this.openplayButton.Size = new System.Drawing.Size(75, 23);
             this.openplayButton.TabIndex = 20;
@@ -275,7 +280,7 @@
             // 
             this.clearQueueButton.Location = new System.Drawing.Point(706, 27);
             this.clearQueueButton.Name = "clearQueueButton";
-            this.clearQueueButton.Size = new System.Drawing.Size(89, 22);
+            this.clearQueueButton.Size = new System.Drawing.Size(87, 22);
             this.clearQueueButton.TabIndex = 21;
             this.clearQueueButton.TabStop = false;
             this.clearQueueButton.Text = "Clear Queue";
@@ -376,7 +381,7 @@
             // clearButton
             // 
             this.clearButton.Enabled = false;
-            this.clearButton.Location = new System.Drawing.Point(721, 371);
+            this.clearButton.Location = new System.Drawing.Point(718, 371);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(75, 23);
             this.clearButton.TabIndex = 27;
@@ -413,6 +418,7 @@
             this.deviceBox.Size = new System.Drawing.Size(168, 21);
             this.deviceBox.Sorted = true;
             this.deviceBox.TabIndex = 3;
+            this.deviceBox.TabStop = false;
             this.toolTip1.SetToolTip(this.deviceBox, "Audio Device Selector");
             this.deviceBox.SelectedIndexChanged += new System.EventHandler(this.deviceBox_SelectedIndexChanged);
             this.deviceBox.Click += new System.EventHandler(this.deviceBox_Click);
@@ -523,10 +529,26 @@
             this.settingsBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.settingsBox.TabIndex = 3;
             this.settingsBox.TabStop = false;
-            this.closeToolTip.SetToolTip(this.settingsBox, "More Settings");
+            this.closeToolTip.SetToolTip(this.settingsBox, "Settings");
             this.settingsBox.Click += new System.EventHandler(this.settingsBox_Click);
             this.settingsBox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.settingsBox.MouseHover += new System.EventHandler(this.MouseHover);
+            // 
+            // nolibbox
+            // 
+            this.nolibbox.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.nolibbox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.nolibbox.ErrorImage = null;
+            this.nolibbox.Image = global::Music_Player.Properties.Resources.settings;
+            this.nolibbox.InitialImage = null;
+            this.nolibbox.Location = new System.Drawing.Point(614, 340);
+            this.nolibbox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.nolibbox.Name = "nolibbox";
+            this.nolibbox.Size = new System.Drawing.Size(14, 16);
+            this.nolibbox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.nolibbox.TabIndex = 5;
+            this.nolibbox.TabStop = false;
+            this.nolibbox.Visible = false;
             // 
             // volumeBar
             // 
@@ -537,6 +559,7 @@
             this.volumeBar.Name = "volumeBar";
             this.volumeBar.Size = new System.Drawing.Size(81, 17);
             this.volumeBar.TabIndex = 203;
+            this.volumeBar.TabStop = false;
             this.volumeBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.volumeToolTip.SetToolTip(this.volumeBar, "Adjust Volume");
             this.volumeBar.Value = 90;
@@ -592,9 +615,9 @@
             this.albumPanel.Controls.Add(this.libraryAlbumArtBox);
             this.albumPanel.Controls.Add(this.backBox);
             this.albumPanel.Controls.Add(this.treeView);
-            this.albumPanel.Location = new System.Drawing.Point(532, 49);
+            this.albumPanel.Location = new System.Drawing.Point(528, 48);
             this.albumPanel.Name = "albumPanel";
-            this.albumPanel.Size = new System.Drawing.Size(264, 318);
+            this.albumPanel.Size = new System.Drawing.Size(264, 317);
             this.albumPanel.TabIndex = 205;
             this.albumPanel.Visible = false;
             // 
@@ -612,9 +635,9 @@
             // treeView
             // 
             this.treeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.treeView.Location = new System.Drawing.Point(0, 136);
+            this.treeView.Location = new System.Drawing.Point(0, 140);
             this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(260, 177);
+            this.treeView.Size = new System.Drawing.Size(264, 177);
             this.treeView.TabIndex = 0;
             this.treeView.Visible = false;
             this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseDoubleClick);
@@ -623,7 +646,7 @@
             // 
             this.noLibraryLabel.AutoSize = true;
             this.noLibraryLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.noLibraryLabel.Location = new System.Drawing.Point(605, 58);
+            this.noLibraryLabel.Location = new System.Drawing.Point(610, 70);
             this.noLibraryLabel.Name = "noLibraryLabel";
             this.noLibraryLabel.Size = new System.Drawing.Size(118, 13);
             this.noLibraryLabel.TabIndex = 206;
@@ -677,16 +700,6 @@
             this.WindowsMediaPlayer.ClickEvent += new AxWMPLib._WMPOCXEvents_ClickEventHandler(this.WindowsMediaPlayer_ClickEvent);
             this.WindowsMediaPlayer.KeyUpEvent += new AxWMPLib._WMPOCXEvents_KeyUpEventHandler(this.VideoContainer_KeyUp);
             // 
-            // configureLabel
-            // 
-            this.configureLabel.AutoSize = true;
-            this.configureLabel.Location = new System.Drawing.Point(273, 425);
-            this.configureLabel.Name = "configureLabel";
-            this.configureLabel.Size = new System.Drawing.Size(74, 13);
-            this.configureLabel.TabIndex = 207;
-            this.configureLabel.Text = "👈 Configure";
-            this.configureLabel.Visible = false;
-            // 
             // rightClickMenuStrip
             // 
             this.rightClickMenuStrip.AutoSize = false;
@@ -728,13 +741,25 @@
             this.openToolStripMenuItem.Text = "Open Album";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
+            // configurehintLabel
+            // 
+            this.configurehintLabel.AutoSize = true;
+            this.configurehintLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.configurehintLabel.Location = new System.Drawing.Point(545, 340);
+            this.configurehintLabel.Name = "configurehintLabel";
+            this.configurehintLabel.Size = new System.Drawing.Size(236, 13);
+            this.configurehintLabel.TabIndex = 300;
+            this.configurehintLabel.Text = "Click on the        symbol below to get started";
+            this.configurehintLabel.Visible = false;
+            // 
             // MusicPlayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(796, 454);
-            this.Controls.Add(this.configureLabel);
+            this.Controls.Add(this.nolibbox);
+            this.Controls.Add(this.configurehintLabel);
             this.Controls.Add(this.noLibraryLabel);
             this.Controls.Add(this.albumPanel);
             this.Controls.Add(this.audioControllerPanel);
@@ -775,6 +800,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.playPauseButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeIconBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.settingsBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nolibbox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).EndInit();
             this.audioControllerPanel.ResumeLayout(false);
             this.audioControllerPanel.PerformLayout();
@@ -835,7 +861,6 @@
         private System.Windows.Forms.PictureBox backBox;
         private System.Windows.Forms.PictureBox libraryAlbumArtBox;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label configureLabel;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolTip searchTooltip;
         public System.Windows.Forms.Label noLibraryLabel;
@@ -843,6 +868,8 @@
         private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.PictureBox nolibbox;
+        public System.Windows.Forms.Label configurehintLabel;
     }
 }
 

@@ -571,9 +571,8 @@ namespace Music_Player
                 LoadDevices();
             }
 
-            // Remove setup labels
             noLibraryLabel.Visible = false;
-            configureLabel.Visible = false;
+            nolibbox.Visible = false;
         }
         private (Dictionary<string, List<string>>, string) GetAudioDevices()
         {
@@ -618,8 +617,12 @@ namespace Music_Player
             SetCurrentEffectPreset(4);
             connectionString = dbUtils.connectionString;
             string startupPath = dbUtils.GetStartUpFolder();
+            if (deviceBox.Items.Count == 0)
+            {
+                LoadDevices();
+            }
 
-            if (startupPath != string.Empty)
+            if (startupPath != string.Empty && startupPath != null)
             {
                 LoadLibrary(startupPath);
                 AddSearchSource();
@@ -632,15 +635,15 @@ namespace Music_Player
                 searchTextBox.Enabled = true;
                 playlistBox.Enabled = true;
                 noLibraryLabel.Visible = false;
-                configureLabel.Visible = false;
             }
             else
             {
-                librarylistBox.HorizontalScrollbar = false;
-                searchTextBox.Enabled = false;
-                playlistBox.Enabled = false;
-                noLibraryLabel.Visible = true;
-                configureLabel.Visible = true;
+                 noLibraryLabel.Visible = true;
+                 configurehintLabel.Visible = true;
+                 nolibbox.Visible = true;
+                 librarylistBox.HorizontalScrollbar = false;
+                 searchTextBox.Enabled = false;
+                 playlistBox.Enabled = false;
             }
         }
         private void GetPlaylists(string action)
@@ -1331,7 +1334,6 @@ namespace Music_Player
         {
 
         }
-
         private void vizButton_Click(object sender, EventArgs e)
         {
             // To be implemented 
