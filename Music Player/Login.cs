@@ -174,15 +174,18 @@ namespace Music_Player
                                 cnfmView.Visible = false;
                                 MessageBox.Show("Username already exists. Please choose a different username.", "Username In Use", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
+                            else
+                            {
+                                username = usertextBox.Text;
+                                password = passwordtextBox.Text;
+                                Program.OpenForm1OnClose = true;
+                                MessageBox.Show($"Account created for user {usertextBox.Text}. Please continue to login with your new credentials.");
+                                backButton.PerformClick();
+                                usertextBox.Text = username;
+                                passwordtextBox.Text = password;
+                                loginButton.Focus();
+                            }
                         }
-                        username = usertextBox.Text;
-                        password = passwordtextBox.Text;
-                        Program.OpenForm1OnClose = true;
-                        MessageBox.Show($"Account created for user {usertextBox.Text}. Please continue to login with your new credentials.");
-                        backButton.PerformClick();
-                        usertextBox.Text = username;
-                        passwordtextBox.Text = password;
-                        loginButton.Focus();
                     }
                     else
                     {
