@@ -14,7 +14,7 @@ namespace Music_Player
         public string connectionString { get; set; }
 
         // Hash a password using Bcrypt
-        public static string HashPassword(string password)
+        public string HashPassword(string password)
         {
             string hashedPassword = BC.HashPassword(password);
             return (hashedPassword);
@@ -98,14 +98,23 @@ namespace Music_Player
                 using (SQLiteCommand command = new SQLiteCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@username", username);
-                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    try 
                     {
-                        if (reader.Read())
+                        using (SQLiteDataReader reader = command.ExecuteReader())
                         {
-                            storedHash = reader.GetString(0);
-                            Program.user_id = reader.GetInt32(1);
+                            if (reader.Read())
+                            {
+                                storedHash = reader.GetString(0);
+                                Program.user_id = reader.GetInt32(1);
+                                Program.username = username;
+                            }
                         }
                     }
+                    catch (SQLiteException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                   
                 }
             }
             return storedHash;
@@ -137,12 +146,6 @@ namespace Music_Player
                             Program.user_id = reader.GetInt32(1);
                         }
                     }
-                }
-                string scldInsert = "INSERT INTO soundcloud_details (user_id) VALUES (@user_id)";
-                using (SQLiteCommand command = new SQLiteCommand(scldInsert, connection))
-                {
-                    command.Parameters.AddWithValue("@user_id", Program.user_id);
-                    command.ExecuteNonQuery();
                 }
                 string playlistInsert = "INSERT INTO playlist (user_id, playlist_name) VALUES (@user_id, 'Library')";
                 using (SQLiteCommand command = new SQLiteCommand(playlistInsert, connection))
@@ -239,10 +242,9 @@ namespace Music_Player
             }
             return songs;
         }
-        public DataTable GetUserConfig()
+        public List<string> GetUserConfig()
         {
-            DataTable dt = new DataTable();
-            string sql = "SELECT username AS 'Application Username', default_startup_folder AS 'Music Folder' FROM user WHERE user_id = @user_id;";
+            string sql = "SELECT username, password, default_startup_folder, encrypt_on_exit FROM user WHERE user_id = @user_id;";
             using (SQLiteConnection connection = new SQLiteConnection($"Data Source={connectionString}"))
             {
                 using (SQLiteCommand command = new SQLiteCommand(sql, connection))
@@ -251,16 +253,34 @@ namespace Music_Player
                     try
                     {
                         connection.Open();
-                        var da = new SQLiteDataAdapter(command);
-                        da.Fill(dt);
+                        using (SQLiteDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                List<string> userValues = new List<string>
+                            {
+                                reader.IsDBNull(0) ? null : reader.GetString(0),
+                                reader.IsDBNull(1) ? null : reader.GetString(1),
+                                reader.IsDBNull(2) ? null : reader.GetString(2),
+                                reader.IsDBNull(3) ? null : reader.GetString(3)
+                            };
+                                return userValues;
+                            }
+                            else
+                            {
+                                // Handle case where no matching user is found
+                                MessageBox.Show("User not found.");
+                                return null;
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("An error occurred: " + ex.Message);
+                        MessageBox.Show("An error occurred: " + ex.StackTrace + "\n" + "\n" + ex.Message);
+                        return null;
                     }
                 }
             }
-            return dt;
         }
         public void UpdateChanges(string table, string attribute, string new_value)
         {
