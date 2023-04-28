@@ -2,7 +2,8 @@ CREATE TABLE user (
   user_id INTEGER PRIMARY KEY AUTOINCREMENT,
   username VARCHAR(50) UNIQUE NOT NULL,
   password TEXT NOT NULL,
-  default_startup_folder TEXT
+  default_startup_folder TEXT,
+  encrypt_on_exit BOOLEAN CHECK (encrypt_on_exit IN (0, 1, NULL))
 );
 
 CREATE TABLE playlist (
