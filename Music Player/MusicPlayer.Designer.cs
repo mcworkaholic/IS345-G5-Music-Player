@@ -615,7 +615,7 @@
             this.albumPanel.Controls.Add(this.libraryAlbumArtBox);
             this.albumPanel.Controls.Add(this.backBox);
             this.albumPanel.Controls.Add(this.treeView);
-            this.albumPanel.Location = new System.Drawing.Point(528, 48);
+            this.albumPanel.Location = new System.Drawing.Point(528, 49);
             this.albumPanel.Name = "albumPanel";
             this.albumPanel.Size = new System.Drawing.Size(264, 317);
             this.albumPanel.TabIndex = 205;
@@ -787,8 +787,9 @@
             this.MaximizeBox = false;
             this.Name = "MusicPlayer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MusicPlayer_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.Click += new System.EventHandler(this.Form1_Click);
+            this.Click += new System.EventHandler(this.MusicPlayer_Click);
             this.topPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).EndInit();

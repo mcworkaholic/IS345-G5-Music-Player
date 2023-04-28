@@ -20,17 +20,16 @@
 using AxWMPLib;
 using CSCore.CoreAudioAPI;
 using Microsoft.Win32;
+using System.Security.Cryptography;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Windows.Forms;
-using WMPLib;
 using Cursors = System.Windows.Forms.Cursors;
 
 namespace Music_Player
@@ -48,7 +47,7 @@ namespace Music_Player
             int nWidthEllipse, // width of ellipse
             int nHeightEllipse // height of ellipse
         );
-
+        private Config config = new Config();
         private MusicPlayerClass MusicPlayerClass = new MusicPlayerClass(); //создание объекта музыкального плеера
 
         private GlobalKeyboardHook _globalKeyboardHook; // initiate
@@ -128,6 +127,10 @@ namespace Music_Player
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
         }
 
+        // Arrays of formats for different media
+        string[] videoFormats = { ".avi", ".mp4", ".mkv", ".mov", ".wmv", ".flv", ".webm", ".mpeg", ".mpg", ".m4v" };
+        string[] audioFormats = { ".mp3", ".wav", ".flac", ".aac", ".wma", ".m4a", ".ogg", ".opus", ".alac", ".aiff" };
+
         private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
         {
             // Stops sound from cutting out when user is typing on a diff application or webpage
@@ -141,7 +144,6 @@ namespace Music_Player
                     Keys loggedKey = e.KeyboardData.Key;
                     int loggedVkCode = e.KeyboardData.VirtualCode;
 
-                    this.ActiveControl = null;
                     MusicPlayerClass.Volume = 0;
                     volumeBar.Value = 0;
                 }
@@ -194,15 +196,17 @@ namespace Music_Player
                         currentIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(librarylistBox.SelectedItem.ToString(), songObj).FullPath));
                         WindowsMediaPlayer.URL = paths[currentIndex];
                     }
+
+                    // CHECK for file extension HERE.
+                    string extension = Path.GetExtension(WindowsMediaPlayer.URL);
+                    if (videoFormats.Contains(extension))
+                        albumArtBox.Visible = false; else albumArtBox.Visible = true;
+
                     listBoxDoubleClick = true;
                     Play(WindowsMediaPlayer.URL);
                     // reset the flag
                     listBoxDoubleClick = false;
                 }
-            }
-            else
-            {
-                MessageBox.Show("No device IDs found for selected device name.");
             }
         }
 
@@ -503,18 +507,21 @@ namespace Music_Player
 
             string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
             var currentNode = rootNode.FindNodeByFullPath(currentSongPath, songObj);
-            try
+            if(currentNode != null)
             {
-                // GET IMAGE HERE
-                TagLib.File file_TAG = TagLib.File.Create(currentNode.FullPath);
-                if (file_TAG.Tag.Pictures.Length >= 1)
+                try
                 {
-                    var bin = (byte[])(file_TAG.Tag.Pictures[0].Data.Data);
-                    Image image = Image.FromStream(new MemoryStream(bin));
-                    albumArtBox.Image = image;
+                    // GET IMAGE HERE
+                    TagLib.File file_TAG = TagLib.File.Create(currentNode.FullPath);
+                    if (file_TAG.Tag.Pictures.Length >= 1)
+                    {
+                        var bin = (byte[])(file_TAG.Tag.Pictures[0].Data.Data);
+                        Image image = Image.FromStream(new MemoryStream(bin));
+                        albumArtBox.Image = image;
+                    }
                 }
+                catch (Exception ex) { MessageBox.Show("An unexpected error has occurred: " + ex.Message); }
             }
-            catch (Exception ex) { MessageBox.Show("An unexpected error has occurred: " + ex.Message); }
         }
         public void LoadLibrary(string path)
         {
@@ -859,11 +866,6 @@ namespace Music_Player
                 openplayButton.Enabled = false;
             }
         }
-        private void Form1_Click(object sender, EventArgs e)
-        {
-            this.ActiveControl = null;
-        }
-
         private void newButton_Click(object sender, EventArgs e)
         {
             if (playlistBox.Text == string.Empty)
@@ -944,10 +946,6 @@ namespace Music_Player
             playlistBox.ResetText();
             addtoplaylistButton.Enabled = false;
             openplayButton.Enabled = false;
-            if (searchTextBox.Text.Length == 0 && playlistBox.SelectedIndex == -1)
-            {
-                this.ActiveControl = null;
-            }
             clearButton.Visible = false;
 
         }
@@ -1043,7 +1041,6 @@ namespace Music_Player
                             MusicPlayerClass.Volume = volumeBar.Value;
                             WindowsMediaPlayer.Ctlcontrols.play();
                             MusicPlayerClass.Play();
-                            this.ActiveControl = null;
                         }
                     }
                     else
@@ -1057,12 +1054,10 @@ namespace Music_Player
                 }
             }
         }
-
         private void clearBox_Click(object sender, EventArgs e)
         {
             searchTextBox.Clear();
             clearBox.Visible = false;
-            this.ActiveControl = null;
         }
         public void OpenLink(string link)
         {
@@ -1332,8 +1327,63 @@ namespace Music_Player
         }
        private void ToolStripMenuItem_MouseHover(object sender, EventArgs e)
         {
-
+            // highligh gray like the other toolstrip
         }
+
+        private void MusicPlayer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (config.encryptAfterExit != null && config.encryptAfterExit == "true")
+            {
+                foreach (FileSystemTreeNode fstn in rootNode.GetAllNodesExceptRoot())
+                {
+                    if(fstn.NodeType == NodeType.File)
+                    {
+                        // encrypt contents
+                        //string password = "myPassword123"; // Replace with user's password
+                        //byte[] salt = new byte[32]; // Generate a random salt
+                        //using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+                        //{
+                        //    rng.GetBytes(salt);
+                        //}
+
+                        //byte[] key = new byte[32]; // Generate key using PBKDF2
+                        //using (Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000))
+                        //{
+                        //    key = pbkdf2.GetBytes(32);
+                        //}
+
+                        //// Encrypt the file using AES
+                        //using (Aes aes = Aes.Create())
+                        //{
+                        //    aes.Key = key;
+                        //    using (FileStream inputFileStream = new FileStream("inputFile.txt", FileMode.Open, FileAccess.Read))
+                        //    {
+                        //        using (FileStream outputFileStream = new FileStream("encryptedFile.txt", FileMode.Create, FileAccess.Write))
+                        //        {
+                        //            using (ICryptoTransform encryptor = aes.CreateEncryptor())
+                        //            {
+                        //                using (CryptoStream cryptoStream = new CryptoStream(outputFileStream, encryptor, CryptoStreamMode.Write))
+                        //                {
+                        //                    inputFileStream.CopyTo(cryptoStream);
+                        //                }
+                        //            }
+                        //        }
+                        //    }
+                        //}
+                    }
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        private void MusicPlayer_Click(object sender, EventArgs e)
+        {
+            this.ActiveControl = null;
+        }
+
         private void vizButton_Click(object sender, EventArgs e)
         {
             // To be implemented 
