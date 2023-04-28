@@ -4,6 +4,7 @@ CREATE TABLE user (
   password TEXT NOT NULL,
   default_startup_folder TEXT,
   encrypt_on_exit BOOLEAN CHECK (encrypt_on_exit IN (0, 1, NULL))
+  sbit TEXT
 );
 
 CREATE TABLE playlist (
