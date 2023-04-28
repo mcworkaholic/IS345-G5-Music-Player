@@ -60,7 +60,7 @@ namespace Music_Player
             passwordtextBox.Text = "";
             confirmtextBox.Text = "";
 
-            // The password character is an asterisk.
+            // The password character is a dot.
             passwordtextBox.PasswordChar = '•';
             confirmtextBox.PasswordChar = '•';
 
@@ -111,17 +111,18 @@ namespace Music_Player
 
         private void createButton_Click(object sender, EventArgs e)
         {
-            SetFocus(usertextBox);
-
+            string username;
+            string password;
             if (!createButtonClicked)
             {
                 buttonPanel.Location = new System.Drawing.Point(35, 99);
                 loginButton.Visible = false;
                 confirmPanel.Location = new System.Drawing.Point(3, 69);
                 confirmPanel.Visible = true;
+                backButton.Visible = true;
                 createButton.Text = "Create";
                 createButtonClicked = true;
-                backButton.Visible = true;
+                confirmtextBox.Focus();
             }
             else
             {
@@ -159,8 +160,6 @@ namespace Music_Player
                         {
                             // Second click: perform insert and close form
                             dbUtils.InsertUser(usertextBox.Text, passwordtextBox.Text);
-                            Program.OpenForm1OnClose = true;
-                            this.Close();
                         }
                         catch (SQLiteException ex)
                         {
@@ -176,6 +175,14 @@ namespace Music_Player
                                 MessageBox.Show("Username already exists. Please choose a different username.", "Username In Use", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
+                        username = usertextBox.Text;
+                        password = passwordtextBox.Text;
+                        Program.OpenForm1OnClose = true;
+                        MessageBox.Show($"Account created for user {usertextBox.Text}. Please continue to login with your new credentials.");
+                        backButton.PerformClick();
+                        usertextBox.Text = username;
+                        passwordtextBox.Text = password;
+                        loginButton.Focus();
                     }
                     else
                     {
