@@ -1,6 +1,7 @@
 ﻿using CSCore;
 using CSCore.Codecs;
 using CSCore.CoreAudioAPI;
+using CSCore.MediaFoundation;
 using CSCore.SoundOut;
 using CSCore.Streams.Effects;
 using System;
@@ -109,7 +110,7 @@ namespace Music_Player
                 _soundOut.Initialize(_waveSource);
                 if (PlaybackStopped != null) _soundOut.Stopped += PlaybackStopped;
             }
-            catch (CoreAudioAPIException ex)
+            catch (MediaFoundationException ex)
             {
                 MessageBox.Show("Error opening file: " + ex.Message);
             }
