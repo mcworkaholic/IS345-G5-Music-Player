@@ -55,6 +55,7 @@
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
             this.MinimizetoolTip = new System.Windows.Forms.ToolTip(this.components);
             this.ClosetoolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minibox)).BeginInit();
@@ -64,6 +65,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.filefinderPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // usageLabel
@@ -88,6 +90,7 @@
             // topPanel
             // 
             this.topPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.topPanel.Controls.Add(this.pictureBox1);
             this.topPanel.Controls.Add(this.exitBox);
             this.topPanel.Controls.Add(this.minibox);
             this.topPanel.Controls.Add(this.codelinkBox);
@@ -336,6 +339,21 @@
             this.searchingLabel.Text = "Searching...";
             this.searchingLabel.Visible = false;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox1.ErrorImage = null;
+            this.pictureBox1.Image = global::Music_Player.Properties.Resources.settings;
+            this.pictureBox1.InitialImage = null;
+            this.pictureBox1.Location = new System.Drawing.Point(3, 4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(13, 19);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
+            this.MinimizetoolTip.SetToolTip(this.pictureBox1, "Minimize");
+            // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -357,6 +375,7 @@
             this.Controls.Add(this.usageLabel);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Config";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Configuration";
@@ -372,6 +391,7 @@
             this.filefinderPanel.ResumeLayout(false);
             this.filefinderPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -403,5 +423,6 @@
         private System.Windows.Forms.ToolTip toolTip2;
         private System.Windows.Forms.ToolTip ClosetoolTip;
         private System.Windows.Forms.ToolTip MinimizetoolTip;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
