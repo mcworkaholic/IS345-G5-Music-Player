@@ -3,7 +3,7 @@ CREATE TABLE user (
   username VARCHAR(50) UNIQUE NOT NULL,
   password TEXT NOT NULL,
   default_startup_folder TEXT,
-  encrypt_on_exit BOOLEAN CHECK (encrypt_on_exit IN (0, 1, NULL))
+  encrypt_on_exit TEXT CHECK (encrypt_on_exit IN ('True', 'False', 'NULL')),
   sbit TEXT
 );
 
