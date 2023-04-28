@@ -7,6 +7,7 @@ using CSCore.Streams.Effects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Music_Player
@@ -112,7 +113,7 @@ namespace Music_Player
             }
             catch (MediaFoundationException ex)
             {
-                MessageBox.Show("Error opening file: " + ex.Message);
+                MessageBox.Show("Error opening file: " + ex.Message + " File extension is {" + Path.GetExtension(filename) + "}");
             }
         }
         public void Play()
