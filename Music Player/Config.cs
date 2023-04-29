@@ -1,5 +1,4 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,8 +11,11 @@ namespace Music_Player
 {
     public partial class Config : Form
     {
+        // Class Instantiation
         private DBUtils dbUtils = new DBUtils();
-        MusicPlayer form1 = (MusicPlayer)ActiveForm;
+        private MusicPlayer form1 = (MusicPlayer)ActiveForm;
+        private Utes utes = new Utes();
+
         private string connectionString;
 
         // can be null, 0, or 1, where 0 or null = false, 1 = true
@@ -71,7 +73,7 @@ namespace Music_Player
                 switch (encryptAfterExit)
                 {
                     case "null":
-                        encryptcheckBox.Checked = false; 
+                        encryptcheckBox.Checked = false;
                         break;
                     case "False":
                         encryptcheckBox.Checked = false;
@@ -174,7 +176,7 @@ namespace Music_Player
         {
             if (linkBox.SelectedIndex > -1)
             {
-                form1.OpenLink(linkBox.SelectedItem.ToString());
+                utes.OpenLink(linkBox.SelectedItem.ToString());
             }
         }
 
@@ -189,42 +191,24 @@ namespace Music_Player
         }
         private void SearchDirectories(string rootDirectory)
         {
-            searchingLabel.Visible = true;
-            searchingLabel.BringToFront();
-
-            string workingDirectory = Environment.CurrentDirectory;
-            string exeDirectory = Directory.GetParent(workingDirectory).Parent.FullName + "\\Utilities";
-            string exeFile = "music_dir_finder.exe";
-            string scriptPath = Path.Combine(exeDirectory, exeFile);
-
-            ProcessStartInfo startInfo = new ProcessStartInfo(scriptPath);
-            startInfo.Arguments = rootDirectory;
-            startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.CreateNoWindow = true;
-
-            HashSet<string> directories = new HashSet<string>();
-
-            Process process = new Process();
-            process.StartInfo = startInfo;
-            process.EnableRaisingEvents = true;
-            process.OutputDataReceived += new DataReceivedEventHandler((s, e) =>
+            if (directorieslistBox.Items.Count > 0)
             {
-                if (!string.IsNullOrEmpty(e.Data) && directories.Add(e.Data))
-                {
-                    Invoke(new Action(() =>
-                    {
-                        if (!directorieslistBox.Items.Contains(e.Data))
-                        {
-                            searchingLabel.Visible = false;
-                        }
-                        directorieslistBox.Items.Add(e.Data);
-                    }));
-                }
-            });
+                directorieslistBox.Items.Clear();
+            }
+            List<string> audioDirectories = utes.SearchForAudioDirectories(rootDirectory);
+            directorieslistBox.BringToFront();
+            directorieslistBox.Visible = true;
+            directorieslistBox.Items.Add($"Found {audioDirectories.Count} directories containing audio in: {rootDirectory}");
+            string line = new string('-', directorieslistBox.Width);
+            directorieslistBox.Items.Add(line);
 
-            process.Start();
-            process.BeginOutputReadLine();
+            if (audioDirectories.Count > 0)
+            {
+                foreach (string file in audioDirectories)
+                {
+                    directorieslistBox.Items.Add($"{file}");
+                }
+            }
         }
         private void directorytextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -240,13 +224,8 @@ namespace Music_Player
                 }
                 else
                 {
-                    searchingLabel.Visible = true;
                     SearchDirectories(rootDirectory);
                 }
-
-                // Behaviors
-                directorieslistBox.Items.Clear();
-                directorieslistBox.Visible = true;
                 backBox.Visible = true;
                 backBox.BringToFront();
                 directorieslistBox.HorizontalScrollbar = true;
@@ -285,7 +264,7 @@ namespace Music_Player
         {
             foreach (Control control in configPanel.Controls)
             {
-                if(control is TextBox)
+                if (control is TextBox)
                 {
                     control.Enabled = true;
                 }
@@ -331,10 +310,13 @@ namespace Music_Player
                 }
                 else
                 {
+                    oldpassBox.Clear();
+                    newpassBox.Clear();
                     oldpassLabel.Visible = false;
                     newpassLabel.Visible = false;
                     oldpassBox.Visible = false;
                     newpassBox.Visible = false;
+                    saveButton.Visible = false;
                 }
             }
         }

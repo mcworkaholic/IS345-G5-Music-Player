@@ -69,6 +69,8 @@
             this.usernameLabel = new System.Windows.Forms.Label();
             this.editButton = new System.Windows.Forms.Button();
             this.downloadButton = new System.Windows.Forms.Button();
+            this.albumLabel = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.formiconBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
@@ -299,10 +301,10 @@
             // directorieslistBox
             // 
             this.directorieslistBox.FormattingEnabled = true;
-            this.directorieslistBox.Location = new System.Drawing.Point(7, 96);
+            this.directorieslistBox.Location = new System.Drawing.Point(-1, -1);
             this.directorieslistBox.Name = "directorieslistBox";
             this.directorieslistBox.ScrollAlwaysVisible = true;
-            this.directorieslistBox.Size = new System.Drawing.Size(555, 212);
+            this.directorieslistBox.Size = new System.Drawing.Size(554, 199);
             this.directorieslistBox.TabIndex = 46;
             this.directorieslistBox.Visible = false;
             this.directorieslistBox.DoubleClick += new System.EventHandler(this.directorieslistBox_DoubleClick);
@@ -314,7 +316,7 @@
             this.backBox.ErrorImage = null;
             this.backBox.Image = global::Music_Player.Properties.Resources.backbutton;
             this.backBox.InitialImage = null;
-            this.backBox.Location = new System.Drawing.Point(509, 9);
+            this.backBox.Location = new System.Drawing.Point(511, 2);
             this.backBox.Margin = new System.Windows.Forms.Padding(0, 0, 3, 3);
             this.backBox.Name = "backBox";
             this.backBox.Size = new System.Drawing.Size(25, 22);
@@ -342,8 +344,10 @@
             // 
             this.configPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.configPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.configPanel.Controls.Add(this.saveButton);
             this.configPanel.Controls.Add(this.directorieslistBox);
+            this.configPanel.Controls.Add(this.checkBox1);
+            this.configPanel.Controls.Add(this.albumLabel);
+            this.configPanel.Controls.Add(this.saveButton);
             this.configPanel.Controls.Add(this.newpassBox);
             this.configPanel.Controls.Add(this.newpassLabel);
             this.configPanel.Controls.Add(this.oldpassBox);
@@ -360,7 +364,7 @@
             this.configPanel.Controls.Add(this.backBox);
             this.configPanel.Location = new System.Drawing.Point(10, 55);
             this.configPanel.Name = "configPanel";
-            this.configPanel.Size = new System.Drawing.Size(552, 203);
+            this.configPanel.Size = new System.Drawing.Size(552, 195);
             this.configPanel.TabIndex = 50;
             this.configPanel.Click += new System.EventHandler(this.configPanel_Click);
             // 
@@ -512,6 +516,24 @@
             this.downloadButton.Text = "Download Queue";
             this.downloadButton.UseVisualStyleBackColor = true;
             // 
+            // albumLabel
+            // 
+            this.albumLabel.AutoSize = true;
+            this.albumLabel.Location = new System.Drawing.Point(14, 107);
+            this.albumLabel.Name = "albumLabel";
+            this.albumLabel.Size = new System.Drawing.Size(61, 13);
+            this.albumLabel.TabIndex = 63;
+            this.albumLabel.Text = "Album Art:";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(81, 107);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(15, 14);
+            this.checkBox1.TabIndex = 64;
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -593,5 +615,7 @@
         private System.Windows.Forms.TextBox oldpassBox;
         private System.Windows.Forms.Label oldpassLabel;
         private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label albumLabel;
     }
 }
