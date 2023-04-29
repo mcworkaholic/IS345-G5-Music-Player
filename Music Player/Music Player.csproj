@@ -128,7 +128,6 @@
     <Compile Include="EQ.Designer.cs">
       <DependentUpon>EQ.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utes.cs" />
     <EmbeddedResource Include="Config.resx">
       <DependentUpon>Config.cs</DependentUpon>
       <SubType>Designer</SubType>

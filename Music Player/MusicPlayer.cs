@@ -31,7 +31,6 @@ using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Windows.Forms;
 using Cursors = System.Windows.Forms.Cursors;
-using Newtonsoft.Json.Linq;
 
 namespace Music_Player
 {
@@ -48,9 +47,7 @@ namespace Music_Player
             int nWidthEllipse, // width of ellipse
             int nHeightEllipse // height of ellipse
         );
-        // Class Instantiation
         private Config config = new Config();
-        private Utes utes = new Utes();
         private MusicPlayerClass MusicPlayerClass = new MusicPlayerClass(); //создание объекта музыкального плеера
 
         private GlobalKeyboardHook _globalKeyboardHook; // initiate
@@ -130,6 +127,10 @@ namespace Music_Player
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
         }
 
+        // Arrays of formats for different media
+        string[] videoFormats = { ".avi", ".mp4", ".mkv", ".mov", ".wmv", ".flv", ".webm", ".mpeg", ".mpg", ".m4v" };
+        string[] audioFormats = { ".mp3", ".wav", ".flac", ".aac", ".wma", ".m4a", ".ogg", ".opus", ".alac", ".aiff" };
+
         private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
         {
             // Stops sound from cutting out when user is typing on a diff application or webpage
@@ -198,7 +199,6 @@ namespace Music_Player
 
                     // CHECK for file extension HERE.
                     string extension = Path.GetExtension(WindowsMediaPlayer.URL);
-                    string[] videoFormats = Utes.videoFormats;
                     if (videoFormats.Contains(extension))
                         albumArtBox.Visible = false; else albumArtBox.Visible = true;
 
@@ -342,6 +342,14 @@ namespace Music_Player
                 librarylistBox.SelectedIndex = trackIndexes[atIndex];
                 WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
                 Play(WindowsMediaPlayer.URL);
+
+                //// while loop ensures that the same song that is currently playing is not shuffled to next
+                //while (MusicPlayerClass.Shuffle(librarylistBox) != paths.FindIndex(path => path.Contains(WindowsMediaPlayer.URL)))
+                //{
+                //    librarylistBox.SelectedIndex = MusicPlayerClass.Shuffle(librarylistBox);
+                //    Play(paths[librarylistBox.SelectedIndex]);
+                //    break;
+                //}
             }
         }
         private void Play(string songPath)
@@ -415,6 +423,15 @@ namespace Music_Player
                     librarylistBox.SelectedIndex = trackIndexes[atIndex];
                     WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
                     Play(WindowsMediaPlayer.URL);
+
+                    //// while loop ensures that the same song that is currently playing is not shuffled to next
+                    //while (MusicPlayerClass.Shuffle(librarylistBox) != paths.FindIndex(path => path.Contains(WindowsMediaPlayer.URL)))
+                    //{
+                    //    librarylistBox.SelectedIndex = MusicPlayerClass.Shuffle(librarylistBox);
+                    //    WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
+                    //    Play(WindowsMediaPlayer.URL);
+                    //    break;
+                    //}
                 }
             }
         }
@@ -502,19 +519,8 @@ namespace Music_Player
                         Image image = Image.FromStream(new MemoryStream(bin));
                         albumArtBox.Image = image;
                     }
-                    else
-                    {
-                        foreach (string path in Directory.EnumerateFiles(currentNode.Parent.FullPath))
-                        {
-                            if (Path.GetExtension(path) == ".jpg" || Path.GetExtension(path) == ".png")
-                            {
-                                Bitmap albumArtBitmap = new Bitmap(Image.FromFile(path));
-                                albumArtBox.Image = albumArtBitmap;
-                            }
-                        }
-                    }
                 }
-                catch (Exception ex) { MessageBox.Show("An unexpected error has occurred: " + ex.StackTrace + "\n" + "\n" + ex.Message); }
+                catch (Exception ex) { MessageBox.Show("An unexpected error has occurred: " + ex.Message); }
             }
         }
         public void LoadLibrary(string path)
@@ -1053,10 +1059,39 @@ namespace Music_Player
             searchTextBox.Clear();
             clearBox.Visible = false;
         }
+        public void OpenLink(string link)
+        {
+            string target;
+            switch (link)
+            {
+                case "githublinkBox":
+                    target = "https://github.com/mcworkaholic/IS345-G5-Music-Player";
+                    break;
+                case "SoundCloud":
+                    target = "https://soundcloud.com/";
+                    break;
+                case "Spotify":
+                    target = "https://open.spotify.com/";
+                    break;
+                default:
+                    target = "https://music.youtube.com/";
+                    break;
+            }
+            try
+            {
+                System.Diagnostics.Process.Start(target);
+            }
+            catch (System.ComponentModel.Win32Exception noBrowser)
+            {
+                if (noBrowser.ErrorCode == -2147467259)
+                    MessageBox.Show(noBrowser.Message);
+            }
+        }
 
+        // Opens GitHub link with default web browser
         private void githublinkBox_Click(object sender, EventArgs e)
         {
-            utes.OpenLink("githublinkBox");
+            OpenLink("githublinkBox");
         }
 
         private void VideoContainer_KeyUp(object sender, _WMPOCXEvents_KeyUpEvent e)
