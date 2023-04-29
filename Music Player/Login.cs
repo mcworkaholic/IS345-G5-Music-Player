@@ -25,7 +25,8 @@ namespace Music_Player
             int nHeightEllipse // height of ellipse
         );
 
-        MusicPlayer form1 = new MusicPlayer();
+        // Class Instantiation
+        Utes utes = new Utes();
         public loginForm()
         {
             InitializeComponent();
@@ -384,7 +385,7 @@ namespace Music_Player
 
         private void codelinkBox_Click(object sender, EventArgs e)
         {
-            form1.OpenLink("codelinkBox");
+            utes.OpenLink("codelinkBox");
         }
 
         // method to circumvent the wonky tab-order

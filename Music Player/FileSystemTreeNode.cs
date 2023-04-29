@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Music_Player
@@ -9,6 +10,7 @@ namespace Music_Player
         //private static TreeNode _cachedTree;
         private readonly List<FileSystemTreeNode> _children = new List<FileSystemTreeNode>();
 
+
         public string DisplayName { get; set; } // Displays the song title w/out file extension and track number
         public string ObjectType { get; set; } // Displays the object type, i.e (artist), (album), (song)
         public string FullPath { get; set; } //  property to store file/folder path
@@ -17,6 +19,8 @@ namespace Music_Player
         public FileSystemTreeNode Parent { get; set; }
         public IEnumerable<FileSystemTreeNode> Children => _children;
 
+        // Class instantiation
+        private Utes utes = new Utes();
         public FileSystemTreeNode FindNodeByDisplayName(string displayName, string objectType)
         {
             if (this.DisplayName == displayName && this.ObjectType == objectType)
@@ -82,6 +86,7 @@ namespace Music_Player
                 ObjectType = "(Music)"
             };
 
+
             foreach (var subDirectoryPath in Directory.GetDirectories(directoryPath))
             {
                 var artistNode = new FileSystemTreeNode
@@ -136,7 +141,10 @@ namespace Music_Player
                                 NodeType = NodeType.File,
                                 ObjectType = "(Song)"
                             };
-                            albumNode.AddChild(node);
+                            if (!Utes.imageFormats.Contains(Path.GetExtension(node.FullPath)))
+                            {
+                                albumNode.AddChild(node);
+                            }
                         }
                     }
                 }
