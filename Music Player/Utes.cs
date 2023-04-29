@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -47,7 +46,7 @@ namespace Music_Player
         }
         /*
          * SearchForAudioDirectories searches for directories that contain audio files in a given path and its subdirectories and returns a list of directory paths. 
-         * The code is efficient because it uses the Directory.GetFiles method to search for audio files in each directory and 
+         * The code is efficient because it uses the Directory.GetFiles method to search for audio files in each directory, in parallel, and 
          * Any LINQ extension method to check if any audio files are present in the directory.
          *   The code recursively calls itself on each subdirectory found in the given path, effectively searching through all subdirectories.
         */
@@ -56,14 +55,17 @@ namespace Music_Player
             List<string> audioDirectories = new List<string>();
             try
             {
-                foreach (string directory in Directory.GetDirectories(path))
+                Parallel.ForEach(Directory.GetDirectories(path), directory =>
                 {
                     if (Directory.GetFiles(directory).Any(file => audioFormats.Contains(Path.GetExtension(file))))
                     {
-                        audioDirectories.Add(directory);
+                        lock (audioDirectories)
+                        {
+                            audioDirectories.Add(directory);
+                        }
                     }
                     audioDirectories.AddRange(SearchForAudioDirectories(directory));
-                }
+                });
             }
             catch (Exception ex)
             {
