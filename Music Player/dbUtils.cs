@@ -244,7 +244,7 @@ namespace Music_Player
         }
         public List<string> GetUserConfig()
         {
-            string sql = "SELECT username, password, default_startup_folder, encrypt_on_exit FROM user WHERE user_id = @user_id;";
+            string sql = "SELECT username, password, default_startup_folder, encrypt_on_exit, show_art FROM user WHERE user_id = @user_id;";
             using (SQLiteConnection connection = new SQLiteConnection($"Data Source={connectionString}"))
             {
                 using (SQLiteCommand command = new SQLiteCommand(sql, connection))
@@ -262,7 +262,8 @@ namespace Music_Player
                                 reader.IsDBNull(0) ? null : reader.GetString(0),
                                 reader.IsDBNull(1) ? null : reader.GetString(1),
                                 reader.IsDBNull(2) ? null : reader.GetString(2),
-                                reader.IsDBNull(3) ? null : reader.GetString(3)
+                                reader.IsDBNull(3) ? null : reader.GetString(3),
+                                reader.IsDBNull(4) ? null : reader.GetString(4)
                             };
                                 return userValues;
                             }
