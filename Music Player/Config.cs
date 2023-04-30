@@ -20,6 +20,7 @@ namespace Music_Player
 
         // can be null, 0, or 1, where 0 or null = false, 1 = true
         public string encryptAfterExit;
+        public string showArtAlbum;
 
         // form movement
         bool isMoving;
@@ -27,20 +28,28 @@ namespace Music_Player
         int movY;
 
         // indicators for whether values have been changed or clicked
-        bool checkChanged = false;
+        bool encryptChanged = false;
+        bool artChanged = false;
         bool libChanged = false;
         bool passChanged = false;
         bool passClicked = false;
+        bool newpassViewClicked = false;
         bool refreshClicked = false;
+
+        // load values from DB and set
+        CheckState initialEncryptState;
+        CheckState initialArtState;
 
         // counter for odd, even clicks
         int passclickCount;
+        int newpassViewClickCount;
 
         // Database values
         string username;
         string password;
         string defaultStartupFolder;
         string encryptOnExit;
+        string showArt;
 
         public Config()
         {
@@ -61,28 +70,39 @@ namespace Music_Player
             List<string> userConfig = dbUtils.GetUserConfig();
             if (userConfig != null)
             {
+                // Grab all values
                 username = userConfig[0];
                 password = userConfig[1];
                 defaultStartupFolder = userConfig[2];
                 encryptAfterExit = userConfig[3];
+                showArt = userConfig[4];
 
+                // Map values to states
+                if (encryptAfterExit == "False" || encryptAfterExit == null || encryptAfterExit == "NULL")
+                {
+                    initialEncryptState = CheckState.Unchecked;
+                    encryptcheckBox.Checked = false;
+                }
+                else
+                {
+                    initialEncryptState = CheckState.Checked;
+                    encryptcheckBox.Checked = true;
+                }
+                if (showArt == "False" || showArt == null || showArt == "NULL")
+                {
+                    initialArtState = CheckState.Unchecked;
+                    artcheckBox.Checked = false;
+                }
+                else
+                {
+                    initialArtState = CheckState.Checked;
+                    artcheckBox.Checked = true;
+                }
+
+                // Set other values
                 userBox.Text = username;
                 passBox.Text = password;
                 libraryBox.Text = defaultStartupFolder;
-
-                switch (encryptAfterExit)
-                {
-                    case "null":
-                        encryptcheckBox.Checked = false;
-                        break;
-                    case "False":
-                        encryptcheckBox.Checked = false;
-                        break;
-                    case "True":
-                        encryptcheckBox.Checked = true;
-                        break;
-                }
-
             }
         }
         private void searchButton_Click(object sender, EventArgs e)
@@ -101,16 +121,50 @@ namespace Music_Player
         }
         private void refreshButton_Click(object sender, EventArgs e)
         {
-            if (checkChanged)
+            if (passChanged)
+            {
+                string storedHash = dbUtils.GetHash(Program.username);
+
+                if (!BC.Verify(oldpassBox.Text, storedHash))
+                {
+                    MessageBox.Show("Old password doesn't match your records. Please try again.", "Password Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (newpassBox.Text != null)
+                {
+                    dbUtils.UpdateChanges("user", "password", dbUtils.HashPassword(newpassBox.Text));
+
+                    passBox.Text = dbUtils.HashPassword(newpassBox.Text);
+                    passChanged = true;
+
+                    // could use states here instead
+                    oldpassLabel.Visible = false;
+                    newpassLabel.Visible = false;
+                    oldpassBox.Visible = false;
+                    newpassBox.Visible = false;
+                    passBox.Enabled = false;
+                }
+                else
+                {
+                    MessageBox.Show("New password must not be empty. Please try again.", "Password Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            if (encryptChanged)
             {
                 dbUtils.UpdateChanges("user", "encrypt_on_exit", encryptAfterExit.ToString());
+            }
+            if (artChanged)
+            {
+                 dbUtils.UpdateChanges("user", "show_art", showArtAlbum.ToString());
             }
             if (libChanged)
             {
                 dbUtils.UpdateChanges("user", "default_startup_folder", libraryBox.Text);
                 form1.LoadLibrary(dbUtils.GetStartUpFolder());
             }
+            newpassView.Visible = false;
             refreshClicked = true;
+            if(userBox.Enabled == true)
+                editButton.PerformClick();
             this.Refresh();
         }
         private void PromptForSave()
@@ -125,9 +179,19 @@ namespace Music_Player
         }
         private void exitBox_Click(object sender, EventArgs e)
         {
+            if (encryptcheckBox.CheckState != initialEncryptState)
+            {
+                encryptChanged = true;
+            }
+
+            if (artcheckBox.CheckState != initialArtState)
+            {
+                artChanged = true;
+            }
+
             if (!refreshClicked)
             {
-                if (passChanged || libChanged || checkChanged)
+                if (passChanged || libChanged || encryptChanged || artChanged)
                 {
                     PromptForSave();
                 }
@@ -188,9 +252,11 @@ namespace Music_Player
         private void locateButton_Click(object sender, EventArgs e)
         {
             filefinderPanel.Visible = true;
+            directorytextBox.Clear();
         }
         private void SearchDirectories(string rootDirectory)
         {
+            directorytextBox.Text = "Searching...";
             if (directorieslistBox.Items.Count > 0)
             {
                 directorieslistBox.Items.Clear();
@@ -206,9 +272,10 @@ namespace Music_Player
             {
                 foreach (string file in audioDirectories)
                 {
-                    directorieslistBox.Items.Add($"{file}");
+                    directorieslistBox.Items.Add(file);
                 }
             }
+            filefinderPanel.Visible = false;
         }
         private void directorytextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -262,29 +329,52 @@ namespace Music_Player
 
         private void editButton_Click(object sender, EventArgs e)
         {
-            foreach (Control control in configPanel.Controls)
+            if (userBox.Enabled == false)
             {
-                if (control is TextBox)
+                foreach (Control control in configPanel.Controls)
                 {
-                    control.Enabled = true;
+                    if (control is TextBox)
+                    {
+                        control.Enabled = true;
+                    }
                 }
             }
+            else
+            {
+                foreach (Control control in configPanel.Controls)
+                {
+                    if (control is TextBox)
+                    {
+                        control.Enabled = false;
+                    }
+                }
+            }
+            
         }
 
         private void libraryBox_MouseClick(object sender, MouseEventArgs e)
         {
-            searchButton.Visible = true;
+            searchButton.Enabled = true;
         }
 
         private void encryptcheckBox_CheckedChanged(object sender, EventArgs e)
         {
             refreshButton.Enabled = true;
-            checkChanged = true;
-
+            
             switch (encryptcheckBox.CheckState)
             {
                 case CheckState.Checked: encryptAfterExit = "True"; break;
                 case CheckState.Unchecked: encryptAfterExit = "False"; break;
+            }
+        }
+        private void artcheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            refreshButton.Enabled = true;
+
+            switch (artcheckBox.CheckState)
+            {
+                case CheckState.Checked: showArtAlbum = "True"; break;
+                case CheckState.Unchecked: showArtAlbum = "False"; break;
             }
         }
 
@@ -298,15 +388,14 @@ namespace Music_Player
             passBox.SelectionLength = 0;
             if (passBox.Enabled == true)
             {
-
-                passclickCount++;
-                passClicked = (passclickCount % 2 == 1);
-                if (passclickCount % 2 == 1)
+                passClicked = utes.ToggleState(passClicked, ref passclickCount);
+                if (passClicked)
                 {
                     oldpassLabel.Visible = true;
                     newpassLabel.Visible = true;
                     oldpassBox.Visible = true;
                     newpassBox.Visible = true;
+                    newpassView.Visible = true;
                 }
                 else
                 {
@@ -316,43 +405,13 @@ namespace Music_Player
                     newpassLabel.Visible = false;
                     oldpassBox.Visible = false;
                     newpassBox.Visible = false;
-                    saveButton.Visible = false;
+                    newpassView.Visible = false;
                 }
             }
         }
-
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            string storedHash = dbUtils.GetHash(Program.username);
-
-            if (!BC.Verify(oldpassBox.Text, storedHash))
-            {
-                MessageBox.Show("Old password doesn't match your records. Please try again.", "Password Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (newpassBox.Text != null)
-            {
-                dbUtils.UpdateChanges("user", "password", dbUtils.HashPassword(newpassBox.Text));
-
-                passBox.Text = dbUtils.HashPassword(newpassBox.Text);
-                passChanged = true;
-
-                // could use states here instead
-                oldpassLabel.Visible = false;
-                newpassLabel.Visible = false;
-                oldpassBox.Visible = false;
-                newpassBox.Visible = false;
-                saveButton.Visible = false;
-                passBox.Enabled = false;
-            }
-            else
-            {
-                MessageBox.Show("New password must not be empty. Please try again.", "Password Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void newpassBox_TextChanged(object sender, EventArgs e)
         {
-            saveButton.Visible = true;
+            passChanged = true;
         }
 
         private void configPanel_Click(object sender, EventArgs e)
@@ -364,5 +423,30 @@ namespace Music_Player
         {
             passBox.SelectionLength = 0;
         }
+
+        private void newpassView_Click(object sender, EventArgs e)
+        {
+            newpassViewClicked = utes.ToggleState(newpassViewClicked, ref newpassViewClickCount);
+            if (newpassViewClicked)
+            {
+                if (newpassBox.PasswordChar == '•')
+                {
+                    newpassBox.PasswordChar = '\0';
+                    oldpassBox.PasswordChar = '\0';
+                }
+                else
+                {
+                    newpassBox.PasswordChar = '•';
+                    oldpassBox.PasswordChar= '•';
+                }
+            }
+            else
+            {
+                newpassBox.PasswordChar = '•';
+                oldpassBox.PasswordChar = '•';
+            }
+        }
+
+       
     }
 }

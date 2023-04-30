@@ -49,12 +49,13 @@
             this.hintLabel = new System.Windows.Forms.Label();
             this.directorieslistBox = new System.Windows.Forms.ListBox();
             this.backBox = new System.Windows.Forms.PictureBox();
-            this.searchingLabel = new System.Windows.Forms.Label();
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
             this.MinimizetoolTip = new System.Windows.Forms.ToolTip(this.components);
             this.ClosetoolTip = new System.Windows.Forms.ToolTip(this.components);
             this.configPanel = new System.Windows.Forms.Panel();
-            this.saveButton = new System.Windows.Forms.Button();
+            this.newpassView = new System.Windows.Forms.Button();
+            this.artcheckBox = new System.Windows.Forms.CheckBox();
+            this.albumLabel = new System.Windows.Forms.Label();
             this.newpassBox = new System.Windows.Forms.TextBox();
             this.newpassLabel = new System.Windows.Forms.Label();
             this.oldpassBox = new System.Windows.Forms.TextBox();
@@ -69,8 +70,6 @@
             this.usernameLabel = new System.Windows.Forms.Label();
             this.editButton = new System.Windows.Forms.Button();
             this.downloadButton = new System.Windows.Forms.Button();
-            this.albumLabel = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.formiconBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
@@ -253,7 +252,7 @@
             // refreshButton
             // 
             this.refreshButton.Enabled = false;
-            this.refreshButton.Location = new System.Drawing.Point(478, 271);
+            this.refreshButton.Location = new System.Drawing.Point(474, 272);
             this.refreshButton.Name = "refreshButton";
             this.refreshButton.Size = new System.Drawing.Size(84, 22);
             this.refreshButton.TabIndex = 43;
@@ -266,14 +265,14 @@
             // 
             // searchButton
             // 
-            this.searchButton.Location = new System.Drawing.Point(404, 271);
+            this.searchButton.Enabled = false;
+            this.searchButton.Location = new System.Drawing.Point(399, 272);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(68, 22);
             this.searchButton.TabIndex = 44;
             this.searchButton.TabStop = false;
             this.searchButton.Text = "Search";
             this.searchButton.UseVisualStyleBackColor = true;
-            this.searchButton.Visible = false;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             this.searchButton.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.searchButton.MouseHover += new System.EventHandler(this.MouseHover);
@@ -282,7 +281,7 @@
             // 
             this.filefinderPanel.Controls.Add(this.directorytextBox);
             this.filefinderPanel.Controls.Add(this.hintLabel);
-            this.filefinderPanel.Location = new System.Drawing.Point(198, 264);
+            this.filefinderPanel.Location = new System.Drawing.Point(198, 262);
             this.filefinderPanel.Name = "filefinderPanel";
             this.filefinderPanel.Size = new System.Drawing.Size(182, 32);
             this.filefinderPanel.TabIndex = 45;
@@ -301,7 +300,7 @@
             // directorieslistBox
             // 
             this.directorieslistBox.FormattingEnabled = true;
-            this.directorieslistBox.Location = new System.Drawing.Point(-1, -1);
+            this.directorieslistBox.Location = new System.Drawing.Point(-3, -1);
             this.directorieslistBox.Name = "directorieslistBox";
             this.directorieslistBox.ScrollAlwaysVisible = true;
             this.directorieslistBox.Size = new System.Drawing.Size(554, 199);
@@ -329,25 +328,14 @@
             this.backBox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.backBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
-            // searchingLabel
-            // 
-            this.searchingLabel.AutoSize = true;
-            this.searchingLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.searchingLabel.Location = new System.Drawing.Point(231, 96);
-            this.searchingLabel.Name = "searchingLabel";
-            this.searchingLabel.Size = new System.Drawing.Size(67, 13);
-            this.searchingLabel.TabIndex = 49;
-            this.searchingLabel.Text = "Searching...";
-            this.searchingLabel.Visible = false;
-            // 
             // configPanel
             // 
             this.configPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.configPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.configPanel.Controls.Add(this.newpassView);
             this.configPanel.Controls.Add(this.directorieslistBox);
-            this.configPanel.Controls.Add(this.checkBox1);
+            this.configPanel.Controls.Add(this.artcheckBox);
             this.configPanel.Controls.Add(this.albumLabel);
-            this.configPanel.Controls.Add(this.saveButton);
             this.configPanel.Controls.Add(this.newpassBox);
             this.configPanel.Controls.Add(this.newpassLabel);
             this.configPanel.Controls.Add(this.oldpassBox);
@@ -360,7 +348,6 @@
             this.configPanel.Controls.Add(this.encryptionLabel);
             this.configPanel.Controls.Add(this.startupfolderLabel);
             this.configPanel.Controls.Add(this.usernameLabel);
-            this.configPanel.Controls.Add(this.searchingLabel);
             this.configPanel.Controls.Add(this.backBox);
             this.configPanel.Location = new System.Drawing.Point(10, 55);
             this.configPanel.Name = "configPanel";
@@ -368,16 +355,37 @@
             this.configPanel.TabIndex = 50;
             this.configPanel.Click += new System.EventHandler(this.configPanel_Click);
             // 
-            // saveButton
+            // newpassView
             // 
-            this.saveButton.Location = new System.Drawing.Point(422, 126);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(55, 23);
-            this.saveButton.TabIndex = 62;
-            this.saveButton.Text = "Save";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Visible = false;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.newpassView.Location = new System.Drawing.Point(415, 127);
+            this.newpassView.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.newpassView.Name = "newpassView";
+            this.newpassView.Size = new System.Drawing.Size(23, 21);
+            this.newpassView.TabIndex = 65;
+            this.newpassView.TabStop = false;
+            this.newpassView.Text = "👁️‍🗨️";
+            this.newpassView.UseVisualStyleBackColor = true;
+            this.newpassView.Visible = false;
+            this.newpassView.Click += new System.EventHandler(this.newpassView_Click);
+            // 
+            // artcheckBox
+            // 
+            this.artcheckBox.AutoSize = true;
+            this.artcheckBox.Location = new System.Drawing.Point(81, 107);
+            this.artcheckBox.Name = "artcheckBox";
+            this.artcheckBox.Size = new System.Drawing.Size(15, 14);
+            this.artcheckBox.TabIndex = 64;
+            this.artcheckBox.UseVisualStyleBackColor = true;
+            this.artcheckBox.CheckedChanged += new System.EventHandler(this.artcheckBox_CheckedChanged);
+            // 
+            // albumLabel
+            // 
+            this.albumLabel.AutoSize = true;
+            this.albumLabel.Location = new System.Drawing.Point(14, 107);
+            this.albumLabel.Name = "albumLabel";
+            this.albumLabel.Size = new System.Drawing.Size(61, 13);
+            this.albumLabel.TabIndex = 63;
+            this.albumLabel.Text = "Album Art:";
             // 
             // newpassBox
             // 
@@ -516,24 +524,6 @@
             this.downloadButton.Text = "Download Queue";
             this.downloadButton.UseVisualStyleBackColor = true;
             // 
-            // albumLabel
-            // 
-            this.albumLabel.AutoSize = true;
-            this.albumLabel.Location = new System.Drawing.Point(14, 107);
-            this.albumLabel.Name = "albumLabel";
-            this.albumLabel.Size = new System.Drawing.Size(61, 13);
-            this.albumLabel.TabIndex = 63;
-            this.albumLabel.Text = "Album Art:";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(81, 107);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 64;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -594,7 +584,6 @@
         private System.Windows.Forms.Label hintLabel;
         private System.Windows.Forms.ListBox directorieslistBox;
         private System.Windows.Forms.PictureBox backBox;
-        private System.Windows.Forms.Label searchingLabel;
         private System.Windows.Forms.ToolTip toolTip2;
         private System.Windows.Forms.ToolTip ClosetoolTip;
         private System.Windows.Forms.ToolTip MinimizetoolTip;
@@ -614,8 +603,8 @@
         private System.Windows.Forms.Label newpassLabel;
         private System.Windows.Forms.TextBox oldpassBox;
         private System.Windows.Forms.Label oldpassLabel;
-        private System.Windows.Forms.Button saveButton;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox artcheckBox;
         private System.Windows.Forms.Label albumLabel;
+        private System.Windows.Forms.Button newpassView;
     }
 }
