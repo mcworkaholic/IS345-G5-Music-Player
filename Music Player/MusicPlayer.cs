@@ -1036,9 +1036,20 @@ namespace Music_Player
         }
         private void settingsBox_Click(object sender, EventArgs e)
         {
-            Config config = new Config();
-            config.GlobalConnectionString = this.GlobalConnectionString;
-            config.Show();
+            Config newConfig = new Config(); 
+            Config config = (Config)Application.OpenForms["Config"];
+            if (config == null)
+            {
+                newConfig.Show();
+                newConfig.GlobalConnectionString = this.GlobalConnectionString;
+            }
+            else
+            {
+                config.Close();
+                config.Dispose();
+                newConfig.Show();
+                newConfig.GlobalConnectionString = this.GlobalConnectionString;
+            }
         }
         private void playPauseButton_Click(object sender, EventArgs e)
         {
