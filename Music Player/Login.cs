@@ -297,9 +297,8 @@ namespace Music_Player
 
         private void passView_Click(object sender, EventArgs e)
         {
-            passViewClickCount++;
-            passViewClicked = (passViewClickCount % 2 == 1);
-            if (passViewClickCount % 2 == 1)
+            passViewClicked = utes.ToggleState(passViewClicked, ref passViewClickCount);
+            if (passViewClicked)
             {
                 if (passwordtextBox.PasswordChar == '•')
                 {
@@ -318,9 +317,8 @@ namespace Music_Player
 
         private void cnfmView_Click(object sender, EventArgs e)
         {
-            confirmViewClickCount++;
-            confirmViewClicked = (confirmViewClickCount % 2 == 1);
-            if (confirmViewClickCount % 2 == 1)
+            confirmViewClicked = utes.ToggleState(confirmViewClicked, ref confirmViewClickCount);
+            if (confirmViewClicked)
             {
                 if (confirmtextBox.PasswordChar == '•')
                 {
