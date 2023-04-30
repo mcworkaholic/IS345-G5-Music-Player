@@ -11,5 +11,5 @@ pip install -r requirements.txt
 ### build to .exe :
 
 ```sh
-pyinstaller --onefile music_dir_finder.py
+pyinstaller --onefile python_file.py
  ```
