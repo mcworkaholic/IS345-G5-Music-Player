@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-/* This is a general class for utilities that could be useful to any other class or form. */
+// This is a general class for utilities that could be useful to any other class or form. 
 
 namespace Music_Player
 {
@@ -72,6 +72,14 @@ namespace Music_Player
                 MessageBox.Show($"Error from Utes.cs: {ex.StackTrace} \n \n {ex.Message}");
             }
             return audioDirectories;
+        }
+
+        // Reallly needed this one. Helps toggle the state of anything given a boolean and a counter 
+        public bool ToggleState(bool currentState, ref int counter)
+        {
+            counter++;
+            currentState = (counter % 2 == 1);
+            return currentState;
         }
     }
 }
