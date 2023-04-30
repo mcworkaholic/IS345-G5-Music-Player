@@ -111,28 +111,13 @@ namespace Music_Player
                             ObjectType = "(Album)"
                         };
                         artistNode.AddChild(albumNode);
-
                         foreach (var filePath in Directory.GetFiles(albumDirectoryPath))
                         {
                             string fileName = Path.GetFileNameWithoutExtension(filePath);
-                            int firstCharIndex = fileName.IndexOf("-");
-                            string title;
-                            if (firstCharIndex == -1)
-                            {
-                                if (fileName.IndexOf('.') != -1)
-                                {
-                                    title = fileName.Substring(fileName.IndexOf('.') + 1).Trim();
-                                }
-                                else
-                                {
-                                    title = Regex.Replace(fileName, @"^\d+\s*", "").Trim();
-                                }
-                            }
-                            else
-                            {
-                                string[] parts = fileName.Split('-');
-                                title = parts[1].Trim();
-                            }
+
+                            // Extract the title using a regex
+                            string title = Regex.Replace(fileName, @"^[^a-zA-Z]*(?<title>[a-zA-Z].*)$", "${title}");
+
                             var node = new FileSystemTreeNode
                             {
                                 FullPath = filePath,
@@ -141,9 +126,13 @@ namespace Music_Player
                                 NodeType = NodeType.File,
                                 ObjectType = "(Song)"
                             };
+
                             if (!Utes.imageFormats.Contains(Path.GetExtension(node.FullPath)))
                             {
-                                albumNode.AddChild(node);
+                                if(Utes.videoFormats.Contains(Path.GetExtension(node.FullPath)) || Utes.audioFormats.Contains(Path.GetExtension(node.FullPath)))
+                                {
+                                    albumNode.AddChild(node);
+                                }
                             }
                         }
                     }
