@@ -408,9 +408,9 @@ namespace Music_Player
             // this is  a method of turning off and on shuffle mode, odd clicks turn it on, even clicks turn it off.
             // if the current click count divided by 2 yields a remainder of 1,
             // shuffleButtonClickCount == odd and shuffle mode == off
-            shuffleButtonClickCount++;
-            shuffleButtonClicked = (shuffleButtonClickCount % 2 == 1);
-            if (shuffleButtonClickCount % 2 == 1)
+
+            shuffleButtonClicked = utes.ToggleState(shuffleButtonClicked, ref shuffleButtonClickCount);
+            if (shuffleButtonClicked)
             {
                 //set button text as indicator
                 // shuffle mode ON
@@ -553,6 +553,7 @@ namespace Music_Player
                 // Populate Device dropdown with the system's devices, play through default
                 LoadDevices();
             }
+            configurehintLabel.Visible = false;
             noLibraryLabel.Visible = false;
             nolibbox.Visible = false;
         }
