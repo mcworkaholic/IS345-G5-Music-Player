@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using System.Windows.Forms;
@@ -98,7 +97,7 @@ namespace Music_Player
                 using (SQLiteCommand command = new SQLiteCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@username", username);
-                    try 
+                    try
                     {
                         using (SQLiteDataReader reader = command.ExecuteReader())
                         {
@@ -114,7 +113,7 @@ namespace Music_Player
                     {
                         MessageBox.Show(ex.Message);
                     }
-                   
+
                 }
             }
             return storedHash;
