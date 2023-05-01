@@ -15,7 +15,6 @@
 using AxWMPLib;
 using CSCore.CoreAudioAPI;
 using Microsoft.Win32;
-using System.Security.Cryptography;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -31,7 +30,7 @@ namespace Music_Player
 {
     public partial class MusicPlayer : Form
     {
-        //rounded corners
+        //Rounded Corners
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
         (
@@ -42,6 +41,8 @@ namespace Music_Player
             int nWidthEllipse, // width of ellipse
             int nHeightEllipse // height of ellipse
         );
+        public string albumVisible;
+
         // Class Instantiation
         private Config config = new Config();
         private Utes utes = new Utes();
@@ -49,37 +50,46 @@ namespace Music_Player
 
         private GlobalKeyboardHook _globalKeyboardHook; // initiate
         private DBUtils dbUtils = new DBUtils();
-        EQ equalizerWindow;
+        private EQ equalizerWindow;
+
         // tracking for queuing
-        int currentSelectedIndex;
+        private int currentSelectedIndex;
+
         // for moving borderless form
-        int movX, movY;
-        bool isMoving;
+        private int movX, movY;
+        private bool isMoving;
+
         // initial states
-        bool shuffleButtonClicked = false;
-        bool listBoxDoubleClick = false;
-        bool stopUpdate;
-        bool playlistViewing = false;
-        int shuffleButtonClickCount = 0;
-        int playlistIndexChanged = 0;
-        int deviceIndexChanged = 0;
-        int lastVolume = 85;
+        private bool shuffleButtonClicked = false;
+        private bool listBoxDoubleClick = false;
+        private bool listViewDoubleClick = false;
+
+        private bool stopUpdate;
+        private bool playlistViewing = false;
+        private int shuffleButtonClickCount = 0;
+        private int playlistIndexChanged = 0;
+        private int deviceIndexChanged = 0;
+        private int lastVolume = 85;
+
         //Create Global Variables of String Type Array to save the path of the track 
-        List<string> paths;
-        List<int> trackIndexes = new List<int>();
-        int atIndex = 0;
+        private List<string> paths;
+        private List<int> trackIndexes = new List<int>();
+        private int atIndex = 0;
+
         // variables that are set on formload event
-        string connectionString;
-        (Dictionary<string, List<string>>, string) devices;
+        private string connectionString;
+        private (Dictionary<string, List<string>>, string) devices;
+
         // Modified throughout use
-        List<int> queueList = new List<int>();
-        // Create a dictionary to cache album artwork URLs
-        //Dictionary<string, string> albumArtCache = new Dictionary<string, string>();
+        private List<int> queueList = new List<int>();
+
         // for storing initial root node
-        FileSystemTreeNode rootNode;
-        string songObj = "(Song)";
-        string albumObj = "(Album)";
-        string artistObj = "(Artist)";
+        private FileSystemTreeNode rootNode;
+
+        private string songObj = "(Song)";
+        private string albumObj = "(Album)";
+        private string artistObj = "(Artist)";
+
         // Fullscreen capabilities
         private bool _isFullscreenToggle = false;
         public bool IsFullscreen
@@ -126,66 +136,6 @@ namespace Music_Player
                 {
                     volumeBar.Value = lastVolume;
                     MusicPlayerClass.Volume = volumeBar.Value;
-                }
-            }
-        }
-        private void songslistBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listBoxDoubleClick)
-            {
-                //play music 
-                //only plays when double clicked, a single click only changes the listbox so the user can add the selected song to a queue or playlist
-                WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
-                Play(WindowsMediaPlayer.URL);
-                // reset the flag
-                listBoxDoubleClick = false;
-            }
-            else
-            {
-                if (playlistBox.SelectedIndex != -1)
-                {
-                    addtoplaylistButton.Enabled = true;
-                }
-                else
-                {
-                    addtoplaylistButton.Enabled = false;
-                }
-            }
-        }
-        private void songslistBox_MouseDoubleClick(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            int currentIndex;
-            if (e.Button == MouseButtons.Left)
-            //play music at the selected index
-            {
-                if (librarylistBox.Items.Count > 0)
-                {
-                    if (playlistViewing == false)
-                    {
-                        WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
-                    }
-                    else
-                    {
-                        currentIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(librarylistBox.SelectedItem.ToString(), songObj).FullPath));
-                        WindowsMediaPlayer.URL = paths[currentIndex];
-                    }
-
-                    // CHECK for file extension HERE.
-                    string extension = Path.GetExtension(WindowsMediaPlayer.URL);
-                    string[] videoFormats = Utes.videoFormats;
-                    if (videoFormats.Contains(extension))
-                    {
-                        albumArtBox.Visible = false;
-                    }
-                    else
-                    {
-                        GetAlbumArt();
-                    }
-
-                    listBoxDoubleClick = true;
-                    Play(WindowsMediaPlayer.URL);
-                    // reset the flag
-                    listBoxDoubleClick = false;
                 }
             }
         }
@@ -237,6 +187,7 @@ namespace Music_Player
                 timer1.Enabled = false;
             }
         }
+
         private void playTimer_Tick(object sender, EventArgs e)
         {
             if (queueList.Count == 0)
@@ -256,19 +207,19 @@ namespace Music_Player
             {
                 if (shuffleButtonClicked == false)
                 {
-                    if (librarylistBox.SelectedIndex < librarylistBox.Items.Count - 1)
+                    if (songslistView.SelectedItems.Count > 0 && songslistView.SelectedItems[0].Index < songslistView.Items.Count - 1)
                     {
                         // sets the next consecutive song to be played next
-                        librarylistBox.SelectedIndex++;
+                        songslistView.Items[songslistView.SelectedItems[0].Index + 1].Selected = true;
                     }
                     else
                     {
                         // if at the end of the selected list, jump to the first song (index 0 of current list of songs)
-                        librarylistBox.SelectedIndex = 0;
+                        songslistView.Items[0].Selected = true;
                     }
-                    int currentIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(librarylistBox.SelectedItem.ToString(), songObj).FullPath));
+                    int currentIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(songslistView.SelectedItems[0].Text, songObj).FullPath));
                     WindowsMediaPlayer.URL = paths[currentIndex];
-                    librarylistBox.SelectedIndex = currentIndex;
+                    songslistView.Items[currentIndex].Selected = true;
                 }
                 else
                 {
@@ -280,7 +231,7 @@ namespace Music_Player
                     }
                     atIndex++;
                     WindowsMediaPlayer.URL = paths[trackIndexes[atIndex]];
-                    librarylistBox.SelectedIndex = trackIndexes[atIndex];
+                    songslistView.Items[trackIndexes[atIndex]].Selected = true;
                 }
                 Play(WindowsMediaPlayer.URL);
             }
@@ -288,21 +239,35 @@ namespace Music_Player
         }
         private void previousBox_Click(object sender, EventArgs e)
         {
+            songslistView.Focus();
             if (shuffleButtonClicked == false)
             {
-                if (librarylistBox.SelectedIndex > 0)
+                if (songslistView.SelectedItems.Count > 0)
                 {
                     // Go back 1 song from the current index of the library
-                    int currentIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(librarylistBox.SelectedItem.ToString(), songObj).FullPath));
-                    librarylistBox.SelectedIndex = paths.FindIndex(path => path.Contains(WindowsMediaPlayer.URL));
-                    Play(paths[currentIndex - 1]);
-                    librarylistBox.SelectedIndex--;
+                    int currentIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(songslistView.SelectedItems[0].Text, songObj).FullPath));
+                    songslistView.Items[currentIndex].Selected = false;
+                    if (currentIndex != 0)
+                    {
+                        Play(paths[currentIndex - 1]);
+                        songslistView.Items[currentIndex - 1].Selected = true;
+                        songslistView.Items[currentIndex - 1].EnsureVisible();
+                    }
+                    else
+                    {
+                        Play(paths[paths.Count - 1]);
+                        int lastIndex = songslistView.Items.Count - 1;
+                        songslistView.Items[lastIndex].Selected = true;
+                        songslistView.Items[lastIndex].EnsureVisible();
+                    }
+
                 }
-                else if (librarylistBox.SelectedIndex == 0)
+                else if (songslistView.SelectedItems.Count == 0)
                 {
                     // Go back to the start/top of the library
-                    librarylistBox.SelectedIndex = librarylistBox.Items.Count - 1;
-                    Play(paths[librarylistBox.SelectedIndex]);
+                    songslistView.Items[0].Selected = true;
+                    songslistView.Items[0].EnsureVisible();
+                    Play(paths[0]);
                 }
             }
             else if (shuffleButtonClicked == true)
@@ -314,8 +279,11 @@ namespace Music_Player
                     atIndex = 0;
                 }
                 atIndex++;
-                librarylistBox.SelectedIndex = trackIndexes[atIndex];
-                WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
+                int prevIndex = trackIndexes[atIndex];
+                songslistView.SelectedItems.Clear();
+                songslistView.Items[prevIndex].Selected = true;
+                songslistView.Items[prevIndex].EnsureVisible();
+                WindowsMediaPlayer.URL = paths[prevIndex];
                 Play(WindowsMediaPlayer.URL);
             }
         }
@@ -339,6 +307,7 @@ namespace Music_Player
         }
         private void nextBox_Click(object sender, EventArgs e)
         {
+            songslistView.Focus();
             if (queueList.Count > 0)
             {
                 Play(paths[queueList[0]]);
@@ -351,29 +320,33 @@ namespace Music_Player
                 queueLabel.Visible = false;
                 if (shuffleButtonClicked == false)
                 {
-                    if (librarylistBox.SelectedIndex == -1)
+                    if (songslistView.SelectedIndices.Count == 0)
                     {
                         int currentIndex = paths.FindIndex(path => path.Contains(WindowsMediaPlayer.URL));
                         if (paths.Count - 1 == currentIndex)
                         {
-                            librarylistBox.SelectedIndex = 0;
+                            songslistView.Items[0].Selected = true;
+                            songslistView.Items[0].EnsureVisible();
                         }
                         else
                         {
-                            librarylistBox.SelectedIndex = currentIndex + 1;
+                            songslistView.Items[currentIndex + 1].Selected = true;
+                            songslistView.Items[currentIndex + 1].EnsureVisible();
                         }
-                        WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
+                        WindowsMediaPlayer.URL = paths[songslistView.SelectedIndices[0]];
                     }
-                    else if (librarylistBox.SelectedIndex < librarylistBox.Items.Count - 1)
+                    else if (songslistView.SelectedIndices[0] < songslistView.Items.Count - 1)
                     {
                         int currentIndex = paths.FindIndex(path => path.Contains(WindowsMediaPlayer.URL));
                         WindowsMediaPlayer.URL = paths[currentIndex + 1];
-                        librarylistBox.SelectedIndex = paths.FindIndex(path => path.Contains(WindowsMediaPlayer.URL));
+                        songslistView.Items[songslistView.SelectedIndices[0] + 1].Selected = true;
+                        songslistView.Items[songslistView.SelectedIndices[0] + 1].EnsureVisible();
                     }
-                    else if (librarylistBox.SelectedIndex == librarylistBox.Items.Count - 1)
+                    else if (songslistView.SelectedIndices[0] == songslistView.Items.Count - 1)
                     {
-                        librarylistBox.SelectedIndex = 0;
-                        WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
+                        songslistView.Items[0].Selected = true;
+                        songslistView.Items[0].EnsureVisible();
+                        WindowsMediaPlayer.URL = paths[songslistView.SelectedIndices[0]];
                     }
                     Play(WindowsMediaPlayer.URL);
                 }
@@ -386,8 +359,9 @@ namespace Music_Player
                         atIndex = 0;
                     }
                     atIndex++;
-                    librarylistBox.SelectedIndex = trackIndexes[atIndex];
-                    WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
+                    songslistView.Items[trackIndexes[atIndex]].Selected = true;
+                    songslistView.Items[trackIndexes[atIndex]].EnsureVisible();
+                    WindowsMediaPlayer.URL = paths[songslistView.SelectedIndices[0]];
                     Play(WindowsMediaPlayer.URL);
                 }
             }
@@ -395,11 +369,11 @@ namespace Music_Player
         private void CallShuffle()
         {
             List<int> indexList = new List<int>();
-            for (int i = 0; i < librarylistBox.Items.Count; i++)
+            for (int i = 0; i < songslistView.Items.Count; i++)
             {
                 indexList.Add(i);
             }
-            indexList.Remove(librarylistBox.SelectedIndex);
+            indexList.Remove(songslistView.SelectedIndices[0]);
             trackIndexes = MusicPlayerClass.Shuffle(indexList);
         }
         private void shuffleButton_Click(object sender, EventArgs e)
@@ -408,6 +382,7 @@ namespace Music_Player
             // this is  a method of turning off and on shuffle mode, odd clicks turn it on, even clicks turn it off.
             // if the current click count divided by 2 yields a remainder of 1,
             // shuffleButtonClickCount == odd and shuffle mode == off
+            // Look at ToggleState function in Utes.cs 
 
             shuffleButtonClicked = utes.ToggleState(shuffleButtonClicked, ref shuffleButtonClickCount);
             if (shuffleButtonClicked)
@@ -430,62 +405,93 @@ namespace Music_Player
         {
             queueLabel.Visible = true;
             clearQueueButton.Visible = true;
-            if (treeView.Visible == false)
+            if (songslistView.Visible == true)
             {
-                currentSelectedIndex = librarylistBox.SelectedIndex;
+                currentSelectedIndex = songslistView.FocusedItem.Index;
             }
-            else
+            else if (treeView.Visible == true)
             {
-                if (librarylistBox.Visible == true)
-                {
-                    currentSelectedIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(librarylistBox.SelectedItem.ToString(), songObj).FullPath));
-                }
-                else
-                {
-                    currentSelectedIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(treeView.SelectedNode.Text, songObj).FullPath));
-                }
+                currentSelectedIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(treeView.SelectedNode.Text, songObj).FullPath));
             }
+
             queueList.Add(currentSelectedIndex);
             queueLabel.Text = $"Queued Songs: {queueList.Count}";
         }
+        public static void SetArtwork(string audioFilePath, string artworkFilePath)
+        {
+            try
+            {
+                var file = TagLib.File.Create(audioFilePath);
+                var picture = new TagLib.Picture(artworkFilePath);
+                file.Tag.Pictures = new TagLib.IPicture[] { picture };
+
+                // Set the MIME type of the picture based on the file extension
+                if (Path.GetExtension(artworkFilePath).Equals(".jpg", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    picture.MimeType = TagLib.Picture.GetMimeFromExtension(".jpg");
+                }
+                else if (Path.GetExtension(artworkFilePath).Equals(".png", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    picture.MimeType = TagLib.Picture.GetMimeFromExtension(".png");
+                }
+
+                // Save the changes to the file
+                file.Save();
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show($"Error setting artwork for {audioFilePath}: {ex.Message}");
+            }
+        }
         private void GetAlbumArt()
         {
-            bool albumArtFound = false;
-            string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
-            var currentNode = rootNode.FindNodeByFullPath(currentSongPath, songObj);
-            if (currentNode != null)
+            if (albumVisible == "True")
             {
-                try
+                bool albumArtFound = false;
+                string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
+                var currentNode = rootNode.FindNodeByFullPath(currentSongPath, songObj);
+                if (currentNode != null)
                 {
-                    TagLib.File file_TAG = TagLib.File.Create(currentNode.FullPath);
-                    if (file_TAG.Tag.Pictures.Length >= 1)
+                    try
                     {
-                        var bin = file_TAG.Tag.Pictures[0].Data.Data;
-                        Image image = Image.FromStream(new MemoryStream(bin));
-                        albumArtBox.Image = image;
-                        albumArtBox.Visible = true;
-                    }
-                    else if (file_TAG.Tag.Pictures.Length == 0)
-                    {
-                        foreach (string path in Directory.EnumerateFiles(currentNode.Parent.FullPath))
+                        TagLib.File file_TAG = TagLib.File.Create(currentNode.FullPath);
+                        if (file_TAG.Tag.Pictures.Length >= 1)
                         {
-                            if (Path.GetExtension(path) == ".jpg" || Path.GetExtension(path) == ".png")
+                            var bin = file_TAG.Tag.Pictures[0].Data.Data;
+                            Image image = Image.FromStream(new MemoryStream(bin));
+                            albumArtBox.Image = image;
+                            albumArtBox.Visible = true;
+                        }
+                        else if (file_TAG.Tag.Pictures.Length == 0)
+                        {
+                            foreach (string path in Directory.EnumerateFiles(currentNode.Parent.FullPath))
                             {
-                                Bitmap albumArtBitmap = new Bitmap(Image.FromFile(path));
-                                albumArtBox.Image = albumArtBitmap;
-                                albumArtBox.Visible = true;
-                                albumArtFound = true; // flag that an album art file was found
-                                break;
+                                if (Path.GetExtension(path) == ".jpg" || Path.GetExtension(path) == ".png")
+                                {
+                                    Bitmap albumArtBitmap = new Bitmap(Image.FromFile(path));
+                                    albumArtBox.Image = albumArtBitmap;
+                                    albumArtBox.Visible = true;
+
+                                    // Set the artwork of the song to the found file
+                                    SetArtwork(currentNode.FullPath, path);
+
+                                    albumArtFound = true; // flag that an album art file was found
+                                    break;
+                                }
+                            }
+
+                            if (!albumArtFound) // set album art box to invisible if no file was found
+                            {
+                                albumArtBox.Visible = false;
                             }
                         }
-
-                        if (!albumArtFound) // set album art box to invisible if no file was found
-                        {
-                            albumArtBox.Visible = false;
-                        }
                     }
+                    catch (Exception ex) { MessageBox.Show("An unexpected error has occurred: " + ex.StackTrace + "\n" + "\n" + ex.Message); }
                 }
-                catch (Exception ex) { MessageBox.Show("An unexpected error has occurred: " + ex.StackTrace + "\n" + "\n" + ex.Message); }
+            }
+            else
+            {
+                albumArtBox.Visible = false;
             }
         }
         private void WindowsMediaPlayer_MediaChange(object sender, _WMPOCXEvents_MediaChangeEvent e)
@@ -500,20 +506,29 @@ namespace Music_Player
             durationLabel.Visible = true;
             durationLabel.Text = $"Length: {TimeSpan.FromSeconds(duration):mm\\:ss}";
             GetAlbumArt();
-           
+
         }
         public void LoadLibrary(string path)
         {
             // designate initial root for tree traversal
             rootNode = FileSystemTreeNode.BuildTree(path);
-            if (librarylistBox.Items.Count > 0)
+            if (songslistView.Items.Count > 0)
             {
-                // clear list, listbox and reset visibilities
-                librarylistBox.Items.Clear();
+                // clear list, listview and reset visibilities
+                songslistView.Items.Clear();
                 paths.Clear();
-                librarylistBox.Visible = true;
+                songslistView.Visible = true;
                 albumPanel.Visible = false;
             }
+            // Set up the ListView control
+            songslistView.View = View.Details;
+            songslistView.Columns.Add("Song", -1, HorizontalAlignment.Left);
+            songslistView.Columns.Add("Artist", -1, HorizontalAlignment.Left);
+            songslistView.Columns.Add("Album", -1, HorizontalAlignment.Left);
+            songslistView.Columns.Add("Genre", -1, HorizontalAlignment.Left);
+            songslistView.Columns.Add("Release Date", -1, HorizontalAlignment.Left);
+
+            // Loop through the songs and add them to the ListView control
             // Get the third level children of the root node
             List<FileSystemTreeNode> thirdLevelChildren = new List<FileSystemTreeNode>();
             foreach (var child in rootNode.Children)
@@ -525,17 +540,27 @@ namespace Music_Player
                         thirdLevelChildren.Add(greatGrandChild);
                         if (greatGrandChild.NodeType == NodeType.File)
                         {
-                            // Construct the song name and artist name string
+                            // Get the song data
                             string songName = greatGrandChild.DisplayName;
                             string albumName = greatGrandChild.Parent.DisplayName;
                             string artistName = greatGrandChild.Parent.Parent.DisplayName;
-                            string itemText = songName; //{objectTypeSeparator}{artistName}";// +{objectTypeSeparator}{albumName}{objectTypeSeparator}";
-                            // Add the string to the ListBox control
-                            librarylistBox.Items.Add(itemText);
+                            string genreName = ""; // Get the genre from the song metadata
+                            string releaseDate = ""; // Get the release date from the song metadata
+
+                            // Create a new ListViewItem with subitems for each column
+                            var item = new ListViewItem(songName);
+                            item.SubItems.Add(artistName);
+                            item.SubItems.Add(albumName);
+                            item.SubItems.Add(genreName);
+                            item.SubItems.Add(releaseDate);
+
+                            // Add the item to the ListView control
+                            songslistView.Items.Add(item);
                         }
                     }
                 }
             }
+
             // Get the names of the files in the third level children
             List<string> fileNames = new List<string>();
             List<string> filePaths = new List<string>();
@@ -556,6 +581,20 @@ namespace Music_Player
             configurehintLabel.Visible = false;
             noLibraryLabel.Visible = false;
             nolibbox.Visible = false;
+
+            foreach (ColumnHeader column in songslistView.Columns)
+            {
+                int maxPixelLength = -1;
+                foreach (ListViewItem item in songslistView.Items)
+                {
+                    int pixelLength = TextRenderer.MeasureText(item.SubItems[column.Index].Text, songslistView.Font).Width;
+                    if (pixelLength > maxPixelLength)
+                    {
+                        maxPixelLength = pixelLength;
+                    }
+                }
+                column.Width = maxPixelLength + 10;
+            }
         }
         private (Dictionary<string, List<string>>, string) GetAudioDevices()
         {
@@ -589,10 +628,19 @@ namespace Music_Player
         {
             buttonHook_Click(sender, e);
             dbUtils.GetConnection();
+
+            List<string> userConfig = dbUtils.GetUserConfig();
+            if (userConfig != null)
+            {
+                // Grab some values
+                albumVisible = userConfig[4];
+            }
             WindowsMediaPlayer.settings.volume = 0;
             playPauseButton.Image = Properties.Resources.PausePlay;
+
             // Add a delegate for the MediaChange event.
             WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(WindowsMediaPlayer_MediaChange);
+
             // set visualization preset from windows media player
             SetCurrentEffectPreset(4);
             connectionString = dbUtils.connectionString;
@@ -607,9 +655,9 @@ namespace Music_Player
                 AddSearchSource();
                 // Add Playlists
                 GetPlaylists("Load");
-                librarylistBox.Visible = true;
+                songslistView.Visible = true;
                 albumPanel.Visible = false;
-                librarylistBox.HorizontalScrollbar = true;
+                // listView1.HorizontalScrollbar = true;
                 searchTextBox.Enabled = true;
                 playlistBox.Enabled = true;
                 noLibraryLabel.Visible = false;
@@ -619,7 +667,7 @@ namespace Music_Player
                 noLibraryLabel.Visible = true;
                 configurehintLabel.Visible = true;
                 nolibbox.Visible = true;
-                librarylistBox.HorizontalScrollbar = false;
+                //libraryListView.HorizontalScrollbar = false;
                 searchTextBox.Enabled = false;
                 playlistBox.Enabled = false;
             }
@@ -682,7 +730,8 @@ namespace Music_Player
                 }
                 // Show the TreeView control and hide the songslistBox control
                 treeView.ExpandAll();
-                librarylistBox.Visible = false;
+                //librarylistBox.Visible = false;
+                songslistView.Visible = false;
                 albumPanel.Visible = true;
                 libraryAlbumArtBox.Visible = true;
                 treeView.Visible = true;
@@ -767,7 +816,8 @@ namespace Music_Player
                     // set bool
                     playlistViewing = true;
                     // Clear the listbox as well as the list holding the song titles
-                    librarylistBox.Items.Clear();
+                    //librarylistBox.Items.Clear();
+                    songslistView.Items.Clear();
                     paths.Clear();
                     //hide panel
                     albumPanel.Visible = false;
@@ -775,10 +825,12 @@ namespace Music_Player
                     foreach (string song in songs)
                     {
                         // now add to both items that were just cleared
-                        librarylistBox.Items.Add(song);
+                        //librarylistBox.Items.Add(song);
+                        songslistView.Items.Add(song);
                         paths.Add(rootNode.FindNodeByDisplayName(song, songObj).FullPath);
                     }
-                    librarylistBox.Visible = true;
+                    //librarylistBox.Visible = true;
+                    songslistView.Visible = true;
                 }
             }
         }
@@ -837,11 +889,11 @@ namespace Music_Player
         }
         private void addtoplaylistButton_Click(object sender, EventArgs e)
         {
-            if (librarylistBox.Visible == true)
+            if (songslistView.Visible == true)
             {
-                if (librarylistBox.SelectedIndex == -1)
+                if (songslistView.SelectedItems.Count == 0)
                 {
-                    MessageBox.Show("No song was highlighted in the listbox", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("No song was highlighted in the listview", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 else if (playlistBox.SelectedIndex == -1)
                 {
@@ -850,8 +902,8 @@ namespace Music_Player
                 else
                 {
                     //insert song into playlist from library
-                    if (!dbUtils.GetPlaylistSongs(Program.user_id, playlistBox.SelectedItem.ToString()).Contains(librarylistBox.SelectedItem))
-                        dbUtils.InsertSong(rootNode.FindNodeByDisplayName((string)librarylistBox.SelectedItem, songObj), playlistBox.SelectedItem.ToString());
+                    if (!dbUtils.GetPlaylistSongs(Program.user_id, playlistBox.SelectedItem.ToString()).Contains(songslistView.SelectedItems[0].Text))
+                        dbUtils.InsertSong(rootNode.FindNodeByDisplayName((string)songslistView.SelectedItems[0].Text, songObj), playlistBox.SelectedItem.ToString());
                     else
                         MessageBox.Show("Song is already in the selected playlist");
                 }
@@ -926,15 +978,6 @@ namespace Music_Player
         {
             this.Close();
             MusicPlayerClass.Dispose();
-        }
-        private void songslistBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                // Play the selected song while listbox is active control
-                WindowsMediaPlayer.URL = paths[librarylistBox.SelectedIndex];
-                Play(WindowsMediaPlayer.URL);
-            }
         }
         // Hovering functionality for buttons and pictureboxes
         private void MouseHover(object sender, EventArgs e)
@@ -1031,12 +1074,12 @@ namespace Music_Player
         //}
         private void maximizeBox_Click(object sender, EventArgs e)
         {
-            // To be implemented
+            // To be implemented, we will see
             // FullscreenToggle();
         }
         private void settingsBox_Click(object sender, EventArgs e)
         {
-            Config newConfig = new Config(); 
+            Config newConfig = new Config();
             Config config = (Config)Application.OpenForms["Config"];
             if (config == null)
             {
@@ -1140,7 +1183,8 @@ namespace Music_Player
             albumPanel.Visible = false;
             treeView.Visible = false;
             backBox.Visible = false;
-            librarylistBox.Visible = true;
+            //librarylistBox.Visible = true;
+            songslistView.Visible = true;
         }
         private void treeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
@@ -1281,6 +1325,86 @@ namespace Music_Player
         {
             this.ActiveControl = null;
         }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int currentIndex;
+            if (e.Button == MouseButtons.Left)
+            {
+                if (songslistView.Items.Count > 0)
+                {
+                    if (playlistViewing == false)
+                    {
+                        WindowsMediaPlayer.URL = paths[songslistView.SelectedItems[0].Index];
+                    }
+                    else
+                    {
+                        currentIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(songslistView.SelectedItems[0].Text, songObj).FullPath));
+                        WindowsMediaPlayer.URL = paths[currentIndex];
+                    }
+
+                    // Check for file extension
+                    string extension = Path.GetExtension(WindowsMediaPlayer.URL);
+                    string[] videoFormats = Utes.videoFormats;
+                    if (videoFormats.Contains(extension))
+                    {
+                        albumArtBox.Visible = false;
+                    }
+                    else
+                    {
+                        if (albumVisible == "True")
+                        {
+                            GetAlbumArt();
+                        }
+                    }
+
+                    // Set the focus back to the ListView to avoid a bug where the selected item doesn't display correctly
+                    songslistView.Focus();
+
+                    // Start playing the selected song
+                    Play(WindowsMediaPlayer.URL);
+                }
+            }
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewDoubleClick)
+            {
+                if (songslistView.SelectedItems.Count > 0)
+                {
+                    int currentIndex = songslistView.SelectedItems[0].Index;
+                    //play music 
+                    //only plays when double clicked, a single click only changes the listbox so the user can add the selected song to a queue or playlist
+                    WindowsMediaPlayer.URL = paths[currentIndex];
+                    Play(WindowsMediaPlayer.URL);
+                    // reset the flag
+                    listBoxDoubleClick = false;
+                }
+            }
+            else
+            {
+                if (playlistBox.SelectedIndex != -1)
+                {
+                    addtoplaylistButton.Enabled = true;
+                }
+                else
+                {
+                    addtoplaylistButton.Enabled = false;
+                }
+            }
+        }
+
+        private void listView1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // Play the selected song while listbox is active control
+                WindowsMediaPlayer.URL = paths[songslistView.SelectedItems[0].Index];
+                Play(WindowsMediaPlayer.URL);
+            }
+        }
+
         private void vizButton_Click(object sender, EventArgs e)
         {
             // To be implemented 

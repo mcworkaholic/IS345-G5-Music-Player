@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MusicPlayer));
-            this.librarylistBox = new System.Windows.Forms.ListBox();
             this.playTimer = new System.Windows.Forms.Timer(this.components);
             this.shuffleButton = new System.Windows.Forms.Button();
             this.queueButton = new System.Windows.Forms.Button();
@@ -83,6 +82,7 @@
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurehintLabel = new System.Windows.Forms.Label();
+            this.songslistView = new System.Windows.Forms.ListView();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
@@ -105,21 +105,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).BeginInit();
             this.rightClickMenuStrip.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // librarylistBox
-            // 
-            this.librarylistBox.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.librarylistBox.FormattingEnabled = true;
-            this.librarylistBox.HorizontalExtent = 1000;
-            this.librarylistBox.HorizontalScrollbar = true;
-            this.librarylistBox.Location = new System.Drawing.Point(528, 49);
-            this.librarylistBox.Name = "librarylistBox";
-            this.librarylistBox.Size = new System.Drawing.Size(264, 316);
-            this.librarylistBox.TabIndex = 600;
-            this.librarylistBox.TabStop = false;
-            this.librarylistBox.SelectedIndexChanged += new System.EventHandler(this.songslistBox_SelectedIndexChanged);
-            this.librarylistBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.songslistBox_KeyDown);
-            this.librarylistBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.songslistBox_MouseDoubleClick);
             // 
             // playTimer
             // 
@@ -541,7 +526,7 @@
             this.nolibbox.ErrorImage = null;
             this.nolibbox.Image = global::Music_Player.Properties.Resources.settings;
             this.nolibbox.InitialImage = null;
-            this.nolibbox.Location = new System.Drawing.Point(614, 340);
+            this.nolibbox.Location = new System.Drawing.Point(87, 290);
             this.nolibbox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.nolibbox.Name = "nolibbox";
             this.nolibbox.Size = new System.Drawing.Size(14, 16);
@@ -614,10 +599,13 @@
             this.albumPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.albumPanel.Controls.Add(this.libraryAlbumArtBox);
             this.albumPanel.Controls.Add(this.backBox);
+            this.albumPanel.Controls.Add(this.nolibbox);
             this.albumPanel.Controls.Add(this.treeView);
-            this.albumPanel.Location = new System.Drawing.Point(528, 49);
+            this.albumPanel.Controls.Add(this.noLibraryLabel);
+            this.albumPanel.Controls.Add(this.configurehintLabel);
+            this.albumPanel.Location = new System.Drawing.Point(529, 50);
             this.albumPanel.Name = "albumPanel";
-            this.albumPanel.Size = new System.Drawing.Size(264, 317);
+            this.albumPanel.Size = new System.Drawing.Size(264, 315);
             this.albumPanel.TabIndex = 205;
             this.albumPanel.Visible = false;
             // 
@@ -646,7 +634,7 @@
             // 
             this.noLibraryLabel.AutoSize = true;
             this.noLibraryLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.noLibraryLabel.Location = new System.Drawing.Point(610, 70);
+            this.noLibraryLabel.Location = new System.Drawing.Point(69, 8);
             this.noLibraryLabel.Name = "noLibraryLabel";
             this.noLibraryLabel.Size = new System.Drawing.Size(118, 13);
             this.noLibraryLabel.TabIndex = 206;
@@ -745,12 +733,25 @@
             // 
             this.configurehintLabel.AutoSize = true;
             this.configurehintLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.configurehintLabel.Location = new System.Drawing.Point(545, 340);
+            this.configurehintLabel.Location = new System.Drawing.Point(18, 290);
             this.configurehintLabel.Name = "configurehintLabel";
             this.configurehintLabel.Size = new System.Drawing.Size(236, 13);
             this.configurehintLabel.TabIndex = 300;
             this.configurehintLabel.Text = "Click on the        symbol below to get started";
             this.configurehintLabel.Visible = false;
+            // 
+            // songslistView
+            // 
+            this.songslistView.HideSelection = false;
+            this.songslistView.Location = new System.Drawing.Point(529, 49);
+            this.songslistView.MultiSelect = false;
+            this.songslistView.Name = "songslistView";
+            this.songslistView.Size = new System.Drawing.Size(264, 316);
+            this.songslistView.TabIndex = 601;
+            this.songslistView.UseCompatibleStateImageBehavior = false;
+            this.songslistView.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.songslistView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
+            this.songslistView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
             // 
             // MusicPlayer
             // 
@@ -758,9 +759,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(796, 454);
-            this.Controls.Add(this.nolibbox);
-            this.Controls.Add(this.configurehintLabel);
-            this.Controls.Add(this.noLibraryLabel);
+            this.Controls.Add(this.songslistView);
             this.Controls.Add(this.albumPanel);
             this.Controls.Add(this.audioControllerPanel);
             this.Controls.Add(this.settingsBox);
@@ -779,7 +778,6 @@
             this.Controls.Add(this.playlistBox);
             this.Controls.Add(this.queueLabel);
             this.Controls.Add(this.albumArtBox);
-            this.Controls.Add(this.librarylistBox);
             this.Controls.Add(this.WindowsMediaPlayer);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -807,6 +805,7 @@
             this.audioControllerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.audioPosTrackBar)).EndInit();
             this.albumPanel.ResumeLayout(false);
+            this.albumPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clearBox)).EndInit();
@@ -818,7 +817,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.ListBox librarylistBox;
         private System.Windows.Forms.Timer playTimer;
         private System.Windows.Forms.PictureBox previousBox;
         private System.Windows.Forms.PictureBox nextBox;
@@ -871,6 +869,7 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.PictureBox nolibbox;
         public System.Windows.Forms.Label configurehintLabel;
+        public System.Windows.Forms.ListView songslistView;
     }
 }
 
