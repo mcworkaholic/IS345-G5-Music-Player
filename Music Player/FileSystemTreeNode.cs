@@ -74,7 +74,6 @@ namespace Music_Player
         {
             _children.Remove(child);
         }
-
         public static FileSystemTreeNode BuildTree(string directoryPath)
         {
             var rootNode = new FileSystemTreeNode
@@ -85,7 +84,6 @@ namespace Music_Player
                 NodeType = NodeType.Folder,
                 ObjectType = "(Music)"
             };
-
 
             foreach (var subDirectoryPath in Directory.GetDirectories(directoryPath))
             {
@@ -98,6 +96,18 @@ namespace Music_Player
                     ObjectType = "(Artist)"
                 };
                 rootNode.AddChild(artistNode);
+
+                bool hasSubDirectories = Directory.GetDirectories(subDirectoryPath).Any();
+
+                if (hasSubDirectories)
+                {
+                    string singlesDirectoryPath = Path.Combine(subDirectoryPath, "Singles");
+                    if (!Directory.Exists(singlesDirectoryPath))
+                    {
+                        Directory.CreateDirectory(singlesDirectoryPath);
+                    }
+                }
+
                 try
                 {
                     foreach (var albumDirectoryPath in Directory.GetDirectories(subDirectoryPath))
@@ -129,7 +139,7 @@ namespace Music_Player
 
                             if (!Utes.imageFormats.Contains(Path.GetExtension(node.FullPath)))
                             {
-                                if(Utes.videoFormats.Contains(Path.GetExtension(node.FullPath)) || Utes.audioFormats.Contains(Path.GetExtension(node.FullPath)))
+                                if (Utes.videoFormats.Contains(Path.GetExtension(node.FullPath)) || Utes.audioFormats.Contains(Path.GetExtension(node.FullPath)))
                                 {
                                     albumNode.AddChild(node);
                                 }
