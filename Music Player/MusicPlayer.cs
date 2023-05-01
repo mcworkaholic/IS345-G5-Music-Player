@@ -25,6 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
+using System.Threading;
 using System.Windows.Forms;
 using Cursors = System.Windows.Forms.Cursors;
 
@@ -597,6 +598,9 @@ namespace Music_Player
                 }
                 column.Width = maxPixelLength + 10;
             }
+            // This way we can avoid overlapping of panels and boxes
+            songslistView.Location = new Point(529, 49);
+            songslistView.Visible = true;
         }
         private (Dictionary<string, List<string>>, string) GetAudioDevices()
         {
@@ -1415,6 +1419,44 @@ namespace Music_Player
                 // Play the selected song while listbox is active control
                 WindowsMediaPlayer.URL = paths[songslistView.SelectedItems[0].Index];
                 Play(WindowsMediaPlayer.URL);
+            }
+        }
+
+        private void treeView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Mutes the annoying windows beep sound
+
+                //// Play the selected song while listbox is active control
+                var clickedNode = rootNode.FindNodeByDisplayName(treeView.SelectedNode.Text, songObj);
+                if (clickedNode.ObjectType == "(Song)")
+                {
+                    MusicPlayerClass.Pause();
+                    WindowsMediaPlayer.Ctlcontrols.pause();
+
+                    //// Create a new thread to play the media file
+                    //Thread thread = new Thread(() =>
+                    //{
+                    //    // Set the URL of the media file
+                    //    WindowsMediaPlayer.URL = clickedNode.FullPath;
+
+                    //    // Call the Play method
+                    //    Play(WindowsMediaPlayer.URL);
+
+                    //    // Update the UI as needed (e.g., disable buttons)
+                    //    this.Invoke((MethodInvoker)delegate
+                    //    {
+                    //        openplayButton.Enabled = false;
+                    //    });
+                    //});
+
+                    //// Start the thread
+                    //thread.Start();
+
+                    WindowsMediaPlayer.URL = clickedNode.FullPath;
+                    Play(clickedNode.FullPath);
+                }
             }
         }
 

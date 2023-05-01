@@ -631,6 +631,7 @@
             this.treeView.TabIndex = 0;
             this.treeView.Visible = false;
             this.treeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseDoubleClick);
+            this.treeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView_KeyDown);
             // 
             // noLibraryLabel
             // 
@@ -745,12 +746,13 @@
             // songslistView
             // 
             this.songslistView.HideSelection = false;
-            this.songslistView.Location = new System.Drawing.Point(529, 49);
+            this.songslistView.Location = new System.Drawing.Point(254, 49);
             this.songslistView.MultiSelect = false;
             this.songslistView.Name = "songslistView";
             this.songslistView.Size = new System.Drawing.Size(264, 316);
             this.songslistView.TabIndex = 601;
             this.songslistView.UseCompatibleStateImageBehavior = false;
+            this.songslistView.Visible = false;
             this.songslistView.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             this.songslistView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
             this.songslistView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
