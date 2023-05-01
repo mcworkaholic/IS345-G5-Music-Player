@@ -125,9 +125,9 @@ namespace Music_Player
         {
             // Keeping track of the currently selected song, so that it is still in focus if the user wishes to refresh the settings
             string currentlyPlaying;
-            if (_musicPlayer.listView1.SelectedItems.Count > 0)
+            if (_musicPlayer.songslistView.SelectedItems.Count > 0)
             {
-                currentlyPlaying = _musicPlayer.listView1.SelectedItems[0].Text;
+                currentlyPlaying = _musicPlayer.songslistView.SelectedItems[0].Text;
             }
             else
             {
@@ -204,9 +204,9 @@ namespace Music_Player
             if (currentlyPlaying != null)
             {
                 int index = -1;
-                for (int i = 0; i < _musicPlayer.listView1.Items.Count; i++)
+                for (int i = 0; i < _musicPlayer.songslistView.Items.Count; i++)
                 {
-                    if (_musicPlayer.listView1.Items[i].Text == currentlyPlaying)
+                    if (_musicPlayer.songslistView.Items[i].Text == currentlyPlaying)
                     {
                         index = i;
                         break;
@@ -214,8 +214,8 @@ namespace Music_Player
                 }
                 if (index != -1)
                 {
-                    _musicPlayer.listView1.Items[index].Selected = true;
-                    _musicPlayer.listView1.Items[index].EnsureVisible();
+                    _musicPlayer.songslistView.Items[index].Selected = true;
+                    _musicPlayer.songslistView.Items[index].EnsureVisible();
                 }
             }
         }
