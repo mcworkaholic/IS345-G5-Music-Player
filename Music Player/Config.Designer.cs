@@ -300,7 +300,7 @@
             // directorieslistBox
             // 
             this.directorieslistBox.FormattingEnabled = true;
-            this.directorieslistBox.Location = new System.Drawing.Point(-3, -1);
+            this.directorieslistBox.Location = new System.Drawing.Point(-1, -1);
             this.directorieslistBox.Name = "directorieslistBox";
             this.directorieslistBox.ScrollAlwaysVisible = true;
             this.directorieslistBox.Size = new System.Drawing.Size(554, 199);
@@ -357,7 +357,7 @@
             // 
             // newpassView
             // 
-            this.newpassView.Location = new System.Drawing.Point(415, 127);
+            this.newpassView.Location = new System.Drawing.Point(406, 132);
             this.newpassView.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.newpassView.Name = "newpassView";
             this.newpassView.Size = new System.Drawing.Size(23, 21);
@@ -389,7 +389,7 @@
             // 
             // newpassBox
             // 
-            this.newpassBox.Location = new System.Drawing.Point(316, 126);
+            this.newpassBox.Location = new System.Drawing.Point(307, 131);
             this.newpassBox.Name = "newpassBox";
             this.newpassBox.PasswordChar = '•';
             this.newpassBox.Size = new System.Drawing.Size(100, 22);
@@ -400,7 +400,7 @@
             // newpassLabel
             // 
             this.newpassLabel.AutoSize = true;
-            this.newpassLabel.Location = new System.Drawing.Point(225, 129);
+            this.newpassLabel.Location = new System.Drawing.Point(216, 134);
             this.newpassLabel.Name = "newpassLabel";
             this.newpassLabel.Size = new System.Drawing.Size(85, 13);
             this.newpassLabel.TabIndex = 60;
@@ -409,7 +409,7 @@
             // 
             // oldpassBox
             // 
-            this.oldpassBox.Location = new System.Drawing.Point(102, 126);
+            this.oldpassBox.Location = new System.Drawing.Point(100, 131);
             this.oldpassBox.Name = "oldpassBox";
             this.oldpassBox.PasswordChar = '•';
             this.oldpassBox.Size = new System.Drawing.Size(100, 22);
@@ -419,7 +419,7 @@
             // oldpassLabel
             // 
             this.oldpassLabel.AutoSize = true;
-            this.oldpassLabel.Location = new System.Drawing.Point(15, 129);
+            this.oldpassLabel.Location = new System.Drawing.Point(13, 134);
             this.oldpassLabel.Name = "oldpassLabel";
             this.oldpassLabel.Size = new System.Drawing.Size(81, 13);
             this.oldpassLabel.TabIndex = 58;
@@ -545,7 +545,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Config";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Configuration";
             this.Load += new System.EventHandler(this.Config_Load);
             this.Click += new System.EventHandler(this.Config_Click);
             this.topPanel.ResumeLayout(false);

@@ -13,12 +13,12 @@ namespace Music_Player
     {
         // Class Instantiation
         private DBUtils dbUtils = new DBUtils();
-        private MusicPlayer form1 = (MusicPlayer)ActiveForm;
+        private MusicPlayer _musicPlayer = (MusicPlayer)ActiveForm;
         private Utes utes = new Utes();
 
         private string connectionString;
 
-        // can be null, 0, or 1, where 0 or null = false, 1 = true
+        // can be null, true, or false
         public string encryptAfterExit;
         public string showArtAlbum;
 
@@ -107,6 +107,8 @@ namespace Music_Player
         }
         private void searchButton_Click(object sender, EventArgs e)
         {
+            // Allow user to search for a folder containing music, and setting it as their default startup folder
+
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
             dialog.InitialDirectory = "C:\\Users";
             dialog.IsFolderPicker = true;
@@ -121,10 +123,35 @@ namespace Music_Player
         }
         private void refreshButton_Click(object sender, EventArgs e)
         {
+            // Keeping track of the currently selected song, so that it is still in focus if the user wishes to refresh the settings
+            string currentlyPlaying;
+            if (_musicPlayer.listView1.SelectedItems.Count > 0)
+            {
+                currentlyPlaying = _musicPlayer.listView1.SelectedItems[0].Text;
+            }
+            else
+            {
+                currentlyPlaying = null;
+            }
+
+            // Check whether initial and current states match up to indicate a change
+
+            if (encryptcheckBox.CheckState != initialEncryptState)
+            {
+                encryptChanged = true;
+            }
+
+            if (artcheckBox.CheckState != initialArtState)
+            {
+                artChanged = true;
+            }
+
             if (passChanged)
             {
+                // Update the password
                 string storedHash = dbUtils.GetHash(Program.username);
 
+                // Check user's records with Bcrypt
                 if (!BC.Verify(oldpassBox.Text, storedHash))
                 {
                     MessageBox.Show("Old password doesn't match your records. Please try again.", "Password Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -150,22 +177,47 @@ namespace Music_Player
             }
             if (encryptChanged)
             {
-                dbUtils.UpdateChanges("user", "encrypt_on_exit", encryptAfterExit.ToString());
+                dbUtils.UpdateChanges("user", "encrypt_on_exit", encryptAfterExit);
             }
             if (artChanged)
             {
-                 dbUtils.UpdateChanges("user", "show_art", showArtAlbum.ToString());
+                dbUtils.UpdateChanges("user", "show_art", showArtAlbum);
             }
             if (libChanged)
             {
                 dbUtils.UpdateChanges("user", "default_startup_folder", libraryBox.Text);
-                form1.LoadLibrary(dbUtils.GetStartUpFolder());
+                // Get the new library
+                _musicPlayer.LoadLibrary(dbUtils.GetStartUpFolder());
             }
             newpassView.Visible = false;
             refreshClicked = true;
-            if(userBox.Enabled == true)
+            if (userBox.Enabled == true)
+            {
+                // Set the textboxes to not enabled to simulate a reset 
                 editButton.PerformClick();
+            }
+            _musicPlayer.albumVisible = showArtAlbum;
+            // Refresh w/changes as well as the musicplayer's library if changed
             this.Refresh();
+
+            // Reset the selected index to the original song that was playing
+            if (currentlyPlaying != null)
+            {
+                int index = -1;
+                for (int i = 0; i < _musicPlayer.listView1.Items.Count; i++)
+                {
+                    if (_musicPlayer.listView1.Items[i].Text == currentlyPlaying)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index != -1)
+                {
+                    _musicPlayer.listView1.Items[index].Selected = true;
+                    _musicPlayer.listView1.Items[index].EnsureVisible();
+                }
+            }
         }
         private void PromptForSave()
         {
@@ -179,6 +231,8 @@ namespace Music_Player
         }
         private void exitBox_Click(object sender, EventArgs e)
         {
+            // Checking whether states have changed once again
+
             if (encryptcheckBox.CheckState != initialEncryptState)
             {
                 encryptChanged = true;
@@ -193,9 +247,22 @@ namespace Music_Player
             {
                 if (passChanged || libChanged || encryptChanged || artChanged)
                 {
+                    // Indicate to the user that chnages have been made but they have not yet refreshed, yes to save on exit
                     PromptForSave();
                 }
             }
+            else
+            {
+                if (encryptChanged)
+                {
+                    dbUtils.UpdateChanges("user", "encrypt_on_exit", encryptAfterExit);
+                }
+                if (artChanged)
+                {
+                    dbUtils.UpdateChanges("user", "show_art", showArtAlbum);
+                }
+            }
+            _musicPlayer.albumVisible = showArtAlbum;
             this.Close();
             this.Dispose();
         }
@@ -218,6 +285,7 @@ namespace Music_Player
 
         private void topPanel_MouseDown(object sender, MouseEventArgs e)
         {
+            // For custom form movement
             isMoving = true;
             movX = e.X;
             movY = e.Y;
@@ -315,7 +383,7 @@ namespace Music_Player
             Process.Start("explorer.exe", selectedDirectory);
         }
 
-        //rounded corners
+        //Rounded Corners
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
         (
@@ -329,6 +397,7 @@ namespace Music_Player
 
         private void editButton_Click(object sender, EventArgs e)
         {
+            // Toggle between enabled mode or not for each textbox
             if (userBox.Enabled == false)
             {
                 foreach (Control control in configPanel.Controls)
@@ -349,7 +418,7 @@ namespace Music_Player
                     }
                 }
             }
-            
+
         }
 
         private void libraryBox_MouseClick(object sender, MouseEventArgs e)
@@ -360,7 +429,7 @@ namespace Music_Player
         private void encryptcheckBox_CheckedChanged(object sender, EventArgs e)
         {
             refreshButton.Enabled = true;
-            
+
             switch (encryptcheckBox.CheckState)
             {
                 case CheckState.Checked: encryptAfterExit = "True"; break;
@@ -385,6 +454,8 @@ namespace Music_Player
 
         private void passBox_Click(object sender, EventArgs e)
         {
+            // Handle visibilty for the password change area
+
             passBox.SelectionLength = 0;
             if (passBox.Enabled == true)
             {
@@ -426,6 +497,8 @@ namespace Music_Player
 
         private void newpassView_Click(object sender, EventArgs e)
         {
+            // Toggle between '•' and what the character is for the password changing area
+
             newpassViewClicked = utes.ToggleState(newpassViewClicked, ref newpassViewClickCount);
             if (newpassViewClicked)
             {
@@ -437,7 +510,7 @@ namespace Music_Player
                 else
                 {
                     newpassBox.PasswordChar = '•';
-                    oldpassBox.PasswordChar= '•';
+                    oldpassBox.PasswordChar = '•';
                 }
             }
             else
@@ -446,7 +519,5 @@ namespace Music_Player
                 oldpassBox.PasswordChar = '•';
             }
         }
-
-       
     }
 }
