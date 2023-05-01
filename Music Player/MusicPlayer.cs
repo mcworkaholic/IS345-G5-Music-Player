@@ -1,16 +1,18 @@
 ﻿// Author: Weston Evans/mcworkaholic on Github
 // 
 // Application purpose:  This application was intended to become a decently
-// functioning music player with a mix of old and new technologies.
+// Functioning music player with a mix of old and new technologies. Heavily built with the help of AI, limited by my own creativity and perseverance.
+// Thankfully, I'm stubborn and useful material is scattered throughout the internet based on WinForms age. This makes WinForms a perfect candidate for AI based applications and its limited use cases to before 2021.
 // In the future I plan on adding archiving functionality with a few Python scripts, with the ability to sync with services such as Soundcloud, Spotify, and Youtube Music.
 // The design is pretty intuitive, all you have to do is first create an account(this is what keeps track of each profile's playlists)
 // and then double click on any song in the listbox to get started.
 // In the future I'm going to allow the user to define what folder is opened up at the start.  ✔️
-// Each icon that does not have text, has a tooltip describing what the action does. 
+// Each icon that does not have text, has a tooltip describing what the action does. ✔️
 // The search textbox is autopopulated with every node contained in the tree besides the root from FileSystemTreeNode.cs,
 // to allow the user to make fast searches and either play a song or open an album.
-// The audio is controlled from MusicPlayer.cs, and the audio/video is synced with the visuals from the WindowsMediaPlayer component(hacky I know).
-// You will notice that some functionalities do not work, and that some refactoring can be done. I plan on fixing that for the final project. 
+// The audio is controlled from MusicPlayer.cs via the CSCore audio library, and the audio/video is synced with the visuals from the WindowsMediaPlayer component(hacky I know).
+// TODO: (.ogg) files are not yet supported, looking at Concentus library next
+// TODO: Whitecap, Aero, and G-force visual plugins need to be modified to work correctly without memory leaks
 
 using AxWMPLib;
 using CSCore.CoreAudioAPI;
@@ -703,8 +705,10 @@ namespace Music_Player
         {
             // clear existing treeview if there is one
             treeView.Nodes.Clear();
+
             // Get the first song in the album
             var firstSongNode = node.Children.FirstOrDefault();
+
             // Check if the album has any songs
             if (firstSongNode != null)
             {
@@ -716,12 +720,28 @@ namespace Music_Player
                     Image image = Image.FromStream(new MemoryStream(bin));
                     libraryAlbumArtBox.Image = image;
                 }
+
+                // If no image tags were found, look for an image file with a .jpg or .png extension in the album folder with LINQ
+                else
+                {
+                    string albumFolder = Path.GetDirectoryName(firstSongNode.FullPath);
+                    var imageFiles = Directory.EnumerateFiles(albumFolder, "*.*", SearchOption.AllDirectories)
+            .Where(s => s.EndsWith(".png") || s.EndsWith(".jpg") || s.EndsWith(".jpeg")).ToList();
+                    if (imageFiles.Count > 0)
+                    {
+                        libraryAlbumArtBox.Image = Image.FromFile(imageFiles[0]);
+                    }
+                }
+
+
                 // Add the album node to the TreeView control
                 var albumNode = new TreeNode(node.DisplayName);
                 treeView.Nodes.Add(albumNode);
+
                 // Add the first song to the TreeView control
                 var firstSongTreeNode = new TreeNode(firstSongNode.DisplayName);
                 albumNode.Nodes.Add(firstSongTreeNode);
+
                 // Iterate over the rest of the songs and add them to the TreeView control
                 foreach (var songNode in node.Children.Skip(1))
                 {
@@ -730,9 +750,9 @@ namespace Music_Player
                 }
                 // Show the TreeView control and hide the songslistBox control
                 treeView.ExpandAll();
-                //librarylistBox.Visible = false;
                 songslistView.Visible = false;
                 albumPanel.Visible = true;
+                albumPanel.BringToFront();
                 libraryAlbumArtBox.Visible = true;
                 treeView.Visible = true;
                 backBox.Visible = true;
@@ -775,7 +795,6 @@ namespace Music_Player
                             string songPath = node.FullPath;
                             WindowsMediaPlayer.URL = songPath;
                             Play(songPath);
-                            //searchTextBox.Clear();
                             openplayButton.Enabled = false;
                             resultsFound = true;
                             break; // Stop searching
@@ -816,7 +835,6 @@ namespace Music_Player
                     // set bool
                     playlistViewing = true;
                     // Clear the listbox as well as the list holding the song titles
-                    //librarylistBox.Items.Clear();
                     songslistView.Items.Clear();
                     paths.Clear();
                     //hide panel
@@ -825,11 +843,9 @@ namespace Music_Player
                     foreach (string song in songs)
                     {
                         // now add to both items that were just cleared
-                        //librarylistBox.Items.Add(song);
                         songslistView.Items.Add(song);
                         paths.Add(rootNode.FindNodeByDisplayName(song, songObj).FullPath);
                     }
-                    //librarylistBox.Visible = true;
                     songslistView.Visible = true;
                 }
             }
@@ -1255,19 +1271,16 @@ namespace Music_Player
         }
         private void WindowsMediaPlayer_ClickEvent(object sender, _WMPOCXEvents_ClickEvent e)
         {
-            if (WindowsMediaPlayer.currentMedia != null)
+            if (WindowsMediaPlayer.currentMedia != null && WindowsMediaPlayer.fullScreen == false && albumVisible == "True")
             {
-                if (WindowsMediaPlayer.fullScreen == false)
+                switch (e.nButton)
                 {
-                    switch (e.nButton)
-                    {
-                        case 2:
-                            {
-                                rightClickMenuStrip.Width = 170;
-                                rightClickMenuStrip.Show(this, new Point(e.fX, e.fY - 17));//places the menu at the pointer position
-                            }
-                            break;
-                    }
+                    case 2:
+                        {
+                            rightClickMenuStrip.Width = 170;
+                            rightClickMenuStrip.Show(this, new Point(e.fX, e.fY - 17));//places the menu at the pointer position
+                        }
+                        break;
                 }
             }
         }

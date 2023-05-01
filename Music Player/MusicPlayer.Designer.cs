@@ -603,7 +603,7 @@
             this.albumPanel.Controls.Add(this.treeView);
             this.albumPanel.Controls.Add(this.noLibraryLabel);
             this.albumPanel.Controls.Add(this.configurehintLabel);
-            this.albumPanel.Location = new System.Drawing.Point(529, 50);
+            this.albumPanel.Location = new System.Drawing.Point(529, 49);
             this.albumPanel.Name = "albumPanel";
             this.albumPanel.Size = new System.Drawing.Size(264, 315);
             this.albumPanel.TabIndex = 205;
@@ -612,6 +612,8 @@
             // libraryAlbumArtBox
             // 
             this.libraryAlbumArtBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.libraryAlbumArtBox.ErrorImage = null;
+            this.libraryAlbumArtBox.InitialImage = null;
             this.libraryAlbumArtBox.Location = new System.Drawing.Point(82, 17);
             this.libraryAlbumArtBox.Name = "libraryAlbumArtBox";
             this.libraryAlbumArtBox.Size = new System.Drawing.Size(100, 95);
