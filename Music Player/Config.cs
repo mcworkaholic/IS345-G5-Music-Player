@@ -187,8 +187,20 @@ namespace Music_Player
             {
                 dbUtils.UpdateChanges("user", "default_startup_folder", libraryBox.Text);
                 // Get the new library
+                if (_musicPlayer.configPanel.Visible == true)
+                {
+                    _musicPlayer.configPanel.Visible = false;
+                    _musicPlayer.songslistView.Visible = true;
+                }
                 _musicPlayer.songslistView.Items.Clear();
+                MusicPlayer.paths.Clear();
                 _musicPlayer.LoadLibrary(dbUtils.GetStartUpFolder());
+                _musicPlayer.AddSearchSource();
+                _musicPlayer.GetPlaylists("Load");
+                foreach (Control control in _musicPlayer.Controls)
+                {
+                    control.Enabled = true;
+                }
             }
             newpassView.Visible = false;
             refreshClicked = true;
@@ -418,7 +430,15 @@ namespace Music_Player
                         control.Enabled = false;
                     }
                 }
+
+                // could use states here instead
                 searchButton.Enabled = false;
+                newpassView.Visible = false;
+                oldpassLabel.Visible = false;
+                newpassLabel.Visible = false;
+                oldpassBox.Visible = false;
+                newpassBox.Visible = false;
+                passBox.Enabled = false;
             }
 
         }
@@ -484,7 +504,11 @@ namespace Music_Player
         }
         private void newpassBox_TextChanged(object sender, EventArgs e)
         {
-            passChanged = true;
+            if (oldpassBox.Text.Length == newpassBox.TextLength)
+            {
+                passChanged = true;
+                refreshButton.Enabled = true;
+            }
         }
 
         private void configPanel_Click(object sender, EventArgs e)

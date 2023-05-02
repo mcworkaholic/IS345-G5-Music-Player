@@ -460,9 +460,9 @@
             // libraryBox
             // 
             this.libraryBox.Enabled = false;
-            this.libraryBox.Location = new System.Drawing.Point(138, 62);
+            this.libraryBox.Location = new System.Drawing.Point(167, 62);
             this.libraryBox.Name = "libraryBox";
-            this.libraryBox.Size = new System.Drawing.Size(409, 22);
+            this.libraryBox.Size = new System.Drawing.Size(380, 22);
             this.libraryBox.TabIndex = 54;
             this.libraryBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.libraryBox_MouseClick);
             this.libraryBox.TextChanged += new System.EventHandler(this.libraryBox_TextChanged);
@@ -491,9 +491,9 @@
             this.startupfolderLabel.AutoSize = true;
             this.startupfolderLabel.Location = new System.Drawing.Point(14, 65);
             this.startupfolderLabel.Name = "startupfolderLabel";
-            this.startupfolderLabel.Size = new System.Drawing.Size(118, 13);
+            this.startupfolderLabel.Size = new System.Drawing.Size(147, 13);
             this.startupfolderLabel.TabIndex = 51;
-            this.startupfolderLabel.Text = "Default Music Library:";
+            this.startupfolderLabel.Text = "Default Music Library(Path):";
             // 
             // usernameLabel
             // 
