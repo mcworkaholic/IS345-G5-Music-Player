@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS playlist_song (
 
 CREATE TABLE IF NOT EXISTS song (
   song_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  song_path TEXT NOT NULL,
   song_display_name VARCHAR(50) NOT NULL,
   song_artist TEXT NOT NULL,
   song_album TEXT NOT NULL,
