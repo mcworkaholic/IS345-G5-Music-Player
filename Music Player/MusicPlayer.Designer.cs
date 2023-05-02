@@ -72,6 +72,7 @@
             this.libraryAlbumArtBox = new System.Windows.Forms.PictureBox();
             this.treeView = new System.Windows.Forms.TreeView();
             this.noLibraryLabel = new System.Windows.Forms.Label();
+            this.configurehintLabel = new System.Windows.Forms.Label();
             this.albumArtBox = new System.Windows.Forms.PictureBox();
             this.clearBox = new System.Windows.Forms.PictureBox();
             this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
@@ -81,8 +82,8 @@
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.configurehintLabel = new System.Windows.Forms.Label();
             this.songslistView = new System.Windows.Forms.ListView();
+            this.configPanel = new System.Windows.Forms.Panel();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
@@ -104,6 +105,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.clearBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).BeginInit();
             this.rightClickMenuStrip.SuspendLayout();
+            this.configPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // playTimer
@@ -526,7 +528,7 @@
             this.nolibbox.ErrorImage = null;
             this.nolibbox.Image = global::Music_Player.Properties.Resources.settings;
             this.nolibbox.InitialImage = null;
-            this.nolibbox.Location = new System.Drawing.Point(87, 290);
+            this.nolibbox.Location = new System.Drawing.Point(85, 285);
             this.nolibbox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.nolibbox.Name = "nolibbox";
             this.nolibbox.Size = new System.Drawing.Size(14, 16);
@@ -599,13 +601,11 @@
             this.albumPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.albumPanel.Controls.Add(this.libraryAlbumArtBox);
             this.albumPanel.Controls.Add(this.backBox);
-            this.albumPanel.Controls.Add(this.nolibbox);
             this.albumPanel.Controls.Add(this.treeView);
-            this.albumPanel.Controls.Add(this.noLibraryLabel);
-            this.albumPanel.Controls.Add(this.configurehintLabel);
-            this.albumPanel.Location = new System.Drawing.Point(529, 49);
+            this.albumPanel.Location = new System.Drawing.Point(266, 32);
+            this.albumPanel.Margin = new System.Windows.Forms.Padding(0, 0, 3, 3);
             this.albumPanel.Name = "albumPanel";
-            this.albumPanel.Size = new System.Drawing.Size(264, 315);
+            this.albumPanel.Size = new System.Drawing.Size(264, 316);
             this.albumPanel.TabIndex = 205;
             this.albumPanel.Visible = false;
             // 
@@ -625,7 +625,7 @@
             // treeView
             // 
             this.treeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.treeView.Location = new System.Drawing.Point(0, 140);
+            this.treeView.Location = new System.Drawing.Point(-1, 137);
             this.treeView.Name = "treeView";
             this.treeView.Size = new System.Drawing.Size(264, 177);
             this.treeView.TabIndex = 0;
@@ -637,12 +637,23 @@
             // 
             this.noLibraryLabel.AutoSize = true;
             this.noLibraryLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.noLibraryLabel.Location = new System.Drawing.Point(69, 8);
+            this.noLibraryLabel.Location = new System.Drawing.Point(77, 21);
             this.noLibraryLabel.Name = "noLibraryLabel";
             this.noLibraryLabel.Size = new System.Drawing.Size(118, 13);
             this.noLibraryLabel.TabIndex = 206;
             this.noLibraryLabel.Text = "No Library Connected";
             this.noLibraryLabel.Visible = false;
+            // 
+            // configurehintLabel
+            // 
+            this.configurehintLabel.AutoSize = true;
+            this.configurehintLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.configurehintLabel.Location = new System.Drawing.Point(15, 286);
+            this.configurehintLabel.Name = "configurehintLabel";
+            this.configurehintLabel.Size = new System.Drawing.Size(236, 13);
+            this.configurehintLabel.TabIndex = 300;
+            this.configurehintLabel.Text = "Click on the        symbol below to get started";
+            this.configurehintLabel.Visible = false;
             // 
             // albumArtBox
             // 
@@ -732,30 +743,32 @@
             this.openToolStripMenuItem.Text = "Open Album";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
-            // configurehintLabel
-            // 
-            this.configurehintLabel.AutoSize = true;
-            this.configurehintLabel.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.configurehintLabel.Location = new System.Drawing.Point(18, 290);
-            this.configurehintLabel.Name = "configurehintLabel";
-            this.configurehintLabel.Size = new System.Drawing.Size(236, 13);
-            this.configurehintLabel.TabIndex = 300;
-            this.configurehintLabel.Text = "Click on the        symbol below to get started";
-            this.configurehintLabel.Visible = false;
-            // 
             // songslistView
             // 
             this.songslistView.HideSelection = false;
-            this.songslistView.Location = new System.Drawing.Point(254, 49);
+            this.songslistView.Location = new System.Drawing.Point(532, 49);
             this.songslistView.MultiSelect = false;
             this.songslistView.Name = "songslistView";
             this.songslistView.Size = new System.Drawing.Size(264, 316);
             this.songslistView.TabIndex = 601;
             this.songslistView.UseCompatibleStateImageBehavior = false;
-            this.songslistView.Visible = false;
             this.songslistView.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             this.songslistView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
             this.songslistView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
+            // 
+            // configPanel
+            // 
+            this.configPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.configPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.configPanel.Controls.Add(this.noLibraryLabel);
+            this.configPanel.Controls.Add(this.nolibbox);
+            this.configPanel.Controls.Add(this.configurehintLabel);
+            this.configPanel.Location = new System.Drawing.Point(0, 32);
+            this.configPanel.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.configPanel.Name = "configPanel";
+            this.configPanel.Size = new System.Drawing.Size(263, 315);
+            this.configPanel.TabIndex = 602;
+            this.configPanel.Visible = false;
             // 
             // MusicPlayer
             // 
@@ -763,6 +776,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(796, 454);
+            this.Controls.Add(this.configPanel);
             this.Controls.Add(this.songslistView);
             this.Controls.Add(this.albumPanel);
             this.Controls.Add(this.audioControllerPanel);
@@ -789,6 +803,7 @@
             this.MaximizeBox = false;
             this.Name = "MusicPlayer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = " ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MusicPlayer_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Click += new System.EventHandler(this.MusicPlayer_Click);
@@ -809,12 +824,13 @@
             this.audioControllerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.audioPosTrackBar)).EndInit();
             this.albumPanel.ResumeLayout(false);
-            this.albumPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clearBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).EndInit();
             this.rightClickMenuStrip.ResumeLayout(false);
+            this.configPanel.ResumeLayout(false);
+            this.configPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -874,6 +890,7 @@
         private System.Windows.Forms.PictureBox nolibbox;
         public System.Windows.Forms.Label configurehintLabel;
         public System.Windows.Forms.ListView songslistView;
+        private System.Windows.Forms.Panel configPanel;
     }
 }
 

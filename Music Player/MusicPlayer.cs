@@ -25,7 +25,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
-using System.Threading;
 using System.Windows.Forms;
 using Cursors = System.Windows.Forms.Cursors;
 
@@ -343,7 +342,7 @@ namespace Music_Player
                         int currentIndex = paths.FindIndex(path => path.Contains(WindowsMediaPlayer.URL));
                         WindowsMediaPlayer.URL = paths[currentIndex + 1];
                         songslistView.Items[songslistView.SelectedIndices[0] + 1].Selected = true;
-                        songslistView.Items[songslistView.SelectedIndices[0] + 1].EnsureVisible();
+                        songslistView.Items[songslistView.SelectedIndices[0]].EnsureVisible();
                     }
                     else if (songslistView.SelectedIndices[0] == songslistView.Items.Count - 1)
                     {
@@ -376,7 +375,7 @@ namespace Music_Player
             {
                 indexList.Add(i);
             }
-            indexList.Remove(songslistView.SelectedIndices[0]);
+            indexList.Remove(songslistView.SelectedIndices[0]); //////////////////////////////////////////
             trackIndexes = MusicPlayerClass.Shuffle(indexList);
         }
         private void shuffleButton_Click(object sender, EventArgs e)
@@ -522,6 +521,7 @@ namespace Music_Player
                 paths.Clear();
                 songslistView.Visible = true;
                 albumPanel.Visible = false;
+                configPanel.Visible = false;
             }
             // Set up the ListView control
             songslistView.View = View.Details;
@@ -563,7 +563,6 @@ namespace Music_Player
                     }
                 }
             }
-
             // Get the names of the files in the third level children
             List<string> fileNames = new List<string>();
             List<string> filePaths = new List<string>();
@@ -581,26 +580,22 @@ namespace Music_Player
                 // Populate Device dropdown with the system's devices, play through default
                 LoadDevices();
             }
-            configurehintLabel.Visible = false;
-            noLibraryLabel.Visible = false;
-            nolibbox.Visible = false;
-
             foreach (ColumnHeader column in songslistView.Columns)
             {
                 int maxPixelLength = -1;
                 foreach (ListViewItem item in songslistView.Items)
                 {
-                    int pixelLength = TextRenderer.MeasureText(item.SubItems[column.Index].Text, songslistView.Font).Width;
-                    if (pixelLength > maxPixelLength)
+                    if (column.Index < item.SubItems.Count)
                     {
-                        maxPixelLength = pixelLength;
+                        int pixelLength = TextRenderer.MeasureText(item.SubItems[column.Index].Text, songslistView.Font).Width;
+                        if (pixelLength > maxPixelLength)
+                        {
+                            maxPixelLength = pixelLength;
+                        }
                     }
                 }
                 column.Width = maxPixelLength + 10;
             }
-            // This way we can avoid overlapping of panels and boxes
-            songslistView.Location = new Point(529, 49);
-            songslistView.Visible = true;
         }
         private (Dictionary<string, List<string>>, string) GetAudioDevices()
         {
@@ -659,21 +654,50 @@ namespace Music_Player
             {
                 LoadLibrary(startupPath);
                 AddSearchSource();
-                // Add Playlists
-                GetPlaylists("Load");
-                songslistView.Visible = true;
-                albumPanel.Visible = false;
-                // listView1.HorizontalScrollbar = true;
-                searchTextBox.Enabled = true;
-                playlistBox.Enabled = true;
-                noLibraryLabel.Visible = false;
+                if (songslistView.Items.Count > 0)
+                {
+                    // Add Playlists
+                    GetPlaylists("Load");
+                    songslistView.Visible = true;
+                    songslistView.Location = new Point(529, 49);
+                    albumPanel.Visible = false;
+                    configPanel.Visible = false;
+                    configurehintLabel.Visible = false;
+                    nolibbox.Visible = false;
+                    noLibraryLabel.Visible = false;
+                    searchTextBox.Enabled = true;
+                    playlistBox.Enabled = true;
+                    noLibraryLabel.Visible = false;
+                }
+                else
+                {
+                    configPanel.Location = new Point(529, 49);
+                    configPanel.Visible = true;
+                    songslistView.Visible = false;
+                    configPanel.BringToFront();
+                    noLibraryLabel.Visible = true;
+                    noLibraryLabel.BringToFront();
+                    configurehintLabel.Visible = true;
+                    configurehintLabel.BringToFront();
+                    nolibbox.Visible = true;
+                    nolibbox.BringToFront();
+                    searchTextBox.Enabled = false;
+                    playlistBox.Enabled = false;
+                }
+                
             }
             else
             {
+                configPanel.Location = new Point(529, 49);
+                configPanel.Visible = true;
+                songslistView.Visible = false;
+                configPanel.BringToFront();
                 noLibraryLabel.Visible = true;
+                noLibraryLabel.BringToFront();
                 configurehintLabel.Visible = true;
+                configurehintLabel.BringToFront();
                 nolibbox.Visible = true;
-                //libraryListView.HorizontalScrollbar = false;
+                nolibbox.BringToFront();
                 searchTextBox.Enabled = false;
                 playlistBox.Enabled = false;
             }
@@ -755,6 +779,7 @@ namespace Music_Player
                 // Show the TreeView control and hide the songslistBox control
                 treeView.ExpandAll();
                 songslistView.Visible = false;
+                albumPanel.Location = new Point(529, 49);
                 albumPanel.Visible = true;
                 albumPanel.BringToFront();
                 libraryAlbumArtBox.Visible = true;
