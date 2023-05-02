@@ -76,80 +76,91 @@ namespace Music_Player
         }
         public static FileSystemTreeNode BuildTree(string directoryPath)
         {
-            var rootNode = new FileSystemTreeNode
+            bool hasSubDirectories = false;
+            if (directoryPath != null)
             {
-                FullPath = directoryPath,
-                FileName = Path.GetFileName(directoryPath),
-                DisplayName = Path.GetFileName(directoryPath),
-                NodeType = NodeType.Folder,
-                ObjectType = "(Music)"
-            };
-
-            foreach (var subDirectoryPath in Directory.GetDirectories(directoryPath))
-            {
-                var artistNode = new FileSystemTreeNode
+                var rootNode = new FileSystemTreeNode
                 {
-                    FullPath = subDirectoryPath,
-                    FileName = Path.GetFileName(subDirectoryPath),
-                    DisplayName = Path.GetFileName(subDirectoryPath),
+                    FullPath = directoryPath,
+                    FileName = Path.GetFileName(directoryPath),
+                    DisplayName = Path.GetFileName(directoryPath),
                     NodeType = NodeType.Folder,
-                    ObjectType = "(Artist)"
+                    ObjectType = "(Music)"
                 };
-                rootNode.AddChild(artistNode);
 
-                bool hasSubDirectories = Directory.GetDirectories(subDirectoryPath).Any();
-
-                if (hasSubDirectories)
+                foreach (var subDirectoryPath in Directory.GetDirectories(directoryPath))
                 {
-                    string singlesDirectoryPath = Path.Combine(subDirectoryPath, "Singles");
-                    if (!Directory.Exists(singlesDirectoryPath))
+                    var artistNode = new FileSystemTreeNode
                     {
-                        Directory.CreateDirectory(singlesDirectoryPath);
+                        FullPath = subDirectoryPath,
+                        FileName = Path.GetFileName(subDirectoryPath),
+                        DisplayName = Path.GetFileName(subDirectoryPath),
+                        NodeType = NodeType.Folder,
+                        ObjectType = "(Artist)"
+                    };
+                    rootNode.AddChild(artistNode);
+                    try
+                    {
+                        hasSubDirectories = Directory.GetDirectories(subDirectoryPath).Any();
                     }
-                }
-
-                try
-                {
-                    foreach (var albumDirectoryPath in Directory.GetDirectories(subDirectoryPath))
+                    catch (System.UnauthorizedAccessException ex)
                     {
-                        var albumNode = new FileSystemTreeNode
-                        {
-                            FullPath = albumDirectoryPath,
-                            FileName = Path.GetFileName(albumDirectoryPath),
-                            DisplayName = Path.GetFileName(albumDirectoryPath),
-                            NodeType = NodeType.Folder,
-                            ObjectType = "(Album)"
-                        };
-                        artistNode.AddChild(albumNode);
-                        foreach (var filePath in Directory.GetFiles(albumDirectoryPath))
-                        {
-                            string fileName = Path.GetFileNameWithoutExtension(filePath);
 
-                            // Extract the title using a regex
-                            string title = Regex.Replace(fileName, @"^[^a-zA-Z]*(?<title>[a-zA-Z].*)$", "${title}");
+                    }
 
-                            var node = new FileSystemTreeNode
+                    if (hasSubDirectories)
+                    {
+                        string singlesDirectoryPath = Path.Combine(subDirectoryPath, "Singles");
+                        if (!Directory.Exists(singlesDirectoryPath))
+                        {
+                            Directory.CreateDirectory(singlesDirectoryPath);
+                        }
+                    }
+
+                    try
+                    {
+                        foreach (var albumDirectoryPath in Directory.GetDirectories(subDirectoryPath))
+                        {
+                            var albumNode = new FileSystemTreeNode
                             {
-                                FullPath = filePath,
-                                FileName = Path.GetFileName(filePath),
-                                DisplayName = title,
-                                NodeType = NodeType.File,
-                                ObjectType = "(Song)"
+                                FullPath = albumDirectoryPath,
+                                FileName = Path.GetFileName(albumDirectoryPath),
+                                DisplayName = Path.GetFileName(albumDirectoryPath),
+                                NodeType = NodeType.Folder,
+                                ObjectType = "(Album)"
                             };
-
-                            if (!Utes.imageFormats.Contains(Path.GetExtension(node.FullPath)))
+                            artistNode.AddChild(albumNode);
+                            foreach (var filePath in Directory.GetFiles(albumDirectoryPath))
                             {
-                                if (Utes.videoFormats.Contains(Path.GetExtension(node.FullPath)) || Utes.audioFormats.Contains(Path.GetExtension(node.FullPath)))
+                                string fileName = Path.GetFileNameWithoutExtension(filePath);
+
+                                // Extract the title using a regex
+                                string title = Regex.Replace(fileName, @"^[^a-zA-Z]*(?<title>[a-zA-Z].*)$", "${title}");
+
+                                var node = new FileSystemTreeNode
                                 {
-                                    albumNode.AddChild(node);
+                                    FullPath = filePath,
+                                    FileName = Path.GetFileName(filePath),
+                                    DisplayName = title,
+                                    NodeType = NodeType.File,
+                                    ObjectType = "(Song)"
+                                };
+
+                                if (!Utes.imageFormats.Contains(Path.GetExtension(node.FullPath)))
+                                {
+                                    if (Utes.videoFormats.Contains(Path.GetExtension(node.FullPath)) || Utes.audioFormats.Contains(Path.GetExtension(node.FullPath)))
+                                    {
+                                        albumNode.AddChild(node);
+                                    }
                                 }
                             }
                         }
                     }
+                    catch (System.UnauthorizedAccessException) { }
                 }
-                catch (System.UnauthorizedAccessException) { }
+                return rootNode;
             }
-            return rootNode;
+            else { return null; }
         }
     }
     public enum NodeType
