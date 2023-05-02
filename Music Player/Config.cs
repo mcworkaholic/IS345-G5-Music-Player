@@ -187,6 +187,7 @@ namespace Music_Player
             {
                 dbUtils.UpdateChanges("user", "default_startup_folder", libraryBox.Text);
                 // Get the new library
+                _musicPlayer.songslistView.Items.Clear();
                 _musicPlayer.LoadLibrary(dbUtils.GetStartUpFolder());
             }
             newpassView.Visible = false;
@@ -417,6 +418,7 @@ namespace Music_Player
                         control.Enabled = false;
                     }
                 }
+                searchButton.Enabled = false;
             }
 
         }
