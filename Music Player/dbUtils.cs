@@ -184,13 +184,14 @@ namespace Music_Player
             using (SQLiteConnection connection = new SQLiteConnection($"Data Source={connectionString}"))
             {
                 connection.Open();
-                string songInsert = "INSERT INTO song (song_display_name, song_artist, song_album, song_genre, song_release, song_duration) " +
-                    "VALUES (@display_name, @artist, @album, @genre, @release, @duration)";
+                string songInsert = "INSERT INTO song (song_display_name, song_path, song_artist, song_album, song_genre, song_release, song_duration) " +
+                    "VALUES (@display_name, @song_path, @artist, @album, @genre, @release, @duration)";
                 using (SQLiteCommand command = new SQLiteCommand(songInsert, connection))
                 {
                     //we use the ternary operator ? : to check whether each metadata value is null or empty.
                     //If it's not null or empty, we use the value itself. Otherwise, we use properties of the node via the FileSystemTreeNode class.
                     command.Parameters.AddWithValue("@display_name", !string.IsNullOrEmpty(title) ? title : currentNode.DisplayName);
+                    command.Parameters.AddWithValue("@song_path", currentNode.FullPath);
                     command.Parameters.AddWithValue("@artist", !string.IsNullOrEmpty(artist) ? artist : currentNode.Parent.Parent.DisplayName);
                     command.Parameters.AddWithValue("@album", !string.IsNullOrEmpty(album) ? album : currentNode.Parent.DisplayName);
                     command.Parameters.AddWithValue("@genre", !string.IsNullOrEmpty(genre) ? genre : "Unknown");
@@ -213,14 +214,15 @@ namespace Music_Player
                 }
             }
         }
-        public List<string> GetPlaylistSongs(int userId, string playlistName)
+        public (List<string>, List<string>) GetPlaylistSongs(int userId, string playlistName)
         {
             List<string> songs = new List<string>();
+            List<string> paths = new List<string>();
             using (SQLiteConnection connection = new SQLiteConnection($"Data Source={connectionString}"))
             {
                 connection.Open();
                 using
-                    (SQLiteCommand command = new SQLiteCommand("SELECT song.song_display_name FROM song " +
+                    (SQLiteCommand command = new SQLiteCommand("SELECT song.song_display_name, song.song_path FROM song " +
                                                    "INNER JOIN playlist_song ON song.song_id = playlist_song.song_id " +
                                                    "INNER JOIN playlist ON playlist.playlist_id = playlist_song.playlist_id " +
                                                    "INNER JOIN user ON user.user_id = playlist.user_id " +
@@ -234,12 +236,15 @@ namespace Music_Player
                         while (reader.Read())
                         {
                             string songDisplayName = reader.GetString(0);
+                            string songPath = reader.GetString(1);
                             songs.Add(songDisplayName);
+                            paths.Add(songPath);
+                            MusicPlayer.paths.Clear();
                         }
                     }
                 }
             }
-            return songs;
+            return (songs, paths);
         }
         public List<string> GetUserConfig()
         {
