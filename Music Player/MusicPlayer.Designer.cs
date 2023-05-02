@@ -82,6 +82,7 @@
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideThisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.songslistView = new System.Windows.Forms.ListView();
             this.configPanel = new System.Windows.Forms.Panel();
             this.topPanel.SuspendLayout();
@@ -709,7 +710,8 @@
             this.rightClickMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showToolStripMenuItem,
             this.hideToolStripMenuItem,
-            this.openToolStripMenuItem});
+            this.openToolStripMenuItem,
+            this.hideThisToolStripMenuItem});
             this.rightClickMenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.rightClickMenuStrip.Name = "rightClickMenuStrip";
             this.rightClickMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -743,6 +745,13 @@
             this.openToolStripMenuItem.Text = "Open Album";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
+            // hideThisToolStripMenuItem
+            // 
+            this.hideThisToolStripMenuItem.Name = "hideThisToolStripMenuItem";
+            this.hideThisToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.hideThisToolStripMenuItem.Text = "Hide this";
+            this.hideThisToolStripMenuItem.Click += new System.EventHandler(this.hideThisToolStripMenuItem_Click);
+            // 
             // songslistView
             // 
             this.songslistView.HideSelection = false;
@@ -763,7 +772,7 @@
             this.configPanel.Controls.Add(this.noLibraryLabel);
             this.configPanel.Controls.Add(this.nolibbox);
             this.configPanel.Controls.Add(this.configurehintLabel);
-            this.configPanel.Location = new System.Drawing.Point(0, 32);
+            this.configPanel.Location = new System.Drawing.Point(9, 36);
             this.configPanel.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.configPanel.Name = "configPanel";
             this.configPanel.Size = new System.Drawing.Size(263, 315);
@@ -890,7 +899,8 @@
         private System.Windows.Forms.PictureBox nolibbox;
         public System.Windows.Forms.Label configurehintLabel;
         public System.Windows.Forms.ListView songslistView;
-        private System.Windows.Forms.Panel configPanel;
+        public System.Windows.Forms.Panel configPanel;
+        private System.Windows.Forms.ToolStripMenuItem hideThisToolStripMenuItem;
     }
 }
 

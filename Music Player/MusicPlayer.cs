@@ -72,11 +72,11 @@ namespace Music_Player
         private int playlistIndexChanged = 0;
         private int deviceIndexChanged = 0;
         private int lastVolume = 85;
-
-        //Create Global Variables of String Type Array to save the path of the track 
-        private List<string> paths;
-        private List<int> trackIndexes = new List<int>();
         private int atIndex = 0;
+
+
+        public static List<string> paths;
+        private List<int> trackIndexes = new List<int>();
 
         // variables that are set on formload event
         private string connectionString;
@@ -684,7 +684,7 @@ namespace Music_Player
                     searchTextBox.Enabled = false;
                     playlistBox.Enabled = false;
                 }
-                
+
             }
             else
             {
@@ -702,7 +702,7 @@ namespace Music_Player
                 playlistBox.Enabled = false;
             }
         }
-        private void GetPlaylists(string action)
+        public void GetPlaylists(string action)
         {
             int selectedIndex = playlistBox.SelectedIndex; // Store the selected index
             playlistBox.DataSource = dbUtils.GetPlaylists();
@@ -712,7 +712,7 @@ namespace Music_Player
                 playlistBox.SelectedIndex = playlistBox.Items.Count - 1;
             }
         }
-        private void AddSearchSource()
+        public void AddSearchSource()
         {
             var allNodes = rootNode.GetAllNodesExceptRoot();
             var autoCompleteSource = allNodes.Select(node => $"{node.DisplayName} {node.ObjectType}").ToList();
@@ -868,12 +868,13 @@ namespace Music_Player
                     paths.Clear();
                     //hide panel
                     albumPanel.Visible = false;
-                    List<string> songs = dbUtils.GetPlaylistSongs(Program.user_id, playlistBox.SelectedItem.ToString());
+                    List<string> songs = dbUtils.GetPlaylistSongs(Program.user_id, playlistBox.SelectedItem.ToString()).Item1;
+                    paths = dbUtils.GetPlaylistSongs(Program.user_id, playlistBox.SelectedItem.ToString()).Item2;
                     foreach (string song in songs)
                     {
                         // now add to both items that were just cleared
                         songslistView.Items.Add(song);
-                        paths.Add(rootNode.FindNodeByDisplayName(song, songObj).FullPath);
+                        //paths.Add(rootNode.FindNodeByDisplayName(song, songObj).FullPath);
                     }
                     songslistView.Visible = true;
                 }
@@ -947,7 +948,7 @@ namespace Music_Player
                 else
                 {
                     //insert song into playlist from library
-                    if (!dbUtils.GetPlaylistSongs(Program.user_id, playlistBox.SelectedItem.ToString()).Contains(songslistView.SelectedItems[0].Text))
+                    if (!dbUtils.GetPlaylistSongs(Program.user_id, playlistBox.SelectedItem.ToString()).Item1.Contains(songslistView.SelectedItems[0].Text))
                         dbUtils.InsertSong(rootNode.FindNodeByDisplayName((string)songslistView.SelectedItems[0].Text, songObj), playlistBox.SelectedItem.ToString());
                     else
                         MessageBox.Show("Song is already in the selected playlist");
@@ -956,7 +957,7 @@ namespace Music_Player
             else
             {
                 //insert song into playlist from album
-                if (!dbUtils.GetPlaylistSongs(Program.user_id, playlistBox.SelectedItem.ToString()).Contains(treeView.SelectedNode.Text))
+                if (!dbUtils.GetPlaylistSongs(Program.user_id, playlistBox.SelectedItem.ToString()).Item1.Contains(treeView.SelectedNode.Text))
                     dbUtils.InsertSong(rootNode.FindNodeByDisplayName(treeView.SelectedNode.Text, songObj), playlistBox.SelectedItem.ToString());
                 else
                     MessageBox.Show("Song is already in the selected playlist");
@@ -1307,7 +1308,7 @@ namespace Music_Player
                     case 2:
                         {
                             rightClickMenuStrip.Width = 170;
-                            rightClickMenuStrip.Show(this, new Point(e.fX, e.fY - 17));//places the menu at the pointer position
+                            rightClickMenuStrip.Show(this, new Point(e.fX, e.fY - 39));//places the menu at the pointer position
                         }
                         break;
                 }
@@ -1381,7 +1382,19 @@ namespace Music_Player
                     }
                     else
                     {
-                        currentIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(songslistView.SelectedItems[0].Text, songObj).FullPath));
+                        //currentIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(songslistView.SelectedItems[0].Text, songObj).FullPath));
+                        // The index was not found
+                        currentIndex = songslistView.SelectedItems[0].Index;
+                        if (currentIndex != -1)
+                        {
+                            // The index was found
+                        }
+                        else
+                        {
+                            // The index was not found
+                            // currentIndex = paths.FindIndex(path => path.Contains(songslistView.SelectedItems[0].Text));
+                        }
+
                         WindowsMediaPlayer.URL = paths[currentIndex];
                     }
 
@@ -1441,48 +1454,74 @@ namespace Music_Player
         {
             if (e.KeyCode == Keys.Enter)
             {
-                // Play the selected song while listbox is active control
-                WindowsMediaPlayer.URL = paths[songslistView.SelectedItems[0].Index];
+                e.SuppressKeyPress = true; // Mutes the annoying windows beep sound
+
+                //// Play the selected song 
+                int currentIndex = songslistView.SelectedItems[0].Index;
+
+                // pause/play music 
+                MusicPlayerClass.Pause();
+                WindowsMediaPlayer.Ctlcontrols.pause();
+                WindowsMediaPlayer.URL = paths[currentIndex];
                 Play(WindowsMediaPlayer.URL);
+
+                //// Create a new thread to play the media file
+                //Thread thread = new Thread(() =>
+                //{
+                //    // Set the URL of the media file
+                //    WindowsMediaPlayer.URL = clickedNode.FullPath;
+
+                //    // Call the Play method
+                //    Play(WindowsMediaPlayer.URL);
+
+                //    // Update the UI as needed (e.g., disable buttons)
+                //    this.Invoke((MethodInvoker)delegate
+                //    {
+                //        openplayButton.Enabled = false;
+                //    });
+                //});
+
+                //// Start the thread
+                //thread.Start();
             }
         }
-
         private void treeView_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true; // Mutes the annoying windows beep sound
 
-                //// Play the selected song while listbox is active control
+                ////// Play the selected song 
                 var clickedNode = rootNode.FindNodeByDisplayName(treeView.SelectedNode.Text, songObj);
-                if (clickedNode.ObjectType == "(Song)")
-                {
-                    MusicPlayerClass.Pause();
-                    WindowsMediaPlayer.Ctlcontrols.pause();
+                MusicPlayerClass.Pause();
+                WindowsMediaPlayer.Ctlcontrols.pause();
+                WindowsMediaPlayer.URL = clickedNode.FullPath;
+                Play(clickedNode.FullPath);
 
-                    //// Create a new thread to play the media file
-                    //Thread thread = new Thread(() =>
-                    //{
-                    //    // Set the URL of the media file
-                    //    WindowsMediaPlayer.URL = clickedNode.FullPath;
+                //// Create a new thread to play the media file
+                //Thread thread = new Thread(() =>
+                //{
+                //    // Set the URL of the media file
+                //    WindowsMediaPlayer.URL = clickedNode.FullPath;
 
-                    //    // Call the Play method
-                    //    Play(WindowsMediaPlayer.URL);
+                //    // Call the Play method
+                //    Play(WindowsMediaPlayer.URL);
 
-                    //    // Update the UI as needed (e.g., disable buttons)
-                    //    this.Invoke((MethodInvoker)delegate
-                    //    {
-                    //        openplayButton.Enabled = false;
-                    //    });
-                    //});
+                //    // Update the UI as needed (e.g., disable buttons)
+                //    this.Invoke((MethodInvoker)delegate
+                //    {
+                //        openplayButton.Enabled = false;
+                //    });
+                //});
 
-                    //// Start the thread
-                    //thread.Start();
-
-                    WindowsMediaPlayer.URL = clickedNode.FullPath;
-                    Play(clickedNode.FullPath);
-                }
+                //// Start the thread
+                //thread.Start();
             }
+        }
+
+        private void hideThisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rightClickMenuStrip.Hide();
         }
 
         private void vizButton_Click(object sender, EventArgs e)
