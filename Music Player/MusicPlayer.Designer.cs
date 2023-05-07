@@ -1,6 +1,6 @@
 ﻿namespace Music_Player
 {
-    partial class MusicPlayer
+    partial class RhythmRanger
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MusicPlayer));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RhythmRanger));
             this.playTimer = new System.Windows.Forms.Timer(this.components);
             this.shuffleButton = new System.Windows.Forms.Button();
             this.queueButton = new System.Windows.Forms.Button();
@@ -45,6 +45,8 @@
             this.openplayButton = new System.Windows.Forms.Button();
             this.clearQueueButton = new System.Windows.Forms.Button();
             this.topPanel = new System.Windows.Forms.Panel();
+            this.coffeeLabel = new System.Windows.Forms.Label();
+            this.pluginLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.githublinkBox = new System.Windows.Forms.PictureBox();
             this.closeBox = new System.Windows.Forms.PictureBox();
@@ -75,16 +77,18 @@
             this.configurehintLabel = new System.Windows.Forms.Label();
             this.albumArtBox = new System.Windows.Forms.PictureBox();
             this.clearBox = new System.Windows.Forms.PictureBox();
-            this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.searchTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.rightClickMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fullScreenModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideThisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.songslistView = new System.Windows.Forms.ListView();
             this.configPanel = new System.Windows.Forms.Panel();
+            this.downloadsButton = new System.Windows.Forms.Button();
+            this.WindowsMediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).BeginInit();
@@ -104,9 +108,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clearBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).BeginInit();
             this.rightClickMenuStrip.SuspendLayout();
             this.configPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).BeginInit();
             this.SuspendLayout();
             // 
             // playTimer
@@ -164,7 +168,7 @@
             this.vizButton.Size = new System.Drawing.Size(72, 22);
             this.vizButton.TabIndex = 12;
             this.vizButton.TabStop = false;
-            this.vizButton.Text = "Plugin";
+            this.vizButton.Text = "Next Vis";
             this.vizButton.UseVisualStyleBackColor = true;
             this.vizButton.Click += new System.EventHandler(this.vizButton_Click);
             this.vizButton.MouseLeave += new System.EventHandler(this.MouseLeave);
@@ -208,7 +212,7 @@
             // searchLabel
             // 
             this.searchLabel.AutoSize = true;
-            this.searchLabel.Location = new System.Drawing.Point(534, 400);
+            this.searchLabel.Location = new System.Drawing.Point(532, 401);
             this.searchLabel.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.searchLabel.Name = "searchLabel";
             this.searchLabel.Size = new System.Drawing.Size(44, 13);
@@ -218,7 +222,7 @@
             // playlistLabel
             // 
             this.playlistLabel.AutoSize = true;
-            this.playlistLabel.Location = new System.Drawing.Point(528, 376);
+            this.playlistLabel.Location = new System.Drawing.Point(532, 376);
             this.playlistLabel.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.playlistLabel.Name = "playlistLabel";
             this.playlistLabel.Size = new System.Drawing.Size(50, 13);
@@ -281,6 +285,8 @@
             // topPanel
             // 
             this.topPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.topPanel.Controls.Add(this.coffeeLabel);
+            this.topPanel.Controls.Add(this.pluginLabel);
             this.topPanel.Controls.Add(this.pictureBox1);
             this.topPanel.Controls.Add(this.githublinkBox);
             this.topPanel.Controls.Add(this.closeBox);
@@ -295,6 +301,26 @@
             this.topPanel.MouseHover += new System.EventHandler(this.MouseHover);
             this.topPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseMove);
             this.topPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseUp);
+            // 
+            // coffeeLabel
+            // 
+            this.coffeeLabel.AutoSize = true;
+            this.coffeeLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.coffeeLabel.Location = new System.Drawing.Point(99, 7);
+            this.coffeeLabel.Name = "coffeeLabel";
+            this.coffeeLabel.Size = new System.Drawing.Size(87, 13);
+            this.coffeeLabel.TabIndex = 5;
+            this.coffeeLabel.Text = "Buy me a coffee";
+            // 
+            // pluginLabel
+            // 
+            this.pluginLabel.AutoSize = true;
+            this.pluginLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pluginLabel.Location = new System.Drawing.Point(43, 7);
+            this.pluginLabel.Name = "pluginLabel";
+            this.pluginLabel.Size = new System.Drawing.Size(40, 13);
+            this.pluginLabel.TabIndex = 4;
+            this.pluginLabel.Text = "Plugin";
             // 
             // pictureBox1
             // 
@@ -510,7 +536,7 @@
             this.settingsBox.ErrorImage = null;
             this.settingsBox.Image = global::Music_Player.Properties.Resources.settings;
             this.settingsBox.InitialImage = null;
-            this.settingsBox.Location = new System.Drawing.Point(256, 422);
+            this.settingsBox.Location = new System.Drawing.Point(346, 423);
             this.settingsBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
             this.settingsBox.Name = "settingsBox";
             this.settingsBox.Size = new System.Drawing.Size(14, 20);
@@ -571,7 +597,7 @@
             this.audioControllerPanel.Controls.Add(this.queueButton);
             this.audioControllerPanel.Location = new System.Drawing.Point(0, 365);
             this.audioControllerPanel.Name = "audioControllerPanel";
-            this.audioControllerPanel.Size = new System.Drawing.Size(525, 47);
+            this.audioControllerPanel.Size = new System.Drawing.Size(529, 47);
             this.audioControllerPanel.TabIndex = 204;
             // 
             // audioPosTrackBar
@@ -582,7 +608,7 @@
             this.audioPosTrackBar.Location = new System.Drawing.Point(0, 0);
             this.audioPosTrackBar.Maximum = 100;
             this.audioPosTrackBar.Name = "audioPosTrackBar";
-            this.audioPosTrackBar.Size = new System.Drawing.Size(525, 16);
+            this.audioPosTrackBar.Size = new System.Drawing.Size(529, 16);
             this.audioPosTrackBar.TabIndex = 204;
             this.audioPosTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.volumeToolTip.SetToolTip(this.audioPosTrackBar, "Seek");
@@ -603,7 +629,7 @@
             this.albumPanel.Controls.Add(this.libraryAlbumArtBox);
             this.albumPanel.Controls.Add(this.backBox);
             this.albumPanel.Controls.Add(this.treeView);
-            this.albumPanel.Location = new System.Drawing.Point(266, 32);
+            this.albumPanel.Location = new System.Drawing.Point(551, 57);
             this.albumPanel.Margin = new System.Windows.Forms.Padding(0, 0, 3, 3);
             this.albumPanel.Name = "albumPanel";
             this.albumPanel.Size = new System.Drawing.Size(264, 316);
@@ -689,43 +715,27 @@
             this.clearBox.MouseLeave += new System.EventHandler(this.MouseLeave);
             this.clearBox.MouseHover += new System.EventHandler(this.MouseHover);
             // 
-            // WindowsMediaPlayer
-            // 
-            this.WindowsMediaPlayer.Enabled = true;
-            this.WindowsMediaPlayer.Location = new System.Drawing.Point(0, 49);
-            this.WindowsMediaPlayer.Name = "WindowsMediaPlayer";
-            this.WindowsMediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("WindowsMediaPlayer.OcxState")));
-            this.WindowsMediaPlayer.Size = new System.Drawing.Size(525, 363);
-            this.WindowsMediaPlayer.TabIndex = 200;
-            this.WindowsMediaPlayer.TabStop = false;
-            this.WindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.WindowsMediaPlayer_PlayStateChange);
-            this.WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(this.WindowsMediaPlayer_MediaChange);
-            this.WindowsMediaPlayer.ClickEvent += new AxWMPLib._WMPOCXEvents_ClickEventHandler(this.WindowsMediaPlayer_ClickEvent);
-            this.WindowsMediaPlayer.KeyUpEvent += new AxWMPLib._WMPOCXEvents_KeyUpEventHandler(this.VideoContainer_KeyUp);
-            // 
             // rightClickMenuStrip
             // 
-            this.rightClickMenuStrip.AutoSize = false;
             this.rightClickMenuStrip.BackColor = System.Drawing.SystemColors.Window;
             this.rightClickMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showToolStripMenuItem,
             this.hideToolStripMenuItem,
             this.openToolStripMenuItem,
+            this.fullScreenModeToolStripMenuItem,
             this.hideThisToolStripMenuItem});
-            this.rightClickMenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
+            this.rightClickMenuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.rightClickMenuStrip.Name = "rightClickMenuStrip";
             this.rightClickMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.rightClickMenuStrip.ShowCheckMargin = true;
             this.rightClickMenuStrip.ShowImageMargin = false;
-            this.rightClickMenuStrip.Size = new System.Drawing.Size(170, 92);
+            this.rightClickMenuStrip.Size = new System.Drawing.Size(181, 136);
             // 
             // showToolStripMenuItem
             // 
             this.showToolStripMenuItem.BackColor = System.Drawing.SystemColors.Window;
-            this.showToolStripMenuItem.Checked = true;
-            this.showToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showToolStripMenuItem.Name = "showToolStripMenuItem";
-            this.showToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.showToolStripMenuItem.Text = "Show Album";
             this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
             // 
@@ -734,22 +744,29 @@
             this.hideToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
             this.hideToolStripMenuItem.MergeAction = System.Windows.Forms.MergeAction.Insert;
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.hideToolStripMenuItem.Text = "Hide Album";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem.Text = "Open Album";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // fullScreenModeToolStripMenuItem
+            // 
+            this.fullScreenModeToolStripMenuItem.Name = "fullScreenModeToolStripMenuItem";
+            this.fullScreenModeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fullScreenModeToolStripMenuItem.Text = "Full Screen Mode";
+            this.fullScreenModeToolStripMenuItem.Click += new System.EventHandler(this.fullScreenModeToolStripMenuItem_Click);
             // 
             // hideThisToolStripMenuItem
             // 
             this.hideThisToolStripMenuItem.Name = "hideThisToolStripMenuItem";
-            this.hideThisToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.hideThisToolStripMenuItem.Text = "Hide this";
+            this.hideThisToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hideThisToolStripMenuItem.Text = "Hide this Menu";
             this.hideThisToolStripMenuItem.Click += new System.EventHandler(this.hideThisToolStripMenuItem_Click);
             // 
             // songslistView
@@ -772,19 +789,43 @@
             this.configPanel.Controls.Add(this.noLibraryLabel);
             this.configPanel.Controls.Add(this.nolibbox);
             this.configPanel.Controls.Add(this.configurehintLabel);
-            this.configPanel.Location = new System.Drawing.Point(9, 36);
+            this.configPanel.Location = new System.Drawing.Point(533, 32);
             this.configPanel.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.configPanel.Name = "configPanel";
             this.configPanel.Size = new System.Drawing.Size(263, 315);
             this.configPanel.TabIndex = 602;
             this.configPanel.Visible = false;
             // 
-            // MusicPlayer
+            // downloadsButton
+            // 
+            this.downloadsButton.Location = new System.Drawing.Point(259, 421);
+            this.downloadsButton.Name = "downloadsButton";
+            this.downloadsButton.Size = new System.Drawing.Size(84, 23);
+            this.downloadsButton.TabIndex = 603;
+            this.downloadsButton.Text = "Downloads";
+            this.downloadsButton.UseVisualStyleBackColor = true;
+            this.downloadsButton.Click += new System.EventHandler(this.downloadsButton_Click);
+            // 
+            // WindowsMediaPlayer
+            // 
+            this.WindowsMediaPlayer.Enabled = true;
+            this.WindowsMediaPlayer.Location = new System.Drawing.Point(0, 49);
+            this.WindowsMediaPlayer.Name = "WindowsMediaPlayer";
+            this.WindowsMediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("WindowsMediaPlayer.OcxState")));
+            this.WindowsMediaPlayer.Size = new System.Drawing.Size(529, 363);
+            this.WindowsMediaPlayer.TabIndex = 200;
+            this.WindowsMediaPlayer.TabStop = false;
+            this.WindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.WindowsMediaPlayer_PlayStateChange);
+            this.WindowsMediaPlayer.MediaChange += new AxWMPLib._WMPOCXEvents_MediaChangeEventHandler(this.WindowsMediaPlayer_MediaChange);
+            this.WindowsMediaPlayer.ClickEvent += new AxWMPLib._WMPOCXEvents_ClickEventHandler(this.WindowsMediaPlayer_ClickEvent);
+            // 
+            // RhythmRanger
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(796, 454);
+            this.Controls.Add(this.downloadsButton);
             this.Controls.Add(this.configPanel);
             this.Controls.Add(this.songslistView);
             this.Controls.Add(this.albumPanel);
@@ -810,13 +851,14 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "MusicPlayer";
+            this.Name = "RhythmRanger";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = " ";
+            this.Text = " RhythmRanger ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MusicPlayer_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Click += new System.EventHandler(this.MusicPlayer_Click);
             this.topPanel.ResumeLayout(false);
+            this.topPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.githublinkBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.closeBox)).EndInit();
@@ -836,10 +878,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.libraryAlbumArtBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.albumArtBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clearBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).EndInit();
             this.rightClickMenuStrip.ResumeLayout(false);
             this.configPanel.ResumeLayout(false);
             this.configPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowsMediaPlayer)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -901,6 +943,10 @@
         public System.Windows.Forms.ListView songslistView;
         public System.Windows.Forms.Panel configPanel;
         private System.Windows.Forms.ToolStripMenuItem hideThisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fullScreenModeToolStripMenuItem;
+        private System.Windows.Forms.Button downloadsButton;
+        private System.Windows.Forms.Label coffeeLabel;
+        private System.Windows.Forms.Label pluginLabel;
     }
 }
 

@@ -17,6 +17,7 @@
 using AxWMPLib;
 using CSCore.CoreAudioAPI;
 using Microsoft.Win32;
+using Music_Player.Properties;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,9 +31,9 @@ using Cursors = System.Windows.Forms.Cursors;
 
 namespace Music_Player
 {
-    public partial class MusicPlayer : Form
+    public partial class RhythmRanger : Form
     {
-        //Rounded Corners
+        // Rounded corners
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
         (
@@ -43,6 +44,7 @@ namespace Music_Player
             int nWidthEllipse, // width of ellipse
             int nHeightEllipse // height of ellipse
         );
+
         public string albumVisible;
 
         // Class Instantiation
@@ -65,9 +67,11 @@ namespace Music_Player
         private bool shuffleButtonClicked = false;
         private bool listBoxDoubleClick = false;
         private bool listViewDoubleClick = false;
-
+        private bool ctrlDown = false;
         private bool stopUpdate;
         private bool playlistViewing = false;
+
+
         private int shuffleButtonClickCount = 0;
         private int playlistIndexChanged = 0;
         private int deviceIndexChanged = 0;
@@ -100,7 +104,7 @@ namespace Music_Player
             set { _isFullscreenToggle = value; }
         }
         private Size _previousVideoContainerSize = new Size();
-        public MusicPlayer()
+        public RhythmRanger()
         {
             InitializeComponent();
             Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 10, 10));
@@ -109,35 +113,55 @@ namespace Music_Player
         {
             get { return connectionString; }
         }
+
+        
         private void buttonHook_Click(object sender, EventArgs e)
         {
             // Hooks only into specified Keys (here "Space").
-            _globalKeyboardHook = new GlobalKeyboardHook(new Keys[] { Keys.Space });
+            _globalKeyboardHook = new GlobalKeyboardHook(new Keys[] { Keys.Space, Keys.LControlKey, Keys.RControlKey, Keys.Right });
             // Hooks into all keys.
             //_globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
         }
-
-
         private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
         {
-            // Stops sound from cutting out when user is typing on a diff application or webpage
+            // Now you can access both, the key and virtual code
+            Keys loggedKey = e.KeyboardData.Key;
+            int loggedVkCode = e.KeyboardData.VirtualCode;
+
+
+            // Stops sound from cutting out when user is typing on a different application or webpage
             if (this.Focused == true)
             {
                 // EDT: No need to filter for VkSnapshot anymore. This now gets handled
                 // through the constructor of GlobalKeyboardHook(...).
                 if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyDown)
                 {
-                    // Now you can access both, the key and virtual code
-                    Keys loggedKey = e.KeyboardData.Key;
-                    int loggedVkCode = e.KeyboardData.VirtualCode;
-                    MusicPlayerClass.Volume = 0;
-                    volumeBar.Value = 0;
+                    if (loggedKey == Keys.Space)
+                    {
+                        MusicPlayerClass.Volume = 0;
+                        volumeBar.Value = 0;
+                    }
+                    else if (loggedKey == Keys.LControlKey)
+                    {
+                        ctrlDown = true;
+                    }
+                    else if (ctrlDown && loggedKey == Keys.Right)
+                    {
+                        NextVisualization();
+                    }
                 }
                 else if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.KeyUp)
                 {
-                    volumeBar.Value = lastVolume;
-                    MusicPlayerClass.Volume = volumeBar.Value;
+                    if (loggedKey == Keys.Space)
+                    {
+                        volumeBar.Value = lastVolume;
+                        MusicPlayerClass.Volume = volumeBar.Value;
+                    }
+                    else if (loggedKey == Keys.Control)
+                    {
+                        ctrlDown = false;
+                    }
                 }
             }
         }
@@ -474,7 +498,7 @@ namespace Music_Player
                                     albumArtBox.Image = albumArtBitmap;
                                     albumArtBox.Visible = true;
 
-                                    // Set the artwork of the song to the found file
+                                    //// Set the artwork of the song to the found file
                                     SetArtwork(currentNode.FullPath, path);
 
                                     albumArtFound = true; // flag that an album art file was found
@@ -484,7 +508,11 @@ namespace Music_Player
 
                             if (!albumArtFound) // set album art box to invisible if no file was found
                             {
-                                albumArtBox.Visible = false;
+                                albumArtBox.Image = Resources.EmptyAlbumArtwork;
+                                if (albumVisible == "True")
+                                {
+                                    albumArtBox.Visible = true;
+                                }
                             }
                         }
                     }
@@ -494,6 +522,16 @@ namespace Music_Player
             else
             {
                 albumArtBox.Visible = false;
+            }
+            if (albumArtBox.Visible == true)
+            {
+                showToolStripMenuItem.Checked = true;
+                hideToolStripMenuItem.Checked = false;
+            }
+            else
+            {
+                showToolStripMenuItem.Checked = false;
+                hideToolStripMenuItem.Checked = true;
             }
         }
         private void WindowsMediaPlayer_MediaChange(object sender, _WMPOCXEvents_MediaChangeEvent e)
@@ -596,6 +634,7 @@ namespace Music_Player
                 }
                 column.Width = maxPixelLength + 10;
             }
+            WindowsMediaPlayer.Ctlenabled = false;
         }
         private (Dictionary<string, List<string>>, string) GetAudioDevices()
         {
@@ -701,6 +740,7 @@ namespace Music_Player
                 searchTextBox.Enabled = false;
                 playlistBox.Enabled = false;
             }
+            WindowsMediaPlayer.Ctlenabled = false;
         }
         public void GetPlaylists(string action)
         {
@@ -758,6 +798,10 @@ namespace Music_Player
                     if (imageFiles.Count > 0)
                     {
                         libraryAlbumArtBox.Image = Image.FromFile(imageFiles[0]);
+                    }
+                    else
+                    {
+                        libraryAlbumArtBox.Image = Resources.EmptyAlbumArtwork;
                     }
                 }
 
@@ -1093,36 +1137,6 @@ namespace Music_Player
             utes.OpenLink("githublinkBox");
         }
 
-        private void VideoContainer_KeyUp(object sender, _WMPOCXEvents_KeyUpEvent e)
-        {
-            if (IsFullscreen && e.nKeyCode == (short)Keys.Escape)
-            {
-                //FullscreenToggle();
-            }
-        }
-        //private void FullscreenToggle()
-        //{
-        //    this.IsFullscreen = !this.IsFullscreen;
-        //    if (this.IsFullscreen)
-        //    {
-        //        _previousVideoContainerSize = new Size(WindowsMediaPlayer.Width, WindowsMediaPlayer.Height);
-        //        Screen screen = Screen.PrimaryScreen;
-        //        Rectangle area = screen.Bounds;
-        //        WindowsMediaPlayer.Width = Screen.PrimaryScreen.Bounds.Width;
-        //        WindowsMediaPlayer.Height = Screen.PrimaryScreen.Bounds.Height;
-        //        this.WindowState = FormWindowState.Maximized;
-        //    }
-        //    else
-        //    {
-        //        WindowsMediaPlayer.Width = _previousVideoContainerSize.Width;
-        //        WindowsMediaPlayer.Height = _previousVideoContainerSize.Height;
-        //    }
-        //}
-        private void maximizeBox_Click(object sender, EventArgs e)
-        {
-            // To be implemented, we will see
-            // FullscreenToggle();
-        }
         private void settingsBox_Click(object sender, EventArgs e)
         {
             Config newConfig = new Config();
@@ -1282,6 +1296,7 @@ namespace Music_Player
         }
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool albumArtFound = false;
             string currentSongPath = WindowsMediaPlayer.currentMedia.sourceURL;
             var currentNode = rootNode.FindNodeByFullPath(currentSongPath, songObj);
             TagLib.File file_TAG = TagLib.File.Create(currentNode.FullPath);
@@ -1290,6 +1305,33 @@ namespace Music_Player
                 var bin = file_TAG.Tag.Pictures[0].Data.Data;
                 Image image = Image.FromStream(new MemoryStream(bin));
                 albumArtBox.Image = image;
+            }
+            else if (file_TAG.Tag.Pictures.Length == 0)
+            {
+                foreach (string path in Directory.EnumerateFiles(currentNode.Parent.FullPath))
+                {
+                    if (Path.GetExtension(path) == ".jpg" || Path.GetExtension(path) == ".png")
+                    {
+                        Bitmap albumArtBitmap = new Bitmap(Image.FromFile(path));
+                        albumArtBox.Image = albumArtBitmap;
+                        albumArtBox.Visible = true;
+
+                        //// Set the artwork of the song to the found file
+                        SetArtwork(currentNode.FullPath, path);
+
+                        albumArtFound = true; // flag that an album art file was found
+                        break;
+                    }
+                }
+
+                if (!albumArtFound) // set album art box to invisible if no file was found
+                {
+                    albumArtBox.Image = Resources.EmptyAlbumArtwork;
+                    if (albumVisible == "True")
+                    {
+                        albumArtBox.Visible = true;
+                    }
+                }
             }
             albumArtBox.Visible = true;
             hideToolStripMenuItem.Checked = false;
@@ -1301,14 +1343,24 @@ namespace Music_Player
         }
         private void WindowsMediaPlayer_ClickEvent(object sender, _WMPOCXEvents_ClickEvent e)
         {
-            if (WindowsMediaPlayer.currentMedia != null && WindowsMediaPlayer.fullScreen == false && albumVisible == "True")
+            if (WindowsMediaPlayer.currentMedia != null && WindowsMediaPlayer.fullScreen == false)
             {
                 switch (e.nButton)
                 {
                     case 2:
-                        {
+                        {   
+                            if (albumArtBox.Visible == true)
+                            {
+                                showToolStripMenuItem.Checked = true;
+                                hideToolStripMenuItem.Checked = false;
+                            }
+                            else
+                            {
+                                showToolStripMenuItem.Checked = false;
+                                hideToolStripMenuItem.Checked = true;
+                            }
                             rightClickMenuStrip.Width = 170;
-                            rightClickMenuStrip.Show(this, new Point(e.fX, e.fY - 39));//places the menu at the pointer position
+                            rightClickMenuStrip.Show(this, new Point(e.fX, e.fY));//places the menu at the pointer position
                         }
                         break;
                 }
@@ -1385,34 +1437,26 @@ namespace Music_Player
                         //currentIndex = paths.FindIndex(path => path.Contains(rootNode.FindNodeByDisplayName(songslistView.SelectedItems[0].Text, songObj).FullPath));
                         // The index was not found
                         currentIndex = songslistView.SelectedItems[0].Index;
-                        if (currentIndex != -1)
-                        {
-                            // The index was found
-                        }
-                        else
-                        {
-                            // The index was not found
-                            // currentIndex = paths.FindIndex(path => path.Contains(songslistView.SelectedItems[0].Text));
-                        }
-
                         WindowsMediaPlayer.URL = paths[currentIndex];
                     }
 
                     // Check for file extension
                     string extension = Path.GetExtension(WindowsMediaPlayer.URL);
                     string[] videoFormats = Utes.videoFormats;
-                    if (videoFormats.Contains(extension))
-                    {
-                        albumArtBox.Visible = false;
-                    }
-                    else
+                    string[] audioFormats = Utes.audioFormats;
+
+                    if (audioFormats.Contains(extension))
                     {
                         if (albumVisible == "True")
                         {
                             GetAlbumArt();
                         }
                     }
-
+                    else if (videoFormats.Contains(extension))
+                    {
+                        albumArtBox.Visible = false;
+                    }
+                    
                     // Set the focus back to the ListView to avoid a bug where the selected item doesn't display correctly
                     songslistView.Focus();
 
@@ -1524,12 +1568,52 @@ namespace Music_Player
             rightClickMenuStrip.Hide();
         }
 
+        private void fullScreenModeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WindowsMediaPlayer.fullScreen = true;
+        }
+
+        private void downloadsButton_Click(object sender, EventArgs e)
+        {
+            Downloads newDownloads = new Downloads();
+            Downloads downloads = (Downloads)Application.OpenForms["Downloads"];
+            if (downloads == null)
+            {
+                newDownloads.Show();
+            }
+            else
+            {
+                downloads.Close();
+                downloads.Dispose();
+                newDownloads.Show();
+            }
+        }
+
+        private void NextVisualization()
+        {
+            Cursor currentCursor = Cursor.Current;
+            Cursor.Hide();
+
+            // Get the center point of the button in screen coordinates
+            Point center = vizButton.PointToScreen(new Point(vizButton.Width / 2, vizButton.Height / 2));
+
+            // Set the mouse cursor position to the center of the button
+            Cursor.Position = center;
+
+            // Store old position
+            Point oldPosition = new Point(Cursor.Position.X, Cursor.Position.Y);
+            Cursor.Current = currentCursor;
+            Cursor.Position = new Point(Cursor.Position.X - 225, Cursor.Position.Y - 90);
+            utes.DoMouseClick();
+            Cursor.Position = oldPosition;
+
+            Cursor.Current = currentCursor;
+            Cursor.Show();
+        }
+
         private void vizButton_Click(object sender, EventArgs e)
         {
-            // To be implemented 
-            // not working, would like to be able to change the visualization live while the application is running
-            //int start = 0;
-            //SetCurrentEffectPreset();
+            NextVisualization();
         }
     }
 }
