@@ -239,7 +239,7 @@ namespace Music_Player
                             string songPath = reader.GetString(1);
                             songs.Add(songDisplayName);
                             paths.Add(songPath);
-                            MusicPlayer.paths.Clear();
+                            RhythmRanger.paths.Clear();
                         }
                     }
                 }
