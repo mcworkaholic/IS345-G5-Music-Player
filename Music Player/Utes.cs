@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 // This is a general class for utilities that could be useful to any other class or form. 
 
@@ -15,6 +17,15 @@ namespace Music_Player
         public static string[] videoFormats = { ".avi", ".mp4", ".mkv", ".mov", ".wmv", ".flv", ".webm", ".mpeg", ".mpg", ".m4v" };
         public static string[] audioFormats = { ".mp3", ".wav", ".flac", ".aac", ".wma", ".m4a", ".ogg", ".opus", ".alac", ".aiff" };
         public static string[] imageFormats = { ".png", ".jpg" };
+
+        // Mouse events
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
+        //Mouse actions
+        private const int MOUSEEVENTF_LEFTDOWN = 0x02;
+        private const int MOUSEEVENTF_LEFTUP = 0x04;
+        private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
+        private const int MOUSEEVENTF_RIGHTUP = 0x10;
 
         public void OpenLink(string link)
         {
@@ -73,13 +84,23 @@ namespace Music_Player
             }
             return audioDirectories;
         }
-
-        // Reallly needed this one. Helps toggle the state of anything given a boolean and a counter 
+        // Helps toggle the state of anything given a boolean and a counter 
         public bool ToggleState(bool currentState, ref int counter)
         {
             counter++;
             currentState = (counter % 2 == 1);
             return currentState;
+        }
+        public void DoMouseClick()
+        {
+            Cursor.Hide(); // Hide the cursor before the mouse click
+
+            // Call the imported function with the cursor's current position
+            uint X = (uint)Cursor.Position.X;
+            uint Y = (uint)Cursor.Position.Y;
+            mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
+
+            Cursor.Show(); // Show the cursor again after the mouse click
         }
     }
 }
