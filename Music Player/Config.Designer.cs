@@ -53,6 +53,7 @@
             this.MinimizetoolTip = new System.Windows.Forms.ToolTip(this.components);
             this.ClosetoolTip = new System.Windows.Forms.ToolTip(this.components);
             this.configPanel = new System.Windows.Forms.Panel();
+            this.saveBox = new System.Windows.Forms.CheckBox();
             this.newpassView = new System.Windows.Forms.Button();
             this.artcheckBox = new System.Windows.Forms.CheckBox();
             this.albumLabel = new System.Windows.Forms.Label();
@@ -69,7 +70,6 @@
             this.startupfolderLabel = new System.Windows.Forms.Label();
             this.usernameLabel = new System.Windows.Forms.Label();
             this.editButton = new System.Windows.Forms.Button();
-            this.downloadButton = new System.Windows.Forms.Button();
             this.topPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.formiconBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.exitBox)).BeginInit();
@@ -252,7 +252,7 @@
             // refreshButton
             // 
             this.refreshButton.Enabled = false;
-            this.refreshButton.Location = new System.Drawing.Point(474, 272);
+            this.refreshButton.Location = new System.Drawing.Point(473, 271);
             this.refreshButton.Name = "refreshButton";
             this.refreshButton.Size = new System.Drawing.Size(84, 22);
             this.refreshButton.TabIndex = 43;
@@ -266,7 +266,7 @@
             // searchButton
             // 
             this.searchButton.Enabled = false;
-            this.searchButton.Location = new System.Drawing.Point(399, 272);
+            this.searchButton.Location = new System.Drawing.Point(398, 271);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(68, 22);
             this.searchButton.TabIndex = 44;
@@ -332,8 +332,9 @@
             // 
             this.configPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.configPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.configPanel.Controls.Add(this.newpassView);
+            this.configPanel.Controls.Add(this.saveBox);
             this.configPanel.Controls.Add(this.directorieslistBox);
+            this.configPanel.Controls.Add(this.newpassView);
             this.configPanel.Controls.Add(this.artcheckBox);
             this.configPanel.Controls.Add(this.albumLabel);
             this.configPanel.Controls.Add(this.newpassBox);
@@ -354,6 +355,18 @@
             this.configPanel.Size = new System.Drawing.Size(552, 195);
             this.configPanel.TabIndex = 50;
             this.configPanel.Click += new System.EventHandler(this.configPanel_Click);
+            // 
+            // saveBox
+            // 
+            this.saveBox.AutoSize = true;
+            this.saveBox.Location = new System.Drawing.Point(442, 135);
+            this.saveBox.Name = "saveBox";
+            this.saveBox.Size = new System.Drawing.Size(49, 17);
+            this.saveBox.TabIndex = 66;
+            this.saveBox.Text = "Save";
+            this.saveBox.UseVisualStyleBackColor = true;
+            this.saveBox.Visible = false;
+            this.saveBox.CheckedChanged += new System.EventHandler(this.saveBox_CheckedChanged);
             // 
             // newpassView
             // 
@@ -514,22 +527,11 @@
             this.editButton.UseVisualStyleBackColor = true;
             this.editButton.Click += new System.EventHandler(this.editButton_Click);
             // 
-            // downloadButton
-            // 
-            this.downloadButton.Location = new System.Drawing.Point(447, 32);
-            this.downloadButton.Name = "downloadButton";
-            this.downloadButton.Size = new System.Drawing.Size(117, 23);
-            this.downloadButton.TabIndex = 52;
-            this.downloadButton.TabStop = false;
-            this.downloadButton.Text = "Download Queue";
-            this.downloadButton.UseVisualStyleBackColor = true;
-            // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(576, 312);
-            this.Controls.Add(this.downloadButton);
             this.Controls.Add(this.editButton);
             this.Controls.Add(this.configPanel);
             this.Controls.Add(this.filefinderPanel);
@@ -596,7 +598,6 @@
         private System.Windows.Forms.TextBox userBox;
         private System.Windows.Forms.Label encryptionLabel;
         private System.Windows.Forms.Button editButton;
-        private System.Windows.Forms.Button downloadButton;
         private System.Windows.Forms.TextBox passBox;
         private System.Windows.Forms.TextBox newpassBox;
         private System.Windows.Forms.Label newpassLabel;
@@ -605,5 +606,6 @@
         private System.Windows.Forms.CheckBox artcheckBox;
         private System.Windows.Forms.Label albumLabel;
         private System.Windows.Forms.Button newpassView;
+        private System.Windows.Forms.CheckBox saveBox;
     }
 }

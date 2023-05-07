@@ -13,7 +13,7 @@ namespace Music_Player
     {
         // Class Instantiation
         private DBUtils dbUtils = new DBUtils();
-        private MusicPlayer _musicPlayer = (MusicPlayer)ActiveForm;
+        private RhythmRanger _musicPlayer = (RhythmRanger)ActiveForm;
         private Utes utes = new Utes();
 
         private string connectionString;
@@ -48,7 +48,6 @@ namespace Music_Player
         string username;
         string password;
         string defaultStartupFolder;
-        string encryptOnExit;
         string showArt;
 
         public Config()
@@ -134,6 +133,8 @@ namespace Music_Player
                 currentlyPlaying = null;
             }
 
+            
+
             // Check whether initial and current states match up to indicate a change
 
             if (encryptcheckBox.CheckState != initialEncryptState)
@@ -158,10 +159,9 @@ namespace Music_Player
                 }
                 else if (newpassBox.Text != null)
                 {
-                    dbUtils.UpdateChanges("user", "password", dbUtils.HashPassword(newpassBox.Text));
-
-                    passBox.Text = dbUtils.HashPassword(newpassBox.Text);
-                    passChanged = true;
+                    string newHash = dbUtils.HashPassword(newpassBox.Text);
+                    dbUtils.UpdateChanges("user", "password", newHash);
+                    passBox.Text = newHash;
 
                     // could use states here instead
                     oldpassLabel.Visible = false;
@@ -182,6 +182,7 @@ namespace Music_Player
             if (artChanged)
             {
                 dbUtils.UpdateChanges("user", "show_art", showArtAlbum);
+                _musicPlayer.albumVisible = showArtAlbum;
             }
             if (libChanged)
             {
@@ -193,7 +194,7 @@ namespace Music_Player
                     _musicPlayer.songslistView.Visible = true;
                 }
                 _musicPlayer.songslistView.Items.Clear();
-                MusicPlayer.paths.Clear();
+                RhythmRanger.paths.Clear();
                 _musicPlayer.LoadLibrary(dbUtils.GetStartUpFolder());
                 _musicPlayer.AddSearchSource();
                 _musicPlayer.GetPlaylists("Load");
@@ -203,13 +204,14 @@ namespace Music_Player
                 }
             }
             newpassView.Visible = false;
+            saveBox.Visible = false;
             refreshClicked = true;
             if (userBox.Enabled == true)
             {
                 // Set the textboxes to not enabled to simulate a reset 
                 editButton.PerformClick();
             }
-            _musicPlayer.albumVisible = showArtAlbum;
+            
             // Refresh w/changes as well as the musicplayer's library if changed
             this.Refresh();
 
@@ -254,6 +256,11 @@ namespace Music_Player
             if (artcheckBox.CheckState != initialArtState)
             {
                 artChanged = true;
+            }
+
+            if (libraryBox.Text != defaultStartupFolder)
+            {
+                libChanged = true;
             }
 
             if (!refreshClicked)
@@ -452,20 +459,26 @@ namespace Music_Player
         {
             refreshButton.Enabled = true;
 
-            switch (encryptcheckBox.CheckState)
+            if(encryptcheckBox.CheckState == CheckState.Checked)
             {
-                case CheckState.Checked: encryptAfterExit = "True"; break;
-                case CheckState.Unchecked: encryptAfterExit = "False"; break;
+                encryptAfterExit = "True";
+            }
+            else
+            {
+                encryptAfterExit = "False";
             }
         }
         private void artcheckBox_CheckedChanged(object sender, EventArgs e)
         {
             refreshButton.Enabled = true;
 
-            switch (artcheckBox.CheckState)
+            if(artcheckBox.CheckState == CheckState.Checked)
             {
-                case CheckState.Checked: showArtAlbum = "True"; break;
-                case CheckState.Unchecked: showArtAlbum = "False"; break;
+                showArtAlbum = "True";
+            }
+            else
+            {
+                showArtAlbum = "False";
             }
         }
 
@@ -504,10 +517,9 @@ namespace Music_Player
         }
         private void newpassBox_TextChanged(object sender, EventArgs e)
         {
-            if (oldpassBox.Text.Length == newpassBox.TextLength)
+            if (oldpassBox.Text.Length == newpassBox.Text.Length && oldpassBox.Text != newpassBox.Text)
             {
-                passChanged = true;
-                refreshButton.Enabled = true;
+                saveBox.Visible = true;
             }
         }
 
@@ -544,6 +556,15 @@ namespace Music_Player
                 newpassBox.PasswordChar = '•';
                 oldpassBox.PasswordChar = '•';
             }
+        }
+
+        private void saveBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (saveBox.CheckState == CheckState.Checked)
+            {
+                passChanged = true;
+            }
+            else { passChanged = false; }
         }
     }
 }
