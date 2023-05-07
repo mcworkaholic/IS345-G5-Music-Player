@@ -23,7 +23,7 @@ namespace Music_Player
 
             if (OpenForm1OnClose)
             {
-                Application.Run(new MusicPlayer());
+                Application.Run(new RhythmRanger());
             }
         }
     }
